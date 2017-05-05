@@ -2,7 +2,7 @@
 A hardcore math library with many features - regarding 'ultra-complex' math - you'll never find anywhere else. Don't get me wrong - the images you see won't blow your mind - it's more like that these things even can be computed by a library.
 
 ## Topic
-It started with the three base types of hypercomplex numbers.
+It started with the three base types of hyper-complex numbers.
 - complex (imaginary times itself equals -1)
 - binary (imaginary times itself equals 1 - but isn't 1 itself)
 - dual (imaginary times itself equals 0 - but isn't 0 itself)
