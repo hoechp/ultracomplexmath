@@ -55,7 +55,7 @@ and the not so spectacular dual e^(x × π × ê) - vertical
 - sqrt, conjugate, inverse, re, sqr, cub, negate
 - ...
 
-And yeah - these all work perfectly for those strange 8-dimensional numbers - I mean you hopefully know that you cant do pretty much any of this with vectors for example - vectors have nothing to do with this. And there are many, many more features - including parsing textual formulas with the ability to set variables. And also hypercomplex angles - a great and (dare I say) compley topic on its own, and so on, and so on... There's a lot of useful code in there.
+And yeah - these all work perfectly for those strange 8-dimensional numbers - I mean you hopefully know that you can't do pretty much any of this with vectors for example - vectors have nothing to do with this. And there are many, many more features - including parsing textual formulas with the ability to set variables. And also hyper-complex angles - a great and (dare I say) complex topic on its own, and so on, and so on... There's a lot of useful code in there.
 
 ## Meaning
 Complex number revolutionized physics and math, so are binary (aka split-complex) numbers starting to do so - at least to some extent. Also dual numbers have a lot of useful advantages.
