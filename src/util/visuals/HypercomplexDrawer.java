@@ -29,68 +29,69 @@ public class HypercomplexDrawer extends java.applet.Applet implements Runnable {
  	private void changeStuff() {
 	}
  	private void drawGUI() {
- 		Ultra x1 = new Ultra(2, 3, 5, 7, 11, 13, 17, 19).by(10);
- 		Ultra x2 = new Ultra(3, 5, 7, 11, 13, 17, 19, 2).by(10);
- 		Ultra x3 = new Ultra(5, 7, 11, 13, 17, 19, 2, 3).by(10);
- 		Ultra x4 = new Ultra(7, 11, 13, 17, 19, 2, 3, 5).by(10);
- 		Ultra x5 = new Ultra(11, 13, 17, 19, 2, 3, 5, 7).by(10);
- 		Ultra x6 = new Ultra(13, 17, 19, 2, 3, 5, 7, 11).by(10);
- 		Ultra x7 = new Ultra(17, 19, 2, 3, 5, 7, 11, 13).by(10);
- 		Ultra x8 = new Ultra(19, 2, 3, 5, 7, 11, 13, 17).by(10);
- 		for (int x = 0; x < WIDTH; ++x) {
- 	 		for (int y = 0; y < HEIGHT; ++y) {
+// 		Ultra x1 = new Ultra(2, 3, 5, 7, 11, 13, 17, 19).by(10);
+// 		Ultra x2 = new Ultra(3, 5, 7, 11, 13, 17, 19, 2).by(10);
+// 		Ultra x3 = new Ultra(5, 7, 11, 13, 17, 19, 2, 3).by(10);
+// 		Ultra x4 = new Ultra(7, 11, 13, 17, 19, 2, 3, 5).by(10);
+// 		Ultra x5 = new Ultra(11, 13, 17, 19, 2, 3, 5, 7).by(10);
+// 		Ultra x6 = new Ultra(13, 17, 19, 2, 3, 5, 7, 11).by(10);
+// 		Ultra x7 = new Ultra(17, 19, 2, 3, 5, 7, 11, 13).by(10);
+// 		Ultra x8 = new Ultra(19, 2, 3, 5, 7, 11, 13, 17).by(10);
+ 		for (int x = 0; x < WIDTH; x += 1) {
+ 	 		for (int y = 0; y < HEIGHT; y += 1) {
  	 			double nX = ((double)x / WIDTH * 2 - 1) * Math.PI * 2;
  	 			double nY = ((double)y / HEIGHT * 2 - 1) * Math.PI * 2;
- 	 			double fuzz = Math.PI / 64;
- 	 			//Ultra c = new Ultra(nX, fuzz, nY, fuzz, fuzz, fuzz, fuzz, fuzz); // TODO configure
- 	 			Ultra c = new Ultra(nX * 2 * Math.PI,
- 	 					Math.sin(nY + 0 * 2 * Math.PI / 7) * 2 * Math.PI,
- 	 					Math.sin(nY + 1 * 2 * Math.PI / 7) * 2 * Math.PI,
- 	 					Math.sin(nY + 2 * 2 * Math.PI / 7) * 2 * Math.PI,
- 	 					Math.sin(nY + 3 * 2 * Math.PI / 7) * 2 * Math.PI,
- 	 					Math.sin(nY + 4 * 2 * Math.PI / 7) * 2 * Math.PI,
- 	 					Math.sin(nY + 5 * 2 * Math.PI / 7) * 2 * Math.PI,
- 	 					Math.sin(nY + 6 * 2 * Math.PI / 7) * 2 * Math.PI
- 	 					); // TODO configure
- 	 			double alpha = Math.PI / 8 * 2;
- 	 			double beta = Math.PI / 16 * 2;
- 	 			c = new Ultra(Math.cos(alpha) * nX, Math.sin(alpha) * nX, Math.cos(beta) * nY, 0, Math.sin(beta) * nY, 0, 0, 0);
-
- 	 			//c = c.minus(x1).times(c.minus(x2)).times(c.minus(x3)).times(c.minus(x4))
- 	 			//		.times(c.minus(x5)).times(c.minus(x6)).times(c.minus(x7)).times(c.minus(x8));
- 	 			c = c.sin();
- 	 			/*
- 	 			c = c.times(c).times(c).times(c).times(c).times(c).times(c).times(x8).plus(
- 	 				c.times(c).times(c).times(c).times(c).times(c).times(x7)).plus(
- 	 				c.times(c).times(c).times(c).times(c).times(x6)).plus(
- 	 				c.times(c).times(c).times(c).times(x5)).plus(
- 	 				c.times(c).times(c).times(x4)).plus(
- 	 				c.times(c).times(x3)).plus(
- 	 				c.times(x2)).plus(
- 	 				x1);
- 	 			*/
- 	 			
- 	 			//System.out.println(c);
- 	 			for (int i = 0; i < 4; ++i) {
- 	 	 			drawComplex(c, graphics, x, y, i, i, WIDTH * i, 0);
- 	 			}
- 	 			
- 	 			for (int i = 4; i < 8; ++i) {
- 	 	 			drawComplex(c, graphics, x, y, i, i, WIDTH * (i - 4), HEIGHT);
- 	 			}
- 	 			
-	 	 		drawComplex(c, graphics, x, y, -1, -1, WIDTH * 0, HEIGHT * 2);
-	 	 		drawComplex(c, graphics, x, y, 0, 1, WIDTH * 1, HEIGHT * 2);
-	 	 		drawComplex(c, graphics, x, y, 0, 2, WIDTH * 2, HEIGHT * 2);
-	 	 		drawComplex(c, graphics, x, y, 0, 3, WIDTH * 3, HEIGHT * 2);
-
-	 	 		drawComplex(c, graphics, x, y, 0, 4, WIDTH * 0, HEIGHT * 3);
-	 	 		drawComplex(c, graphics, x, y, 0, 5, WIDTH * 1, HEIGHT * 3);
-	 	 		drawComplex(c, graphics, x, y, 0, 6, WIDTH * 2, HEIGHT * 3);
-	 	 		drawComplex(c, graphics, x, y, 0, 7, WIDTH * 3, HEIGHT * 3);
- 	 			if (y % 40 == 0) {
- 	 		 		System.out.println(((double)(x) + (double)(y) / HEIGHT) / WIDTH * 100 + "%");
- 	 			}
+ 	 			drawComplex(new Ultra(nX, 0, 0, 0, nY, 0, 0, 0).cos(), graphics, x, y, 0, 4, 0, 0);
+//// 	 			double fuzz = Math.PI / 64;
+// 	 			//Ultra c = new Ultra(nX, fuzz, nY, fuzz, fuzz, fuzz, fuzz, fuzz); // TODO configure
+// 	 			Ultra c = new Ultra(nX * 2 * Math.PI,
+// 	 					Math.sin(nY + 0 * 2 * Math.PI / 7) * 2 * Math.PI,
+// 	 					Math.sin(nY + 1 * 2 * Math.PI / 7) * 2 * Math.PI,
+// 	 					Math.sin(nY + 2 * 2 * Math.PI / 7) * 2 * Math.PI,
+// 	 					Math.sin(nY + 3 * 2 * Math.PI / 7) * 2 * Math.PI,
+// 	 					Math.sin(nY + 4 * 2 * Math.PI / 7) * 2 * Math.PI,
+// 	 					Math.sin(nY + 5 * 2 * Math.PI / 7) * 2 * Math.PI,
+// 	 					Math.sin(nY + 6 * 2 * Math.PI / 7) * 2 * Math.PI
+// 	 					); // TODO configure
+// 	 			double alpha = Math.PI / 8 * 2;
+// 	 			double beta = Math.PI / 16 * 2;
+// 	 			c = new Ultra(Math.cos(alpha) * nX, Math.sin(alpha) * nX, Math.cos(beta) * nY, 0, Math.sin(beta) * nY, 0, 0, 0);
+//
+// 	 			//c = c.minus(x1).times(c.minus(x2)).times(c.minus(x3)).times(c.minus(x4))
+// 	 			//		.times(c.minus(x5)).times(c.minus(x6)).times(c.minus(x7)).times(c.minus(x8));
+// 	 			c = c.sin();
+// 	 			/*
+// 	 			c = c.times(c).times(c).times(c).times(c).times(c).times(c).times(x8).plus(
+// 	 				c.times(c).times(c).times(c).times(c).times(c).times(x7)).plus(
+// 	 				c.times(c).times(c).times(c).times(c).times(x6)).plus(
+// 	 				c.times(c).times(c).times(c).times(x5)).plus(
+// 	 				c.times(c).times(c).times(x4)).plus(
+// 	 				c.times(c).times(x3)).plus(
+// 	 				c.times(x2)).plus(
+// 	 				x1);
+// 	 			*/
+// 	 			
+// 	 			//System.out.println(c);
+// 	 			for (int i = 0; i < 4; ++i) {
+// 	 	 			drawComplex(c, graphics, x, y, i, i, WIDTH * i, 0);
+// 	 			}
+// 	 			
+// 	 			for (int i = 4; i < 8; ++i) {
+// 	 	 			drawComplex(c, graphics, x, y, i, i, WIDTH * (i - 4), HEIGHT);
+// 	 			}
+// 	 			
+//	 	 		drawComplex(c, graphics, x, y, -1, -1, WIDTH * 0, HEIGHT * 2);
+//	 	 		drawComplex(c, graphics, x, y, 0, 1, WIDTH * 1, HEIGHT * 2);
+//	 	 		drawComplex(c, graphics, x, y, 0, 2, WIDTH * 2, HEIGHT * 2);
+//	 	 		drawComplex(c, graphics, x, y, 0, 3, WIDTH * 3, HEIGHT * 2);
+//
+//	 	 		drawComplex(c, graphics, x, y, 0, 4, WIDTH * 0, HEIGHT * 3);
+//	 	 		drawComplex(c, graphics, x, y, 0, 5, WIDTH * 1, HEIGHT * 3);
+//	 	 		drawComplex(c, graphics, x, y, 0, 6, WIDTH * 2, HEIGHT * 3);
+//	 	 		drawComplex(c, graphics, x, y, 0, 7, WIDTH * 3, HEIGHT * 3);
+// 	 			if (y % 40 == 0) {
+// 	 		 		System.out.println(((double)(x) + (double)(y) / HEIGHT) / WIDTH * 100 + "%");
+// 	 			}
  	 		}
  		}
  		graphics.setColor(Color.white);
