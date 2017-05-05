@@ -1,5 +1,5 @@
-# ultracomplexmath
-Hardcore math library with many features - regarding 'ultracomplex' math - you'll never find anywhere else. Don't get me wrong - the images you see won't blow your mind - it's more like that these things even can be computed by a library.
+# an ultra-complex math library
+A hardcore math library with many features - regarding 'ultra-complex' math - you'll never find anywhere else. Don't get me wrong - the images you see won't blow your mind - it's more like that these things even can be computed by a library.
 
 ## Topic
 It started with the three base types of hypercomplex numbers.
