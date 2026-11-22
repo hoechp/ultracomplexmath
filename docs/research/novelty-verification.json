@@ -1,0 +1,166 @@
+{
+  "package_version": "0.5.0",
+  "source_review_date": "2026-10-06",
+  "paper_version": "Noferini, arXiv:2512.08399v5; Problem 4.19",
+  "full": true,
+  "source_sha256": {
+    "examples/novelty_models.py": "035d57ec2df74f4945f7d1cf5c922e7b382ae8dce38060405846fd9eb50a4ed2",
+    "tools/novelty_probe.py": "6544ad7f76843e0b71608ec281a062026b7c6ab66b15a4d3a9ce856493866a1a",
+    "tests/test_novelty_models.py": "73daeaff465cec2022c325ba40021e2006b7466eb7a8957a3895b404eda19a94",
+    "src/ultracomplexmath/core.py": "c5910656cb02584a2442df3fe50d569a8e9a1e674930655ad48530d89d029351",
+    "src/ultracomplexmath/exact.py": "deef42c26c3f1c2d4ff0d5cfb5d1dbff17bae2bcf9a41fe1f26c1e199b7b5069",
+    "src/ultracomplexmath/transformations.py": "5d0ede7eaf151eecf6fe975e82d1b7b798588141b8d348f55e559ebedc63c8f5"
+  },
+  "rank": {
+    "interval_matrices_three_way_checked": 5565,
+    "interval_grid": {
+      "max_rows_columns": 9,
+      "degree": [
+        0,
+        13
+      ]
+    },
+    "jordan_triples": 1638,
+    "jordan_grid": {
+      "max_m": 12,
+      "max_n": 15,
+      "degree": "1..m+n-1"
+    },
+    "toeplitz_blocks": 12869,
+    "triples_with_rank_loss": 615,
+    "independent_full_tensor_matrices": 196,
+    "full_tensor_max_m_n": 7,
+    "ell_2_counterexample": {
+      "m": 3,
+      "n": 3,
+      "d": 1,
+      "k": 4,
+      "rank": 2,
+      "support_rank": 1
+    },
+    "status": "Proof supplied for ell=1; publication novelty unconfirmed; ell>=2 unresolved here"
+  },
+  "critical_jet": {
+    "exact_jets": 324,
+    "noncommuting_body_variation_pairs": 226,
+    "nonzero_cubic_coefficients": 192,
+    "independent_reference": "4x4 ordinary Fraction block exponential; fourth power zero",
+    "cayley_step": "2/7",
+    "cayley_step_counts": [
+      -3,
+      0,
+      7
+    ],
+    "status": "Exact Cayley-Hamilton corollary, not claimed as a new theorem"
+  },
+  "reciprocal": {
+    "family": "x=1+i*h+i*j*h+eps; extract -j/h\u00b2 and -eps_j/h\u00b2 from 1/x",
+    "reference": "ExactUltra inverse at the exact rational values of the input floats",
+    "second_derivative_limit": 2,
+    "third_derivative_limit": -6,
+    "samples": [
+      {
+        "h": 0.01,
+        "exact_finite_step_second": 1.9992003198720512,
+        "core_second": 1.9992003198721076,
+        "prototype_second": 1.9992003198720514,
+        "exact_finite_step_third": -5.996002238848563,
+        "core_third": -5.99600223884833,
+        "prototype_third": -5.996002238848564,
+        "log_control_second": -0.9998000533173385
+      },
+      {
+        "h": 0.0001,
+        "exact_finite_step_second": 1.9999999200000032,
+        "core_second": 1.9999999212316766,
+        "prototype_second": 1.9999999200000034,
+        "exact_finite_step_third": -5.999999600000022,
+        "core_third": -5.999999602712691,
+        "prototype_third": -5.999999600000023,
+        "log_control_second": -0.9999999800000005
+      },
+      {
+        "h": 1e-06,
+        "exact_finite_step_second": 1.999999999992,
+        "core_second": 1.999955756559757,
+        "prototype_second": 1.999999999992,
+        "exact_finite_step_third": -5.99999999996,
+        "core_third": -5.999922780830502,
+        "prototype_third": -5.999999999960001,
+        "log_control_second": -0.9999999999979999
+      },
+      {
+        "h": 1e-08,
+        "exact_finite_step_second": 1.9999999999999991,
+        "core_second": 2.2204460492503126,
+        "prototype_second": 1.9999999999999991,
+        "exact_finite_step_third": -5.999999999999996,
+        "core_third": -6.661338147750938,
+        "prototype_third": -5.999999999999995,
+        "log_control_second": -0.9999999999999998
+      },
+      {
+        "h": 1e-10,
+        "exact_finite_step_second": 2.0,
+        "core_second": -0.0,
+        "prototype_second": 2.0,
+        "exact_finite_step_third": -6.0,
+        "core_third": -0.0,
+        "prototype_third": -6.0,
+        "log_control_second": -1.0
+      },
+      {
+        "h": 1e-20,
+        "exact_finite_step_second": 2.0,
+        "core_second": -0.0,
+        "prototype_second": 2.0,
+        "exact_finite_step_third": -6.0,
+        "core_third": -0.0,
+        "prototype_third": -6.0,
+        "log_control_second": -1.0
+      },
+      {
+        "h": 1e-40,
+        "exact_finite_step_second": 2.0,
+        "core_second": -0.0,
+        "prototype_second": 2.0,
+        "exact_finite_step_third": -6.0,
+        "core_third": -0.0,
+        "prototype_third": -6.0,
+        "log_control_second": -1.0
+      },
+      {
+        "h": 1e-80,
+        "exact_finite_step_second": 2.0,
+        "core_second": -0.0,
+        "prototype_second": 2.0,
+        "exact_finite_step_third": -6.0,
+        "core_third": -0.0,
+        "prototype_third": -6.0,
+        "log_control_second": -1.0
+      },
+      {
+        "h": 1e-100,
+        "exact_finite_step_second": 2.0,
+        "core_second": -0.0,
+        "prototype_second": 2.0,
+        "exact_finite_step_third": -6.0,
+        "core_third": -0.0,
+        "prototype_third": -6.0,
+        "log_control_second": -1.0
+      },
+      {
+        "h": 1e-140,
+        "exact_finite_step_second": 2.0,
+        "core_second": -0.0,
+        "prototype_second": 2.0,
+        "exact_finite_step_third": -6.0,
+        "core_third": -0.0,
+        "prototype_third": -6.0,
+        "log_control_second": -1.0
+      }
+    ],
+    "status": "Known identity, demonstrated coefficient-accuracy gain, guarded prototype only",
+    "negative_finding": "The same log probe retains its small j component; no log failure claimed"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "environment": {
+    "python": "3.12.14",
+    "ultracomplexmath": "0.5.0",
+    "numpy": "2.5.3",
+    "matplotlib": "3.11.2"
+  },
+  "source_sha256": {
+    "src/ultracomplexmath/core.py": "c5910656cb02584a2442df3fe50d569a8e9a1e674930655ad48530d89d029351",
+    "src/ultracomplexmath/fields.py": "8e5fae3a4713107e76b7b5aca3b48c68753648cef3671faee0942524ffecaca0",
+    "src/ultracomplexmath/surfaces.py": "5b9ae107fd14d0fd2bdeafbe2bdb276dc17934f66cf8de599c2cbad608c31420",
+    "examples/fields.py": "6c4334f8bad6b7474d18f5a0624e47af4007d5d5ae32db49606ea1db130521c1"
+  },
+  "wave_formula": "exp(i*(1.6*x+0.6*y+0.4*z-(speed+eps)*omega1*t)+j*0.35+i*j*0.45)+0.8*exp(i*(-0.9*x+1.8*y-0.5*z-(speed+eps)*omega2*t)-j*0.2-i*j*0.25)",
+  "wave_parameters": {
+    "speed": 1,
+    "omega1": 1.7549928774784245,
+    "omega2": 2.073644135332772
+  },
+  "wave_grid": [
+    141,
+    141
+  ],
+  "wave_bounds": [
+    -5,
+    5
+  ],
+  "wave_slice": {
+    "z": 0,
+    "t": 1.2
+  },
+  "surface_grid": [
+    113,
+    57
+  ],
+  "surface_time": 0,
+  "surface_formulas": {
+    "torus": "exp(i*(2*u-3*v-t)+j*0.3*cos(u)+i*j*0.45*sin(v))*(1+eps*0.2*cos(u+v))",
+    "mobius": "exp(i*(2*u-t)+j*0.8*v*cos(u/2))*(1+eps*v*sin(u/2))"
+  },
+  "seam_checks": {
+    "torus": {
+      "comparisons": 68,
+      "max_value_coefficient_error": 2.6229018956769323e-15,
+      "max_partial_coefficient_error": 2.7853275241795927e-12
+    },
+    "mobius": {
+      "comparisons": 34,
+      "max_value_coefficient_error": 5.473822887940865e-16,
+      "max_partial_coefficient_error": 1.077804512306102e-12
+    }
+  },
+  "torus_area_absolute_error": 0.0,
+  "animation_frames": 16,
+  "animation_preview": {
+    "width": 480,
+    "palette_colors": 32,
+    "fps": 8
+  },
+  "animation_time_interval": [
+    0,
+    5
+  ],
+  "note": "Numerical diagnostics on stated samples; no claim of a new physical theory."
+}

@@ -1,0 +1,182 @@
+{
+  "scope": "bounded example checks, not a certification or general error bound",
+  "quick": false,
+  "python": "3.12.14",
+  "numpy": "2.5.3",
+  "matplotlib": "3.11.2",
+  "source_sha256": {
+    "examples/impact.py": "70d08d76a13903c5102a8d9cf59a1a40917bff214377c7842cec2bbf65ac35ab",
+    "examples/impact_models.py": "f5fc3da09e384e6024841727306e40b6550bcc8a4914bc360535fb27f06cafb8",
+    "examples/impact_lab.html": "7eea4637d6000823a2477338a293ff5b641a4af987f148e3368a6ded21d6fecc",
+    "examples/gallery.py": "ab1cbe301220e3934f5f68cde725ea911ab075b0b8a5f08e79a83fddb48d33fc",
+    "src/ultracomplexmath/core.py": "c5910656cb02584a2442df3fe50d569a8e9a1e674930655ad48530d89d029351",
+    "src/ultracomplexmath/exact.py": "deef42c26c3f1c2d4ff0d5cfb5d1dbff17bae2bcf9a41fe1f26c1e199b7b5069",
+    "src/ultracomplexmath/linalg.py": "4dd93ba3aa915d5f662d5ce618d0f442e59c81dd73f4e32ec756557f48674869",
+    "src/ultracomplexmath/exact_linalg.py": "f59afaad615c9a3e920b13d5f0fd0b7c7cab97ecccfafe8d4211839f7630e3a7",
+    "src/ultracomplexmath/transformations.py": "5d0ede7eaf151eecf6fe975e82d1b7b798588141b8d348f55e559ebedc63c8f5"
+  },
+  "demos": {
+    "optics": {
+      "layers_index_thickness_nm": [
+        [
+          1.22,
+          112.70491803278689
+        ],
+        [
+          1.38,
+          99.6376811594203
+        ]
+      ],
+      "substrate_index": 1.52,
+      "score": "arithmetic mean R over sampled 400\u20131000 nm, angles 0/30/60 degrees, s/p equally weighted",
+      "wavelength_samples": 41,
+      "scale_samples": 21,
+      "bare_mean_R": 0.059735400469699114,
+      "nominal_mean_R": 0.012698140437328038,
+      "selected_mean_R": 0.011274289601791058,
+      "selected_first_layer_scale": 1.25,
+      "max_complex_reflection_error_vs_fresnel": 8.163159687020606e-16,
+      "max_energy_body_and_tangent_residual": 1.3808398868775384e-15,
+      "plus_5_percent_max_prediction_error_in_R": 0.00017936992949259484
+    },
+    "impedance": {
+      "truth": {
+        "rs": 20.0,
+        "rp": 2400.0,
+        "rct": 9000.0,
+        "cf": 8e-09,
+        "cdl": 4e-06
+      },
+      "fit": {
+        "rs": 20.0,
+        "rp": 2399.3809865712806,
+        "rct": 9027.29851942132,
+        "cf": 8e-09,
+        "cdl": 4e-06
+      },
+      "synthetic_seed": 2317,
+      "noise": "independent real/imag Gaussian sigma = 0.006 * abs(Z_truth)",
+      "frequency_range_hz": [
+        0.01,
+        1000000.0
+      ],
+      "frequency_count": 65,
+      "fit_converged": true,
+      "weighted_costs": [
+        279113.62858292053,
+        44455.45082200346,
+        362.0757083810719,
+        133.09997650155233,
+        133.09085494613706,
+        133.090854942453
+      ],
+      "reduced_chi_squared": 1.0397723042379141,
+      "full_band_information": {
+        "condition": 1.3312732580138833,
+        "log_sigma": [
+          0.0013078417725401294,
+          0.0016612419065064011
+        ],
+        "covariance": [
+          [
+            1.7104501020009078e-06,
+            -3.3531156018491867e-07
+          ],
+          [
+            -3.3531156018491867e-07,
+            2.7597246719330227e-06
+          ]
+        ]
+      },
+      "high_band_information": {
+        "condition": 3846516.1673018495,
+        "log_sigma": [
+          0.010898606508538782,
+          21971.13529669239
+        ],
+        "covariance": [
+          [
+            0.00011877962382796389,
+            203.93329178919547
+          ],
+          [
+            203.93329178919544,
+            482730786.2255623
+          ]
+        ]
+      },
+      "high_band_range_hz": [
+        10000.0,
+        1000000.0
+      ],
+      "max_relative_errors_Z_dlogRp_dlogRct": [
+        2.511168526126608e-14,
+        4.965745988355383e-14,
+        6.434512151292742e-07
+      ],
+      "max_absolute_errors_Z_dlogRp_dlogRct": [
+        2.874327930311116e-10,
+        1.191471213947816e-10,
+        4.5113821927267594e-10
+      ],
+      "exact_fixture_impedance_coefficients": [
+        "3591/1906",
+        "0",
+        "-3335/1906",
+        "0",
+        "-64167/908209",
+        "-62925/908209",
+        "-1499299/3632836",
+        "-1584925/3632836"
+      ],
+      "exact_fixture_residual_zero_in_all_24_coefficients": true
+    },
+    "damping": {
+      "dimensionless_step": 0.05,
+      "steps": 240,
+      "initial_state": [
+        1,
+        0
+      ],
+      "damping_range": [
+        0.2,
+        1.8
+      ],
+      "damping_count": 17,
+      "max_position_velocity_error_vs_continuous": 0.0003880474470989437,
+      "max_discrete_energy_balance_residual": 3.86843335142828e-16,
+      "max_critical_position_sensitivity_error_vs_continuous": 0.00010967410239492992,
+      "critical_convergence_step_max_error": [
+        [
+          0.2,
+          0.0026581443143219308
+        ],
+        [
+          0.1,
+          0.0006676757441737013
+        ],
+        [
+          0.05,
+          0.00016665182527203504
+        ],
+        [
+          0.025,
+          4.164629687397614e-05
+        ]
+      ],
+      "exact_dual_energy_residual_zero": true,
+      "jordan_square_zero": true,
+      "epsilon_times_jordan_nonzero": true
+    },
+    "formulas": {
+      "frequency_hz": 8.0,
+      "relative_Ultra_derivative_errors": [
+        3.1970101740715666e-14,
+        3.087689747024756e-14
+      ],
+      "current_internal_complex_solves": 4,
+      "ordinary_equations_with_shared_body": 3,
+      "claim": "fewer handwritten derivative equations; no speedup claim"
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "analytic_field_equations": {
+    "dual_case_is_not_the_heat_equation": true,
+    "exact_cubic_samples": 27,
+    "squares": [
+      -1,
+      0,
+      1
+    ]
+  },
+  "base_commit": "fee69d99a90198b0b02945f897f0d84b06dfb122",
+  "finite_dual_motion": {
+    "exact_free_motion_and_time_composition": true,
+    "finite_times": [
+      "-2",
+      "0",
+      "1/3",
+      "5"
+    ],
+    "independent_operator_and_coefficient_nilpotents": true
+  },
+  "optical_cells": {
+    "cells": [
+      {
+        "delta": "-3/4",
+        "focal_length": "1",
+        "length": "1",
+        "trace": "1"
+      },
+      {
+        "delta": "0",
+        "focal_length": "1/4",
+        "length": "1",
+        "trace": "-2"
+      },
+      {
+        "delta": "5/4",
+        "focal_length": "1/5",
+        "length": "1",
+        "trace": "-3"
+      }
+    ],
+    "critical_cell_powers_checked": 12,
+    "order_of_elements_matters": true
+  },
+  "package_version": "0.4.0",
+  "polarization": {
+    "CS_scalar_phase_and_boost_match_Jones_action": true,
+    "coherency_states": [
+      "pure",
+      "partially_polarized"
+    ],
+    "determinant_and_Stokes_Lorentz_invariants": true,
+    "exact_Jones_transformations": 3,
+    "mode_operator_matches_all_three_Jones_actions": true
+  },
+  "projective_quadric": {
+    "chart_pairs": [
+      [
+        "x",
+        "x"
+      ],
+      [
+        "x",
+        "y"
+      ],
+      [
+        "y",
+        "x"
+      ],
+      [
+        "y",
+        "y"
+      ]
+    ],
+    "homogeneous_examples": 9,
+    "quadric_body_and_tangent_equations": true,
+    "reciprocal_chart_tangent_law": true
+  },
+  "quadratic_dynamics": {
+    "class_counts": {
+      "elliptic": 14,
+      "hyperbolic": 48,
+      "parabolic": 16,
+      "scalar": 3
+    },
+    "damped_oscillators": [
+      {
+        "delta": "-3/4",
+        "gamma": "1/2",
+        "omega_0": "1"
+      },
+      {
+        "delta": "0",
+        "gamma": "1",
+        "omega_0": "1"
+      },
+      {
+        "delta": "3",
+        "gamma": "2",
+        "omega_0": "1"
+      }
+    ],
+    "matrices_exhaustively_checked": 81
+  },
+  "scope": "Bounded examples complement the proofs; no production geometry/physics solver or global numerical guarantee",
+  "source_sha256": {
+    "src/ultracomplexmath/core.py": "4880d9c28527c3fadc3feaa582a50aa39d19d82eb76de63ab3da4e8b587bbb2a",
+    "src/ultracomplexmath/exact.py": "deef42c26c3f1c2d4ff0d5cfb5d1dbff17bae2bcf9a41fe1f26c1e199b7b5069",
+    "src/ultracomplexmath/exact_linalg.py": "f59afaad615c9a3e920b13d5f0fd0b7c7cab97ecccfafe8d4211839f7630e3a7",
+    "src/ultracomplexmath/transformations.py": "5d0ede7eaf151eecf6fe975e82d1b7b798588141b8d348f55e559ebedc63c8f5",
+    "tools/geometric_structure_probe.py": "2dba2aaff1f034653b68d2fc8089e938cb29124f9d31a0e118bef3e8d2b5982f"
+  },
+  "unit_polar_form": {
+    "branch_lattice_shifts_per_sample": 9,
+    "domain": "Real coefficients, invertible bodies, moderate bounded inputs",
+    "maximum_product_coefficient_error": 2.886579864025407e-15,
+    "maximum_reconstruction_coefficient_error": 1.1102230246251565e-15,
+    "unit_samples": 72
+  }
+}

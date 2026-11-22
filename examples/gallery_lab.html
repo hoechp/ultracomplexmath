@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ultracomplex Lab · two modes, eight coefficients</title>
+<style>
+:root{color-scheme:dark;--bg:#090e1d;--panel:#10192b;--line:#28364d;--text:#edf0ff;--muted:#a2b1cc;--cyan:#59e0df;--purple:#b795ff;--gold:#ffcf7b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;line-height:1.5}main{max-width:1220px;margin:0 auto;padding:44px 28px}a{color:var(--cyan)}.eyebrow{font-size:12px;letter-spacing:.18em;color:var(--cyan);font-weight:700}h1{font-size:clamp(28px,4.8vw,52px);letter-spacing:-.04em;line-height:1.08;margin:16px 0}h2{font-size:19px;margin:0 0 8px}.intro{color:var(--muted);max-width:850px;font-size:16px}.formula{display:inline-block;padding:12px 18px;border:1px solid var(--line);border-radius:10px;margin:6px 0 24px;font-size:19px}.controls{display:grid;grid-template-columns:1.5fr 1fr 1fr auto;gap:22px;background:var(--panel);border:1px solid var(--line);padding:20px;border-radius:16px;align-items:center}label{display:block;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}output{display:block;font-size:21px;color:var(--text);font-variant-numeric:tabular-nums;margin:5px 0}input[type=range]{width:100%;accent-color:var(--cyan);min-height:28px}select,button{font:inherit;color:var(--text);background:#18243a;border:1px solid #48627d;border-radius:7px;padding:9px 13px;min-height:44px}button{cursor:pointer}button:hover{border-color:var(--cyan)}:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}.card p{font-size:13px;color:var(--muted);margin:4px 0}.cyan{color:var(--cyan)}.purple{color:var(--purple)}.gold{color:var(--gold)}canvas{display:block;width:100%;height:330px}.wide{grid-column:1/-1}.wide canvas{height:190px}.legend{display:flex;flex-wrap:wrap;gap:8px 24px;color:var(--muted);font-size:13px;margin:12px 0}.legend b{margin-right:6px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}.metric{padding:18px;border:1px solid var(--line);border-radius:12px}.metric span{font-size:12px;color:var(--muted);display:block}.metric strong{font-size:23px;font-variant-numeric:tabular-nums;font-weight:500}.note{color:var(--muted);font-size:13px}details{border-top:1px solid var(--line);padding-top:18px;margin-top:24px}summary{cursor:pointer;color:var(--cyan)}table{width:100%;border-collapse:collapse;font-size:13px;margin:18px 0}td,th{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left}code{color:var(--gold)}footer{margin-top:35px;color:var(--muted);font-size:12px}
+@media(max-width:750px){main{padding:25px 16px}.controls{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr}.wide{grid-column:auto}canvas{height:290px}.formula{font-size:15px}.metric strong{font-size:20px}}
+</style>
+</head>
+<body>
+<main>
+<div class="eyebrow">ULTRACOMPLEX MATH / INTERACTIVE LAB</div>
+<h1>Eight coefficients.<br>One evolving system.</h1>
+<p class="intro">Watch two complex modes exchange intensity. Change the coupling and compare the exact motion with the prediction carried by the four nilpotent coefficients.</p>
+<div class="formula">Z(t) = exp[i (ω + j (κ + ε)) t] &nbsp; · &nbsp; i² = −1 &nbsp; j² = +1 &nbsp; ε² = 0</div>
+<div class="controls">
+<div><label for="time">Time t</label><output id="time-value" for="time">0.00</output><input id="time" type="range" min="0" max="240" value="76" step="1"></div>
+<div><label for="coupling">Coupling κ</label><output id="coupling-value" for="coupling">0.38</output><input id="coupling" type="range" min="2" max="18" value="7" step="1"></div>
+<div><label for="delta">Compare at κ + Δκ</label><output id="delta-value" for="delta">+0.04</output><select id="delta"><option value="-2">Δκ = −0.08</option><option value="-1">Δκ = −0.04</option><option value="0">Δκ = 0.00</option><option value="1" selected>Δκ = +0.04</option><option value="2">Δκ = +0.08</option></select></div>
+<button id="play" type="button" aria-pressed="false">▶ Play</button>
+</div>
+<div class="legend"><span><b class="cyan">●</b> Mode 1</span><span><b class="purple">●</b> Mode 2</span><span><b class="gold">→</b> Tangent prediction at κ + Δκ</span><span><b>○</b> Actual point at κ + Δκ</span></div>
+<div class="grid">
+<section class="card"><h2 class="cyan">Mode 1 · complex amplitude</h2><p>Real and imaginary parts of z₁. The faint path shows the full trajectory.</p><canvas id="mode1" role="img" aria-label="Complex phase portrait of mode 1, with the tangent prediction and actual perturbed point"></canvas></section>
+<section class="card"><h2 class="purple">Mode 2 · complex amplitude</h2><p>Real and imaginary parts of z₂. Gold shows the local derivative prediction.</p><canvas id="mode2" role="img" aria-label="Complex phase portrait of mode 2, with the tangent prediction and actual perturbed point"></canvas></section>
+<section class="card wide"><h2>Lossless intensity exchange</h2><p>|z₁|² + |z₂|² = 1. The vertical marker follows the current time.</p><canvas id="intensity" role="img" aria-label="Modal intensities against time, which always add to one"></canvas></section>
+</div>
+<div class="metrics">
+<div class="metric"><span>Total modal intensity</span><strong id="total">1.000000</strong></div>
+<div class="metric"><span>Actual state change ‖Z(κ + Δκ) − Z(κ)‖₂</span><strong id="actual-change">0.00000</strong></div>
+<div class="metric"><span>Linear prediction error · both modes</span><strong id="error" class="gold">0.00000</strong></div>
+</div>
+<p class="note">Try halving Δκ: for small changes, the prediction error drops by approximately a factor of four. At long times the first-order approximation becomes less accurate even though the underlying derivative is still correct.</p>
+<details>
+<summary>What is being computed?</summary>
+<p class="intro">The ideal linear system obeys ż₁ = iωz₁ + iκz₂ and ż₂ = iκz₁ + iωz₂, starting at (z₁,z₂) = (1,0). The parameter substitution κ → κ + ε carries its derivative through the exponential. This is forward-mode automatic differentiation inside the algebra.</p>
+<table><thead><tr><th>Coefficients</th><th>Meaning</th><th>Current values</th></tr></thead><tbody id="coefficient-table"></tbody></table>
+<p class="note">The independent reference is z₁ = e<sup>iωt</sup> cos(κt), z₂ = i e<sup>iωt</sup> sin(κt). The generator frequency is ω = 1.8. All displayed trajectories and derivatives are precomputed by Python's <code>Ultra.exp()</code>. This page only draws those samples; it contains no replacement ultracomplex implementation. Coupling is sampled in steps of 0.04; time in steps of 0.075. Stored coefficients are rounded to eight decimal places. No network access or third-party scripts are required.</p>
+</details>
+<footer>Created from Philipp Kolodziej's Ultracomplex Math project · <a href="https://github.com/hoechp/ultracomplexmath/tree/master/docs/gallery">Source &amp; mathematical notes</a> · 0BSD</footer>
+</main>
+<script>
+"use strict";
+const DATA = /*__ULTRA_DATA__*/;
+const $ = id => document.getElementById(id);
+const inputs = [$("time"),$("coupling"),$("delta")];
+const colors = {cyan:"#59e0df",purple:"#b795ff",gold:"#ffcf7b",muted:"#a2b1cc",grid:"#28364d",white:"#edf0ff"};
+let playing=false,last=0,accumulator=0;
+function context(id){const canvas=$(id),r=canvas.getBoundingClientRect(),dpr=window.devicePixelRatio||1;canvas.width=Math.round(r.width*dpr);canvas.height=Math.round(r.height*dpr);const ctx=canvas.getContext("2d");ctx.scale(dpr,dpr);return [ctx,r.width,r.height];}
+function line(ctx,points,color,width=1.5,alpha=1){ctx.globalAlpha=alpha;ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.stroke();ctx.globalAlpha=1;}
+function circle(ctx,x,y,color,fill=true,r=4){ctx.beginPath();ctx.arc(x,y,r,0,2*Math.PI);ctx.strokeStyle=color;ctx.lineWidth=2;ctx.fillStyle=color;fill?ctx.fill():ctx.stroke();}
+function arrow(ctx,a,b){line(ctx,[a,b],colors.gold,2);const angle=Math.atan2(b[1]-a[1],b[0]-a[0]);if(Math.hypot(b[1]-a[1],b[0]-a[0])<2)return;line(ctx,[[b[0]-8*Math.cos(angle-.45),b[1]-8*Math.sin(angle-.45)],b,[b[0]-8*Math.cos(angle+.45),b[1]-8*Math.sin(angle+.45)]],colors.gold,2);}
+function portrait(id,rows,actual,idx,real,imag,dr,di,color,delta){
+ const r=rows[idx],px=r[real]+delta*r[dr],py=r[imag]+delta*r[di],limit=Math.max(1.25,Math.abs(px)+.12,Math.abs(py)+.12);
+ const [ctx,w,h]=context(id),s=Math.min(w-75,h-54)/(2*limit),ox=w/2,oy=h/2-4,map=(x,y)=>[ox+s*x,oy-s*y];
+ ctx.font="11px system-ui";ctx.fillStyle=colors.muted;
+ for(const v of [-1,0,1]){line(ctx,[map(-1.25,v),map(1.25,v)],colors.grid,1);line(ctx,[map(v,-1.25),map(v,1.25)],colors.grid,1);ctx.fillText(String(v),ox+s*v-5,oy+s*1.25+18);if(v)ctx.fillText(String(v),ox-s*1.25-20,oy-s*v+4);}
+ ctx.fillText("Re",w-28,oy+16);ctx.fillText("Im",ox+9,18);
+ line(ctx,rows.map(r=>map(r[real],r[imag])),color,1,.18);
+ line(ctx,rows.slice(Math.max(0,idx-48),idx+1).map(r=>map(r[real],r[imag])),color,2.5);
+ const p=map(r[real],r[imag]),prediction=map(px,py),target=map(actual[real],actual[imag]);
+ arrow(ctx,p,prediction);circle(ctx,...p,color,true,5);circle(ctx,...prediction,colors.gold,true,3);circle(ctx,...target,colors.white,false,6);
+}
+function intensity(rows,idx){
+ const [ctx,w,h]=context("intensity"),left=38,right=w-17,top=16,bottom=h-29,map=(t,e)=>[left+(right-left)*t/18,bottom-(bottom-top)*e];
+ ctx.font="11px system-ui";ctx.fillStyle=colors.muted;
+ for(const e of [0,.5,1]){line(ctx,[map(0,e),map(18,e)],colors.grid,1);ctx.fillText(String(e),6,map(0,e)[1]+4);}
+ for(const t of [0,3,6,9,12,15,18])ctx.fillText(String(t),map(t,0)[0]-4,h-8);
+ for(const [re,im,color] of [[0,2,colors.cyan],[1,3,colors.purple]])line(ctx,rows.map((r,i)=>map(DATA.times[i],r[re]**2+r[im]**2)),color,2);
+ line(ctx,[map(DATA.times[idx],0),map(DATA.times[idx],1)],colors.white,1.5,.7);
+ ctx.fillText("t",w-8,h-8);
+}
+function render(){
+ const idx=+inputs[0].value,k=+inputs[1].value,d=+inputs[2].value,delta=DATA.couplings[k+d]-DATA.couplings[k],rows=DATA.samples[k],r=rows[idx],actual=DATA.samples[k+d][idx];
+ $("time-value").textContent=DATA.times[idx].toFixed(2);$("coupling-value").textContent=DATA.couplings[k].toFixed(2);$("delta-value").textContent=(delta>=0?"+":"")+delta.toFixed(2);
+ portrait("mode1",rows,actual,idx,0,2,4,6,colors.cyan,delta);portrait("mode2",rows,actual,idx,1,3,5,7,colors.purple,delta);intensity(rows,idx);
+ $("total").textContent=(r[0]**2+r[1]**2+r[2]**2+r[3]**2).toFixed(6);
+ $("actual-change").textContent=Math.hypot(...[0,1,2,3].map(i=>actual[i]-r[i])).toFixed(5);
+ $("error").textContent=Math.hypot(...[0,1,2,3].map(i=>actual[i]-r[i]-delta*r[i+4])).toFixed(5);
+ const pairs=[["1, i","z₁",0,2],["j, ij","z₂",1,3],["ε, εi","∂z₁ / ∂κ",4,6],["εj, εij","∂z₂ / ∂κ",5,7]];
+ $("coefficient-table").replaceChildren(...pairs.map(([basis,name,a,b])=>{const tr=document.createElement("tr");for(const value of [basis,name,`${r[a].toFixed(5)}, ${r[b].toFixed(5)}`]){const td=document.createElement("td");td.textContent=value;tr.appendChild(td);}return tr;}));
+}
+inputs.forEach(input=>input.addEventListener("input",render));
+$("play").addEventListener("click",()=>{playing=!playing;$("play").textContent=playing?"Ⅱ Pause":"▶ Play";$("play").setAttribute("aria-pressed",String(playing));last=0;accumulator=0;});
+function animate(now){if(playing){if(last)accumulator+=Math.min(now-last,150);if(accumulator>=45){const advance=Math.floor(accumulator/45);inputs[0].value=(+inputs[0].value+advance)%241;accumulator%=45;render();}last=now;}requestAnimationFrame(animate);}
+window.addEventListener("resize",render);render();requestAnimationFrame(animate);
+</script>
+</body>
+</html>

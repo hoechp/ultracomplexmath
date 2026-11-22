@@ -1,0 +1,101 @@
+{
+  "characteristic_two": {
+    "all_units_square_to_one": true,
+    "change_of_basis_bijective_and_preserves_all_basis_products": true,
+    "each_radical_element_squares_to_zero": true,
+    "elements_exhaustively_checked": 256,
+    "implementation_status": "Probe only; no public modular Ultra backend",
+    "radical_cube_nonzero_radical_fourth_zero": true,
+    "units_found_by_exhaustive_inverse_search": 128
+  },
+  "exact_motion": {
+    "cases": [
+      {
+        "kappa_body": -2,
+        "kappa_tangent": 1,
+        "time_step": "1/5"
+      },
+      {
+        "kappa_body": 0,
+        "kappa_tangent": 1,
+        "time_step": "1/5"
+      },
+      {
+        "kappa_body": 2,
+        "kappa_tangent": 1,
+        "time_step": "1/5"
+      }
+    ],
+    "symplectic_reversible_quadratic_and_projective_checks": true
+  },
+  "mixed_derivatives": [
+    {
+      "current_exp_second": 2.7182809223652233,
+      "current_exp_third_via_epsilon": 2.7182809223652233,
+      "current_inverse_second": 1.9999919999569293,
+      "current_log_second": -0.9999980000053333,
+      "finite_step_exp_reference": 2.718280922365223,
+      "h": 0.001,
+      "inverse_derivative_at_one": 2,
+      "log_derivative_at_one": -1,
+      "previous_channel_exp_second": 2.7182809223535997
+    },
+    {
+      "current_exp_second": 2.7182818283684353,
+      "current_exp_third_via_epsilon": 2.7182818283684353,
+      "current_inverse_second": 2.0000001654807416,
+      "current_log_second": -0.9999999998,
+      "finite_step_exp_reference": 2.718281828368435,
+      "h": 1e-05,
+      "inverse_derivative_at_one": 2,
+      "log_derivative_at_one": -1,
+      "previous_channel_exp_second": 2.718281155722479
+    },
+    {
+      "current_exp_second": 2.718281828459045,
+      "current_exp_third_via_epsilon": 2.718281828459045,
+      "current_inverse_second": 2.2204460492503126,
+      "current_log_second": -0.9999999999999998,
+      "finite_step_exp_reference": 2.718281828459045,
+      "h": 1e-08,
+      "inverse_derivative_at_one": 2,
+      "log_derivative_at_one": -1,
+      "previous_channel_exp_second": 2.2204460492503126
+    },
+    {
+      "current_exp_second": 2.7182818284590446,
+      "current_exp_third_via_epsilon": 2.7182818284590446,
+      "current_inverse_second": -0.0,
+      "current_log_second": -1.0,
+      "finite_step_exp_reference": 2.718281828459045,
+      "h": 1e-10,
+      "inverse_derivative_at_one": 2,
+      "log_derivative_at_one": -1,
+      "previous_channel_exp_second": -0.0
+    },
+    {
+      "current_exp_second": 2.7182818284590455,
+      "current_exp_third_via_epsilon": 2.7182818284590455,
+      "current_inverse_second": -0.0,
+      "current_log_second": -1.0,
+      "finite_step_exp_reference": 2.718281828459045,
+      "h": 1e-100,
+      "inverse_derivative_at_one": 2,
+      "log_derivative_at_one": -1,
+      "previous_channel_exp_second": -0.0
+    }
+  ],
+  "package_version": "0.4.0",
+  "pre_review_commit": "fb4870cbf8a47a89b4ac10cf3ff34f37fe0cc541",
+  "rational_cube_root_of_eight": {
+    "error": "Exact powers support integer exponents and rational square roots; use approximate() for other branches",
+    "supported": false
+  },
+  "scope": "Selected bounded checks; not a global accuracy or performance guarantee",
+  "source_sha256": {
+    "core.py": "4880d9c28527c3fadc3feaa582a50aa39d19d82eb76de63ab3da4e8b587bbb2a",
+    "exact.py": "deef42c26c3f1c2d4ff0d5cfb5d1dbff17bae2bcf9a41fe1f26c1e199b7b5069",
+    "plane_geometry.py": "05f69149bd19bfcdd8d38bb1c3aa6b8406e16f3248fa5e4af3a8653ed716ae03",
+    "transformations.py": "5d0ede7eaf151eecf6fe975e82d1b7b798588141b8d348f55e559ebedc63c8f5"
+  }
+}

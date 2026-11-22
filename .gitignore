@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.hypothesis/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.png
+*.pdf
+
+# Published, reproducible gallery figures.
+!docs/gallery/assets/*.png

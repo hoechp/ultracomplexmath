@@ -1,69 +1,99 @@
-# an ultra-complex math library
-A hardcore math library with many features - regarding 'ultra-complex' math - you'll never find anywhere else. Don't get me wrong - the images you see won't blow your mind - it's more like that these things even can be computed by a library.
+# Ultracomplex Math
 
-## Topic
-It started with the three base types of hyper-complex numbers.
-- complex (imaginary times itself equals -1)
-- binary (imaginary times itself equals 1 - but isn't 1 itself)
-- dual (imaginary times itself equals 0 - but isn't 0 itself)
+**Circular, hyperbolic and parabolic geometry — united in one eight-dimensional algebra.**
 
-But eventually it was about all it's combinations, too. A single number then has 8 dimensions - each one corresponding with all other dimensions in a unique way. Then I implemented pretty much all mathematical operations for them - which is anything other than trivial by the way. But right there it'll get too complex, better just look at these first pictures:
+A Python library by **Philipp Kolodziej** for exploring what these geometries can do together: exact rational constructions, mixed trigonometry, rotations, boosts, shears, coupled motion and projective transformations. Derivatives arise naturally from the same structure.
 
-### Color mappings
+$$\mathcal A_K=K[i,j,\varepsilon]/(i^2+1,\;j^2-1,\;\varepsilon^2),\qquad ij=ji,\quad i\varepsilon=\varepsilon i,\quad j\varepsilon=\varepsilon j.$$
 
-![mapper_comp](https://cloud.githubusercontent.com/assets/23620495/25764400/db0726cc-31e7-11e7-86d8-55675637c858.png)
+Choose numerical real coefficients (`Ultra`) or exact rational coefficients (`ExactUltra`). The mixed directions `ij`, `eps*i`, `eps*j` and `eps*i*j` are first-class parts of the same number. The goal is a coherent mathematical toolbox that brings the strengths of all three algebras into shared computations.
 
-Color mapping of simple complex cosine
+[Get started](docs/getting-started.md) · [Documentation](docs/README.md) · [Showcase](docs/gallery/README.md) · [Research agenda](docs/research/README.md)
 
+The [geometry inside the full union](docs/research/geometric-structure.md) explains its complete polar form, the shared structure of oscillators and optical systems, and its projective connection to a tangent quadric. It separates mathematical derivations from implemented APIs.
 
-![mapper_bin](https://cloud.githubusercontent.com/assets/23620495/25764403/dc9d678a-31e7-11e7-94ac-692c5ad722ad.png)
+![Exact circular, hyperbolic and parabolic geometry with coupled motion](docs/gallery/assets/rational-geometry.png)
 
-Color mapping of simple binary cosine
+## See the union at work
 
+| Explore | What comes together | Run from a checkout |
+| --- | --- | --- |
+| [Engineering showcase](docs/gallery/impact.md) | Optical tolerances, impedance diagnostics and vibration settling, with independent references | `python -m examples.impact` |
+| [Formula compression](docs/formula-compression.md) | A complex solution and two sensitivities in one model expression; exact residual and cost audit | `python -m examples.impact --only formulas` |
+| [UltraField](docs/fields.md) | Values in (3+1) dimensions, slices, sensitivity and fields on curved surfaces | `python -m examples.fields --animate` |
+| [Exact geometry](docs/unified-geometry.md) | Rational rotations, boosts, shears, intersections and projective maps | `python -m examples.exact_geometry --plot` |
+| [Coupled motion](docs/gallery/README.md#coupled-motion-and-sensitivity) | Complex phase, split coupling and dual parameter derivatives | `python -m examples.gallery --only coupling` |
+| [Waves and inverse problems](docs/gallery/applications.md) | Travelling waves, robot Jacobians and interference-based geometry recovery | `python -m examples.applications` |
+| [Trigonometric atlas](docs/gallery/README.md#trigonometry-and-angles) | The same function in circular, hyperbolic, parabolic and mixed directions | `python -m examples.gallery --only cosine` |
+| [Geometric structure](docs/research/geometric-structure.md) | Full polar form, critical motion, polarization and projective tangent geometry | `python tools/geometric_structure_probe.py` |
+| [Research investigations](docs/research/novelty.md) | A first-power rank classification, exact critical-jet flow and small-component reciprocal experiments | `python tools/novelty_probe.py` |
 
-![mapper_dual](https://cloud.githubusercontent.com/assets/23620495/25764404/deb80c78-31e7-11e7-8a1f-59aea3e7124f.png)
+![Coupled complex modes](docs/gallery/assets/coupled-modes.gif)
 
-Color mapping of simple dual cosine
+The [offline interactive lab](docs/gallery/lab.html) explores motion and sensitivity. Download the HTML and open it locally; GitHub displays its source. Every numerical plot is reproducible, with model assumptions and independent checks in the showcase.
 
+The new [engineering lab](docs/gallery/impact-lab.html) adds four interactive tabs: optical thickness/angle tradeoffs, measurement-band information, damping through the critical point, and a formula-compression audit. Its [guide](docs/gallery/impact.md) states what the synthetic experiments establish and where the models stop. The strongest demonstrated simplification is carrying a solution and its derivatives in one composable expression; no runtime advantage is claimed.
 
-And then there's a function plotter showing different dimensions of an 8-dimensional function that shows basically the eulerian behaviour of each base-algebra.
+## Try it
 
-![plotter](https://cloud.githubusercontent.com/assets/23620495/25764397/d9cab5e4-31e7-11e7-8b31-4bb641dc13f1.png)
+Python **3.12+**. The mathematical core has **no external dependencies**. From the repository root:
 
-plotter showing an eight-dimensional function
+```sh
+python -m venv .venv
+. .venv/bin/activate
+python -m pip install -e .
+python -m ultracomplexmath 'exp(i*j*(1+eps))'
+python -m ultracomplexmath --exact '(1/3+i+j+eps)^3' --json
+```
 
+Circular, hyperbolic and parabolic factors compose within the same number system:
 
-### Eulerian behaviour
+```python
+from ultracomplexmath import I, J, EPS, Ultra
 
-![euler_complex](https://cloud.githubusercontent.com/assets/23620495/25764838/05ead8be-31ea-11e7-917f-f2db49bce0ee.png)
+rotation = (I * 0.6).exp()
+boost = (J * 0.35).exp()
+relative_phase = (I * J * 0.2).exp()
+v = Ultra(real=0.4, j=-0.2, i=0.1, ij=0.3)
+shear = (EPS * v).exp()
+value = 2 * rotation * boost * relative_phase * shear
+assert value.isclose(2 * (I * 0.6 + J * 0.35 + I * J * 0.2 + EPS * v).exp())
+```
 
-the well-known and loved complex e^(x × π × î) - round
+Exact geometry uses the same algebraic laws without rounding coefficients:
 
-![euler_binary](https://cloud.githubusercontent.com/assets/23620495/25764839/07710c76-31ea-11e7-9444-3f39d9a45ab1.png)
+```python
+from fractions import Fraction as F
+from ultracomplexmath import CIRCULAR, QI, QJ, QEPS, QONE, evaluate_exact
 
-the not so well-known binary e^(x × π × Ê) - hyperbolic
+rotation = CIRCULAR.cayley(F(1, 2))
+assert rotation == CIRCULAR.exact(F(3, 5), F(4, 5))
+x = QONE + QI / 3 + QJ / 7 + QEPS / 11
+assert x * x.inverse() == QONE
+assert evaluate_exact("0.1 + 0.2 - 0.3") == 0 * QONE
+```
 
-![euler_dual](https://cloud.githubusercontent.com/assets/23620495/25764842/089336b0-31ea-11e7-8693-2c61199101b9.png)
+Install plotting with `python -m pip install -e '.[plot]'`. Run `ultracomplex-gui --view domain --formula 'cos(x)'` for an editable desktop explorer. See [setup and examples](docs/getting-started.md) for other platforms and views.
 
-and the not so spectacular dual e^(x × π × ê) - vertical
+## What is available
 
-### Supported operations
+| Area | Implemented | Important boundary / next step |
+| --- | --- | --- |
+| Scalar arithmetic | Full eight-component numerical and rational arithmetic; integer powers; inverses | Zero divisors have no inverse; rational coefficients do not include irrational results |
+| Functions and calculus | Numerical elementary/inverse functions, logarithm branches, first variations, intensity and phase derivatives | Stable small-component evaluation is complete for neither all functions nor all scales; general higher-derivative API is open |
+| Exact mathematics | Fraction formulas/JSON, matrices, complete linear solution families, polynomial arithmetic and Hermite interpolation | General rational powers, symbolic algebraic numbers and modular hypercomplex coefficients remain open |
+| Geometry | Intrinsic planar metrics/sectors, exact Cayley isometries, Euclidean predicates and intersections | General 3D poses, constraint systems and conic intersections need further work |
+| Transformations | Noncommuting `ModeOperator`, Möbius maps, unimodular projective points and mixed charts | Continuous matrix functions and automatic chart continuation are research priorities |
+| Space and time | `LocatedUltra`, rule-defined `UltraField`, 0–n spatial axes, separate time, slices, grids and optional NumPy/xarray adapters | Real coordinates are independent of the scalar algebra; numerical fields and explicit coordinate maps |
+| Surface fields | Torus and Möbius strip, induced metric, tangent gradients, Laplace–Beltrami, area quadrature and seam diagnostics | Static parametric surfaces; no general atlas, boundary solver or automatic physical transport |
+| Applications | Tested optical stacks, coating-impedance fits, critical damping, waves, robotics, interference and root basins | Specified models with independent references; no real-device calibration or general engineering solver |
 
-- all basic operations (+, -, *, /)
-- all trigonometric operations (cos, acos, cosh, acosh, sin, asin, sinh, asinh, tan, atan, tanh, atanh, cot, acot, coth, acoth, sec, asec, sech, asech, csc, acsc, csch, acsch)
-- pow, exp, ln, log
-- sqrt, conjugate, inverse, re, sqr, cub, negate
-- ...
+The ambition is broad; operation domains remain explicit. The scalar algebra is not a field in the algebraic sense (it has zero divisors), and has no compatible total order. This differs from a spatial field of values such as `UltraField`. See the [mathematical foundation](docs/mathematics.md), [operation atlas](docs/research/operations.md) and [prioritized gaps](docs/research/roadmap.md).
 
-And yeah - these all work perfectly for those strange 8-dimensional numbers - I mean you hopefully know that you can't do pretty much any of this with vectors for example - vectors have nothing to do with this. And there are many, many more features - including parsing textual formulas with the ability to set variables. And also hyper-complex angles - a great and (dare I say) complex topic on its own, and so on, and so on... There's a lot of useful code in there.
+## Where next?
 
-## Meaning
-Complex number revolutionized physics and math, so are binary (aka split-complex) numbers starting to do so - at least to some extent. Also dual numbers have a lot of useful advantages.
+The strongest next projects are **complete polar and singular geometry**, **continuous circular–hyperbolic–parabolic dynamics**, **exact geometric constraints** and **optical/projective geometry**. The [research review](docs/research/README.md) compares all seven nonempty combinations of the three base algebras, names missing functionality and gives acceptance criteria. Reliable derivatives remain part of this toolkit, alongside the geometries themselves.
 
-Some real-world physics is not one-dimensional - such as electric voltage and current are not independant to one another - in fact they are one complex value (like you think of a particle having a mass - one-dimensional, but some things are complex numbers in reality).
+Development and verification: [CONTRIBUTING.md](CONTRIBUTING.md). API orientation: [docs/api.md](docs/api.md). Release changes: [CHANGELOG.md](CHANGELOG.md).
 
-So string theory says the universe has to have at least 11 dimensions (without time) or 12 dimensions (with time). So take a three-dimensional vector of a position, or better a four-dimensional space-time-vector and give it an 8-dimensional (as I call it:) ultra-complex value. It's quite possible that this would work out and for example simplify a lot of the math and equations and so on - just like complex numbers did.
-
-For example the somehow hyperbolic-natured binary (aka split-complex or space-time) numbers are already used in physics to describe how waves are traveling in space. And those unspectacular dual numbers are used in mechanics and robotics to describe complex movements. Others of those eight dimensions share the *basic* attributes of one of those base-types, but in some ways they on their own behave uniquely. People have to look deeper into this - I'm afraid I'm neither a physicist nor a full-fledged mathematician, just a mere software engineer, who's interested in this and spent some spare time over a few years to constantly think about this - I wrote hundreds of pages of formulas and I think I'm really onto something. It's just that noone knows about this approach.
-
-I hope some physics/math people will share my enthusiasm and try to verify or falsify my claim that these could be candidates for simplifying physics and/or fitting greatly into string-/m-theory and so on. The math, the formulas are the key - not this half-baken old code (yet still you won't find a better library for 8-dimensional combined hyper-complex math with complex, dual and binary numbers combined).
+Licensed under [0BSD](LICENSE). [Project scope](docs/scope.md) explains the separation of unrelated algorithm experiments; [history and compatibility](docs/history.md) preserve access to the original work without crowding the current guides.

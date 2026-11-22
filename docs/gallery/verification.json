@@ -1,0 +1,11 @@
+{
+  "closed_form_max_error": 3.019806626980426e-14,
+  "intensity_conservation_max_error": 4.440892098500626e-16,
+  "nine_roots_max_residual": 1.5543122344752192e-15,
+  "linearization_error_ratio_when_delta_halves": 3.989110383755968,
+  "newton": {
+    "resolution": 360,
+    "basins_found": 9,
+    "unresolved": 4
+  }
+}

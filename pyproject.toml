@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ultracomplexmath"
+version = "0.5.0"
+description = "A typed, eight-dimensional commutative algebra combining complex, split-complex and dual numbers"
+readme = "README.md"
+license = "0BSD"
+license-files = ["LICENSE"]
+requires-python = ">=3.12"
+authors = [{name = "Philipp Kolodziej"}]
+dependencies = []
+keywords = ["mathematics", "hypercomplex", "dual-numbers", "automatic-differentiation"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Mathematics",
+  "Typing :: Typed",
+]
+
+[project.urls]
+Repository = "https://github.com/hoechp/ultracomplexmath"
+Issues = "https://github.com/hoechp/ultracomplexmath/issues"
+Original = "https://github.com/hoechp/ultracomplexmath/tree/954c19190ea862ee93e5e1a18295cc15f69649dd"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "hypothesis>=6", "ruff>=0.12", "mypy>=1.15", "build>=1", "setuptools>=77", "wheel"]
+plot = ["matplotlib>=3.8"]
+arrays = ["numpy>=1.26", "xarray>=2024.1"]
+
+[project.scripts]
+ultracomplex = "ultracomplexmath.__main__:main"
+ultracomplex-gui = "ultracomplexmath.gui:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ultracomplexmath = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-config --strict-markers"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501", "E741"]  # I is the conventional imaginary-unit constant.
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src"]

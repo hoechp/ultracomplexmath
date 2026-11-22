@@ -1,0 +1,59 @@
+{
+  "absolute_error_limit": 1e-11,
+  "current_observations": {
+    "abs_dual_returns": "float",
+    "integer_exponent": 9007199254740993,
+    "integer_power_actual": "1.0*i",
+    "integer_power_correct": true,
+    "integer_power_expected": "1.0*i",
+    "large_integer_coefficients_collide": true,
+    "split_endpoint_square": "(1.0+0.0*j)",
+    "ultra_methods_present": {
+      "atan2": false,
+      "expm1": false,
+      "log1p": false,
+      "primal": true,
+      "roots": false,
+      "sinc": false,
+      "tangent": true
+    }
+  },
+  "evaluated_package_version": "0.4.0",
+  "hensel_example": {
+    "initial_root": 3,
+    "lifted_root": 10,
+    "modulus": 49,
+    "prime": 7
+  },
+  "max_absolute_errors": {
+    "coherent_intensity_and_tangent": 8.881784197001252e-16,
+    "complex_cosine": 0.0,
+    "critical_cosine_tangent": 0.0,
+    "critical_oscillator_derivative": 9.71445146547012e-17,
+    "critical_sine_tangent": 0.0,
+    "dual_cosine": 0.0,
+    "generalized_cosine": 4.440892098500626e-16,
+    "generalized_quadratic_identity": 7.105427357601002e-15,
+    "generalized_sine": 8.881784197001252e-16,
+    "interferometer_minus_derivative": 2.220446049250313e-16,
+    "interferometer_minus_power": 2.220446049250313e-16,
+    "interferometer_plus_derivative": 2.220446049250313e-16,
+    "interferometer_plus_power": 3.3306690738754696e-16,
+    "mixed_euler_factorization": 3.002224531865041e-16,
+    "operator_circular_square": 0.0,
+    "operator_composition": 1.8444410139024814e-15,
+    "operator_matrix_action": 6.377745716588144e-16,
+    "operator_parabolic_square": 0.0,
+    "operator_swap_j_anticommutator": 0.0,
+    "oscillator_body": 3.3306690738754696e-16,
+    "split_cosine": 1.1443916996305594e-16,
+    "unit_cube_root_residual": 1.8626891697387987e-15,
+    "zero_root_family": 0.0
+  },
+  "minimum_root_separation": 1.4733736128730237,
+  "operator_samples": 24,
+  "pre_review_commit": "fb4870cbf8a47a89b4ac10cf3ff34f37fe0cc541",
+  "purpose": "Selected identity checks, not a complete audit or production API implementation",
+  "tangent_ideal_zero_products": 16,
+  "unit_cube_roots": 9
+}
