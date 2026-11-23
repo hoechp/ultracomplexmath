@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Four bars at dead centre · Ultracomplexmath</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #152f33;
+        --muted: #49616a;
+        --border: #ccd6d3;
+        --paper: #fafaf5;
+        --teal: #126766;
+        --orange: #a64220;
+        font-family: "Inter", system-ui, sans-serif;
+        color: var(--ink);
+        background: var(--paper);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        max-width: 1100px;
+        margin: auto;
+        padding: 2.5rem clamp(1rem, 4vw, 3rem);
+      }
+      h1 {
+        font:
+          normal clamp(2.1rem, 5vw, 4rem) / 1.05 "STIX Two Text",
+          Georgia,
+          serif;
+        margin: 0 0 0.65rem;
+      }
+      header p {
+        max-width: 66ch;
+        color: var(--muted);
+        line-height: 1.55;
+        margin: 0 0 1.8rem;
+      }
+      section {
+        min-width: 0;
+      }
+      .lab {
+        border-top: 2px solid var(--ink);
+        border-bottom: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: minmax(0, 1.9fr) minmax(240px, 1fr);
+      }
+      .visual {
+        padding: 1.15rem 1.5rem 1rem 0;
+      }
+      .controls {
+        border-left: 1px solid var(--border);
+        padding: 1.5rem 0 1.25rem 1.5rem;
+      }
+      svg {
+        width: 100%;
+        height: auto;
+        display: block;
+        background: #eff3ec;
+        border-radius: 0.3rem;
+      }
+      svg text {
+        font:
+          600 19px system-ui,
+          sans-serif;
+        fill: var(--ink);
+        paint-order: stroke;
+        stroke: #eff3ec;
+        stroke-width: 4px;
+      }
+      svg .orbit {
+        fill: none;
+        stroke: #98aba4;
+        stroke-dasharray: 4 5;
+      }
+      svg .label {
+        text-anchor: middle;
+      }
+      fieldset {
+        border: 0;
+        padding: 0;
+        margin: 0 0 1.25rem;
+      }
+      legend,
+      .caption {
+        font-weight: 650;
+        margin-bottom: 0.5rem;
+      }
+      fieldset label {
+        display: block;
+        line-height: 1.8;
+      }
+      input {
+        accent-color: var(--teal);
+      }
+      input[type="range"] {
+        width: 100%;
+        margin: 1rem 0;
+      }
+      button {
+        font: inherit;
+        cursor: pointer;
+        background: transparent;
+        border: 1px solid #809691;
+        color: var(--ink);
+        border-radius: 0.3rem;
+        padding: 0.45rem 0.65rem;
+      }
+      button:hover,
+      button:focus-visible {
+        background: #dbeae2;
+      }
+      .buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .note {
+        color: var(--muted);
+        line-height: 1.45;
+        font-size: 0.9rem;
+        margin: 0.65rem 0 0;
+      }
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        padding: 1.1rem 0;
+        margin: 0;
+      }
+      dt {
+        font-size: 0.83rem;
+        color: var(--muted);
+        margin-bottom: 0.25rem;
+      }
+      dd {
+        margin: 0;
+        font-weight: 600;
+      }
+      #verdict {
+        color: var(--teal);
+      }
+      #verdict[data-blocked="true"] {
+        color: var(--orange);
+      }
+      .exact {
+        border-top: 1px solid var(--border);
+        padding-top: 1rem;
+        line-height: 1.6;
+      }
+      .exact output {
+        overflow-wrap: anywhere;
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+      }
+      @media (max-width: 720px) {
+        main {
+          padding-top: 1.35rem;
+        }
+        .lab {
+          grid-template-columns: 1fr;
+        }
+        .visual {
+          padding: 1rem 0;
+        }
+        .controls {
+          border: 0;
+          border-top: 1px solid var(--border);
+          padding: 1rem 0;
+        }
+        .metrics {
+          grid-template-columns: 1fr 1fr;
+        }
+        .metrics div:last-child {
+          grid-column: 1/-1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Four bars at dead centre</h1>
+        <p>
+          Turn the crank, then try both assemblies at a toggle. The joints meet
+          at exactly the same points, yet the output can leave in two different
+          directions.
+        </p>
+      </header>
+      <div class="lab">
+        <section class="visual" aria-label="Mechanism drawing">
+          <svg
+            viewBox="0 0 640 350"
+            role="img"
+            aria-labelledby="figure-title figure-desc"
+          >
+            <title id="figure-title">Four-bar linkage with motion arrows</title>
+            <desc id="figure-desc">
+              Fixed pivots A and D, moving joints B and C. Arrows show scaled
+              velocity vectors.
+            </desc>
+            <defs>
+              <marker
+                id="tip"
+                markerWidth="5"
+                markerHeight="5"
+                refX="4.2"
+                refY="2.5"
+                orient="auto"
+              >
+                <path d="M0 0 L5 2.5 L0 5 Z" fill="#a64220" />
+              </marker>
+            </defs>
+            <g aria-hidden="true">
+              <path d="M48 175H591" stroke="#c6d2c9" />
+              <circle class="orbit" cx="160" cy="175" r="83" />
+              <circle class="orbit" cx="409" cy="175" r="83" />
+              <path
+                d="M160 175H409"
+                stroke="#637678"
+                stroke-width="5"
+                stroke-dasharray="8 4"
+              />
+              <path
+                id="rods"
+                fill="none"
+                stroke="#126766"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="7"
+              />
+              <g fill="#152f33">
+                <circle cx="160" cy="175" r="6" />
+                <circle cx="409" cy="175" r="6" />
+              </g>
+              <g fill="#fafaf5" stroke="#126766" stroke-width="3">
+                <circle id="jointB" r="6" />
+                <circle id="jointC" r="6" />
+              </g>
+              <g
+                fill="none"
+                stroke="#a64220"
+                stroke-width="3"
+                marker-end="url(#tip)"
+              >
+                <path id="arrowB" />
+                <path id="arrowC" />
+              </g>
+              <g class="label">
+                <text x="160" y="200">A</text>
+                <text x="409" y="200">D</text>
+                <text id="labelB">B</text>
+                <text id="labelC">C</text>
+              </g>
+            </g>
+          </svg>
+          <p class="note">
+            Dashed line · fixed base &nbsp; / &nbsp; Solid bars · moving linkage
+            &nbsp; / &nbsp; Arrows · trial velocity
+          </p>
+        </section>
+        <section class="controls" aria-label="Experiment controls">
+          <label class="caption" for="position"
+            >Crank angle <output id="angle" for="position"></output
+          ></label>
+          <input
+            type="range"
+            id="position"
+            min="0"
+            step="1"
+            value="8"
+            aria-label="Crank angle"
+          />
+          <div class="buttons">
+            <button id="inner" type="button">Inner toggle</button
+            ><button id="outer" type="button">Outer toggle</button>
+          </div>
+          <hr
+            style="
+              border: 0;
+              border-top: 1px solid var(--border);
+              margin: 1.2rem 0;
+            "
+          />
+          <fieldset>
+            <legend>Assembly</legend>
+            <label
+              ><input type="radio" name="branch" value="0" checked />
+              Parallelogram</label
+            >
+            <label
+              ><input type="radio" name="branch" value="1" /> Reflected
+              assembly</label
+            >
+          </fieldset>
+          <label
+            ><input type="checkbox" id="probe" /> Hold B still and lift C</label
+          >
+          <p class="note">
+            At a toggle this trial preserves all bar lengths to first order.
+            Test whether an acceleration can continue it.
+          </p>
+        </section>
+      </div>
+      <dl class="metrics" aria-live="polite">
+        <div>
+          <dt>Distinct assemblies at this angle</dt>
+          <dd id="closures"></dd>
+        </div>
+        <div>
+          <dt>Instantaneous degrees of freedom</dt>
+          <dd id="dimension"></dd>
+        </div>
+        <div>
+          <dt>Selected velocity</dt>
+          <dd id="verdict"></dd>
+        </div>
+      </dl>
+      <div class="exact">
+        <strong>Exact coordinates and velocities</strong><br /><output
+          id="exact"
+        ></output>
+        <p class="note">
+          All samples use rational arithmetic. Branch velocities are per radian
+          at unit crank speed. Only the diagram and angle display are rounded.
+        </p>
+      </div>
+      <noscript>Enable JavaScript to operate this offline experiment.</noscript>
+    </main>
+    <script id="samples" type="application/json">
+      __SAMPLES__
+    </script>
+    <script>
+      "use strict";
+      const samples = JSON.parse(
+        document.getElementById("samples").textContent,
+      );
+      const el = (id) => document.getElementById(id);
+      const slider = el("position");
+      slider.max = samples.length - 1;
+      function number(s) {
+        const [n, d = 1] = String(s).split("/").map(Number);
+        return n / d;
+      }
+      function plot([x, y]) {
+        return [160 + 83 * number(x), 175 - 83 * number(y)];
+      }
+      function drawJoint(name, point, velocity) {
+        const [x, y] = plot(point),
+          joint = el("joint" + name),
+          label = el("label" + name);
+        joint.setAttribute("cx", x);
+        joint.setAttribute("cy", y);
+        label.setAttribute("x", x);
+        label.setAttribute("y", y - 14);
+        const [dx, dy] = velocity.map(number);
+        el("arrow" + name).setAttribute(
+          "d",
+          dx || dy ? "M" + x + " " + y + "l" + 34 * dx + " " + -34 * dy : "",
+        );
+      }
+      function update() {
+        const index = Number(slider.value),
+          sample = samples[index];
+        const branch =
+          sample.branches[
+            Number(document.querySelector("input[name=branch]:checked").value)
+          ];
+        const probe = el("probe").checked;
+        const vb = probe ? [0, 0] : sample.vb,
+          vc = probe ? [0, 1] : branch.vc;
+        const [x, y] = sample.b.map(number);
+        const raw = (Math.atan2(y, x) * 180) / Math.PI;
+        const angle =
+          index === samples.length - 1 ? 360 : raw < 0 ? raw + 360 : raw;
+        el("angle").textContent = angle.toFixed(1) + "°";
+        slider.setAttribute("aria-valuetext", el("angle").textContent);
+        el("rods").setAttribute(
+          "d",
+          "M160 175L" +
+            plot(sample.b).join(" ") +
+            "L" +
+            plot(branch.c).join(" ") +
+            "L409 175",
+        );
+        drawJoint("B", sample.b, vb);
+        drawJoint("C", branch.c, vc);
+        el("closures").textContent = sample.closures;
+        el("dimension").textContent = branch.dimension;
+        const verdict = probe ? branch.trial : "finite assembly motion";
+        el("verdict").textContent = verdict;
+        el("verdict").dataset.blocked =
+          probe && verdict !== "compatible acceleration";
+        const pair = (v) => "(" + v.join(", ") + ")";
+        el("exact").textContent =
+          "B = " +
+          pair(sample.b) +
+          " · C = " +
+          pair(branch.c) +
+          " · vB = " +
+          pair(vb) +
+          " · vC = " +
+          pair(vc);
+      }
+      for (const control of document.querySelectorAll("input"))
+        control.addEventListener("input", update);
+      for (const [id, index] of [
+        ["inner", 0],
+        ["outer", (samples.length - 1) / 2],
+      ])
+        el(id).addEventListener("click", () => {
+          slider.value = index;
+          update();
+        });
+      update();
+    </script>
+  </body>
+</html>

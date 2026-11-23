@@ -12,6 +12,7 @@ GUIDES = (
     "docs/getting-started.md",
     "docs/exact-arithmetic.md",
     "docs/unified-geometry.md",
+    "docs/four-bar.md",
     "docs/fields.md",
     "docs/polar-motion.md",
     "docs/formula-compression.md",

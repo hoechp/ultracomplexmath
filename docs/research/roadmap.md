@@ -44,7 +44,7 @@ The [novelty investigations](novelty.md) now supply a guarded inverse prototype 
 
 ## Suggested sequence
 
-**Milestone A: trustworthy exact and polar geometry.** G01, the small rational-root portion of G02, G16 polar/stratum structure and G04 exact constraints. Polar reconstruction and branch lifts shipped in 0.6.0. A closed-linkage showcase with exact residuals remains. Introduce G03 abstractions around concrete coefficient needs; use G06 helpers where they serve the geometry.
+**Milestone A: trustworthy exact and polar geometry.** G01, the small rational-root portion of G02, G16 polar/stratum structure and G04 exact constraints. Polar reconstruction and branch lifts shipped in 0.6.0. The [closed four-bar lab](../four-bar.md) now checks rational assemblies, driven velocities and both collinear toggles through second order. Algebraic joint coordinates in broader constraint graphs remain open. Introduce G03 abstractions around concrete coefficient needs; use G06 helpers where they serve the geometry.
 
 **Milestone B: motion and charts.** G05 generalized functions with existing exact Cayley steps, plus G07 continuation. The continuous oscillator and RLC experiment shipped in 0.6.0. [Sampled projective continuation](../unified-geometry.md#follow-a-path-through-a-pole) now covers mixed-channel poles and a bare-glass optical example. Layered optical cells are a follow-up. Include G17 tangent chart transitions and apply G19 whenever geometric and perturbation nilpotents meet.
 

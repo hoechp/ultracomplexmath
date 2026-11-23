@@ -7,10 +7,12 @@ Euclidean predicates to the hyperbolic or degenerate parabolic metric.
 from __future__ import annotations
 
 from collections.abc import Sequence
+from dataclasses import dataclass
 from fractions import Fraction
+from typing import Literal
 
 from .core import DomainError
-from .exact import Rational, rational
+from .exact import Rational, _rational_sqrt, rational
 
 type RationalPoint2 = tuple[Fraction, Fraction]
 type PointInput = Sequence[Rational]
@@ -111,3 +113,57 @@ def incircle2d(point: PointInput, a: PointInput, b: PointInput, c: PointInput) -
     )
     oriented = determinant if area > 0 else -determinant
     return (oriented > 0) - (oriented < 0)
+
+
+@dataclass(frozen=True, slots=True)
+class CircleIntersection2D:
+    """Real intersection over Q. A pair is midpoint ± direction * sqrt(radicand)."""
+
+    kind: Literal["empty", "point", "pair", "coincident"]
+    midpoint: RationalPoint2 | None = None
+    direction: RationalPoint2 | None = None
+    radicand: Fraction = Fraction(0)
+
+    def rational_points(self) -> tuple[RationalPoint2, ...]:
+        """Enumerate the full intersection when it is finite and rational."""
+        if self.kind == "empty":
+            return ()
+        if self.midpoint is None:
+            raise DomainError("Coincident positive-radius circles have infinitely many points")
+        if self.direction is None:
+            return (self.midpoint,)
+        try:
+            scale = _rational_sqrt(self.radicand)
+        except DomainError as exc:
+            raise DomainError("Two real intersections have irrational coordinates") from exc
+        x, y = self.midpoint
+        dx, dy = self.direction
+        return ((x + dx * scale, y + dy * scale), (x - dx * scale, y - dy * scale))
+
+
+def circle_intersection2d(
+    a: PointInput, radius_squared_a: Rational, b: PointInput, radius_squared_b: Rational
+) -> CircleIntersection2D:
+    """Intersect Euclidean circles given centers and nonnegative squared radii.
+
+    For a pair, the first point lies left of the directed center line a → b.
+    Zero-radius circles are points. Classification uses no tolerance or radicals.
+    """
+    p, q = rational_point2(a), rational_point2(b)
+    r, s = rational(radius_squared_a), rational(radius_squared_b)
+    if min(r, s) < 0:
+        raise ValueError("Squared radii must be nonnegative")
+    dx, dy = _sub(q, p)
+    distance2 = dx * dx + dy * dy
+    if not distance2:
+        if r != s:
+            return CircleIntersection2D("empty")
+        return CircleIntersection2D("coincident") if r else CircleIntersection2D("point", p)
+    along = (distance2 + r - s) / (2 * distance2)
+    offset2 = r / distance2 - along * along
+    if offset2 < 0:
+        return CircleIntersection2D("empty")
+    midpoint = (p[0] + along * dx, p[1] + along * dy)
+    if not offset2:
+        return CircleIntersection2D("point", midpoint)
+    return CircleIntersection2D("pair", midpoint, (-dy, dx), offset2)
