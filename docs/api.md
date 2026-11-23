@@ -25,6 +25,7 @@ This is a task-oriented map of the implemented interfaces. Mathematical domains 
 | Intrinsic metrics and angles | `CIRCULAR`, `HYPERBOLIC`, `PARABOLIC`, `QuadraticPlane`, `PlanePolar`, `metric_dot`, `metric_project`, `metric_reflect` | [Unified geometry](unified-geometry.md) |
 | Isometries | `PlaneIsometry`, plane `.rotor()` / `.cayley()` | [Unified geometry](unified-geometry.md) |
 | Exact Euclidean constructions | `orientation2d`, `line_intersection2d`, `segment_intersection2d`, `barycentric2d`, `circumcircle2d`, `incircle2d` | [Unified geometry](unified-geometry.md) |
+| Exact planar linkage constraints | `BarFramework2D`, `circle_intersection2d`, `CircleIntersection2D` | [Assemblies, velocities and second-order tests](four-bar.md) |
 | Interacting modes | `ModeOperator`, `.from_matrix()`, `.matrix()`, `.cayley()` | [Unified geometry](unified-geometry.md) |
 | Projective maps | `Mobius`, `ProjectivePoint`, `cross_ratio` | [Unified geometry](unified-geometry.md) |
 | Real vectors and mechanisms | `geometry`, `Matrix`, `Joint`, `Actor`, `Freedom`, `Machine`, `Mechanism` | [Showcase](gallery/README.md) |

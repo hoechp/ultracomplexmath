@@ -190,6 +190,8 @@ If coefficients already contain epsilon, their own variations also contribute:
 calibration. Polynomial root classification, factorization and modular/Hensel
 backends remain research tasks.
 
+The [four-bar model](four-bar.md) applies the rational solver to bar and pin constraints. It compares the packed positions and first variations of two assemblies with exact circle intersections and second-order compatibility.
+
 ## Evidence
 
 `tests/test_exact.py` checks all 64 basis products against a literal independent

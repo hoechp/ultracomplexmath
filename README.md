@@ -22,6 +22,7 @@ The [geometry inside the full union](docs/research/geometric-structure.md) expla
 
 | Explore | What comes together | Run from a checkout |
 | --- | --- | --- |
+| [Four bars at dead centre](docs/four-bar.md) | Find the two finite assembly motions hidden in one singular pose, then try a velocity that fails at second order | `python -m examples.four_bar` |
 | [Through the pole](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/projective-paths.html) | Follow two projective channels through infinity and a zero of the reflected optical field | `python -m examples.projective_paths` |
 | [Draw a field loop](docs/polar-motion.md#draw-your-own-field-loop) | Draw around either or both singularities of `F(z) = z − j` and compare the two phase lifts | `python -m examples.field_loops` |
 | [Winding and critical damping](docs/polar-motion.md) | Follow a root from 1 to −j, then vary the damping of a spring or an RLC circuit | `python -m examples.polar_motion` |
@@ -89,8 +90,8 @@ Install plotting with `python -m pip install -e '.[plot]'`. Run `ultracomplex-gu
 | Scalar arithmetic | Full eight-component numerical and rational arithmetic; integer powers; inverses | Zero divisors have no inverse; rational coefficients do not include irrational results |
 | Functions and calculus | Numerical elementary/inverse functions, logarithm branches, first variations, intensity and phase derivatives | Stable small-component evaluation is complete for neither all functions nor all scales; general higher-derivative API is open |
 | Exact mathematics | Fraction formulas/JSON, matrices, complete linear solution families, polynomial arithmetic and Hermite interpolation | General rational powers, symbolic algebraic numbers and modular hypercomplex coefficients remain open |
-| Geometry | Intrinsic planar metrics/sectors, exact Cayley isometries, Euclidean predicates and intersections | General 3D poses, constraint systems and conic intersections need further work |
-| Transformations | Noncommuting `ModeOperator`, Möbius maps, unimodular projective points and mixed charts | Constant numerical generator flows include first variations. Automatic projective chart continuation remains open |
+| Geometry | Intrinsic planar metrics/sectors, exact Cayley isometries, circle intersections and pinned planar bar constraints | General conic intersections, 3D poses and higher-order rigidity remain open |
+| Transformations | Noncommuting `ModeOperator`, Möbius maps, unimodular projective points and mixed charts | Constant numerical generator flows include first variations. Sampled paths support automatic chart changes |
 | Space and time | `LocatedUltra`, rule-defined `UltraField`, 0–n spatial axes, separate time, slices, grids and optional NumPy/xarray adapters | Real coordinates are independent of the scalar algebra; numerical fields and explicit coordinate maps |
 | Surface fields | Torus and Möbius strip, induced metric, tangent gradients, Laplace–Beltrami, area quadrature and seam diagnostics | Static parametric surfaces; no general atlas, boundary solver or automatic physical transport |
 | Applications | Tested optical stacks, coating-impedance fits, critical damping, waves, robotics, interference and root basins | Specified models with independent references; no real-device calibration or general engineering solver |
@@ -99,7 +100,7 @@ The ambition is broad; operation domains remain explicit. The scalar algebra is 
 
 ## Where next?
 
-Version 0.6.0 ships unit polar decomposition, lifted root paths, singular root families and continuous constant-generator dynamics. Next projects include exact geometric constraints, projective chart continuation and optical geometry. Version 0.6.1 adds the freehand field loop, CLI polar and root views, and a [rank reduction for every positive power](docs/research/higher-power-rank.md) with an explicit third-power classification. The [research review](docs/research/README.md) compares all seven nonempty combinations of the three base algebras, names missing functionality and gives acceptance criteria. Reliable derivatives remain part of this toolkit, alongside the geometries themselves.
+Version 0.6.0 ships unit polar decomposition, lifted root paths, singular root families and continuous constant-generator dynamics. The development branch after 0.6.1 includes [sampled projective paths](docs/unified-geometry.md#follow-a-path-through-a-pole) and [exact linkage constraints](docs/four-bar.md). Version 0.6.1 adds the freehand field loop, CLI polar and root views, and a [rank reduction for every positive power](docs/research/higher-power-rank.md) with an explicit third-power classification. The [research review](docs/research/README.md) compares all seven nonempty combinations of the three base algebras, names missing functionality and gives acceptance criteria. Reliable derivatives remain part of this toolkit, alongside the geometries themselves.
 
 Development and verification: [CONTRIBUTING.md](CONTRIBUTING.md). API orientation: [docs/api.md](docs/api.md). Release changes: [CHANGELOG.md](CHANGELOG.md).
 

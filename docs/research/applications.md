@@ -25,9 +25,9 @@ The complete polar form is foundational mathematics rather than an engineering s
 
 ## Exact constraints: geometry that remains auditable
 
-A linkage/CAD constraint can use rational points, quadrances and Cayley parameters. Dual seeds give an exact rational Jacobian. Exact rank distinguishes regular and singular configurations without a tolerance. The current planar robot demo is a numerical baseline, not an exact constraint engine.
+A linkage/CAD constraint can use rational points, quadrances and Cayley parameters. Dual seeds give an exact rational Jacobian. Exact rank distinguishes regular and singular configurations without a tolerance. The [four-bar lab](../four-bar.md) now uses a pinned rational bar graph to test driven velocities and second-order consistency.
 
-**First deliverable:** a closed linkage represented by a constraint graph. Compute exact residuals, Jacobians and admissible infinitesimal motions at rational configurations. Check regular and singular cases against independent geometry.
+The first closed linkage has two explicit finite assemblies. Independent circle intersections check their positions, and acceleration compatibility detects a spurious first-order velocity at both toggles. A next step is propagation of dimensional tolerances through a driven assembly.
 
 Circular joints, indefinite constraints and shear/deformation variables can share construction and differentiation. Every physical robot need not use all three. Generic circle intersections require irrational coordinates: retain constraints implicitly or introduce a scoped algebraic-number domain. At a singular configuration, an infinitesimal motion need not integrate into a finite motion.
 

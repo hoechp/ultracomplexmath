@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Four bars at dead centre · Ultracomplexmath</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #152f33;
+        --muted: #49616a;
+        --border: #ccd6d3;
+        --paper: #fafaf5;
+        --teal: #126766;
+        --orange: #a64220;
+        font-family: "Inter", system-ui, sans-serif;
+        color: var(--ink);
+        background: var(--paper);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        max-width: 1100px;
+        margin: auto;
+        padding: 2.5rem clamp(1rem, 4vw, 3rem);
+      }
+      h1 {
+        font:
+          normal clamp(2.1rem, 5vw, 4rem) / 1.05 "STIX Two Text",
+          Georgia,
+          serif;
+        margin: 0 0 0.65rem;
+      }
+      header p {
+        max-width: 66ch;
+        color: var(--muted);
+        line-height: 1.55;
+        margin: 0 0 1.8rem;
+      }
+      section {
+        min-width: 0;
+      }
+      .lab {
+        border-top: 2px solid var(--ink);
+        border-bottom: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: minmax(0, 1.9fr) minmax(240px, 1fr);
+      }
+      .visual {
+        padding: 1.15rem 1.5rem 1rem 0;
+      }
+      .controls {
+        border-left: 1px solid var(--border);
+        padding: 1.5rem 0 1.25rem 1.5rem;
+      }
+      svg {
+        width: 100%;
+        height: auto;
+        display: block;
+        background: #eff3ec;
+        border-radius: 0.3rem;
+      }
+      svg text {
+        font:
+          600 19px system-ui,
+          sans-serif;
+        fill: var(--ink);
+        paint-order: stroke;
+        stroke: #eff3ec;
+        stroke-width: 4px;
+      }
+      svg .orbit {
+        fill: none;
+        stroke: #98aba4;
+        stroke-dasharray: 4 5;
+      }
+      svg .label {
+        text-anchor: middle;
+      }
+      fieldset {
+        border: 0;
+        padding: 0;
+        margin: 0 0 1.25rem;
+      }
+      legend,
+      .caption {
+        font-weight: 650;
+        margin-bottom: 0.5rem;
+      }
+      fieldset label {
+        display: block;
+        line-height: 1.8;
+      }
+      input {
+        accent-color: var(--teal);
+      }
+      input[type="range"] {
+        width: 100%;
+        margin: 1rem 0;
+      }
+      button {
+        font: inherit;
+        cursor: pointer;
+        background: transparent;
+        border: 1px solid #809691;
+        color: var(--ink);
+        border-radius: 0.3rem;
+        padding: 0.45rem 0.65rem;
+      }
+      button:hover,
+      button:focus-visible {
+        background: #dbeae2;
+      }
+      .buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .note {
+        color: var(--muted);
+        line-height: 1.45;
+        font-size: 0.9rem;
+        margin: 0.65rem 0 0;
+      }
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        padding: 1.1rem 0;
+        margin: 0;
+      }
+      dt {
+        font-size: 0.83rem;
+        color: var(--muted);
+        margin-bottom: 0.25rem;
+      }
+      dd {
+        margin: 0;
+        font-weight: 600;
+      }
+      #verdict {
+        color: var(--teal);
+      }
+      #verdict[data-blocked="true"] {
+        color: var(--orange);
+      }
+      .exact {
+        border-top: 1px solid var(--border);
+        padding-top: 1rem;
+        line-height: 1.6;
+      }
+      .exact output {
+        overflow-wrap: anywhere;
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+      }
+      @media (max-width: 720px) {
+        main {
+          padding-top: 1.35rem;
+        }
+        .lab {
+          grid-template-columns: 1fr;
+        }
+        .visual {
+          padding: 1rem 0;
+        }
+        .controls {
+          border: 0;
+          border-top: 1px solid var(--border);
+          padding: 1rem 0;
+        }
+        .metrics {
+          grid-template-columns: 1fr 1fr;
+        }
+        .metrics div:last-child {
+          grid-column: 1/-1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Four bars at dead centre</h1>
+        <p>
+          Turn the crank, then try both assemblies at a toggle. The joints meet
+          at exactly the same points, yet the output can leave in two different
+          directions.
+        </p>
+      </header>
+      <div class="lab">
+        <section class="visual" aria-label="Mechanism drawing">
+          <svg
+            viewBox="0 0 640 350"
+            role="img"
+            aria-labelledby="figure-title figure-desc"
+          >
+            <title id="figure-title">Four-bar linkage with motion arrows</title>
+            <desc id="figure-desc">
+              Fixed pivots A and D, moving joints B and C. Arrows show scaled
+              velocity vectors.
+            </desc>
+            <defs>
+              <marker
+                id="tip"
+                markerWidth="5"
+                markerHeight="5"
+                refX="4.2"
+                refY="2.5"
+                orient="auto"
+              >
+                <path d="M0 0 L5 2.5 L0 5 Z" fill="#a64220" />
+              </marker>
+            </defs>
+            <g aria-hidden="true">
+              <path d="M48 175H591" stroke="#c6d2c9" />
+              <circle class="orbit" cx="160" cy="175" r="83" />
+              <circle class="orbit" cx="409" cy="175" r="83" />
+              <path
+                d="M160 175H409"
+                stroke="#637678"
+                stroke-width="5"
+                stroke-dasharray="8 4"
+              />
+              <path
+                id="rods"
+                fill="none"
+                stroke="#126766"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="7"
+              />
+              <g fill="#152f33">
+                <circle cx="160" cy="175" r="6" />
+                <circle cx="409" cy="175" r="6" />
+              </g>
+              <g fill="#fafaf5" stroke="#126766" stroke-width="3">
+                <circle id="jointB" r="6" />
+                <circle id="jointC" r="6" />
+              </g>
+              <g
+                fill="none"
+                stroke="#a64220"
+                stroke-width="3"
+                marker-end="url(#tip)"
+              >
+                <path id="arrowB" />
+                <path id="arrowC" />
+              </g>
+              <g class="label">
+                <text x="160" y="200">A</text>
+                <text x="409" y="200">D</text>
+                <text id="labelB">B</text>
+                <text id="labelC">C</text>
+              </g>
+            </g>
+          </svg>
+          <p class="note">
+            Dashed line · fixed base &nbsp; / &nbsp; Solid bars · moving linkage
+            &nbsp; / &nbsp; Arrows · trial velocity
+          </p>
+        </section>
+        <section class="controls" aria-label="Experiment controls">
+          <label class="caption" for="position"
+            >Crank angle <output id="angle" for="position"></output
+          ></label>
+          <input
+            type="range"
+            id="position"
+            min="0"
+            step="1"
+            value="8"
+            aria-label="Crank angle"
+          />
+          <div class="buttons">
+            <button id="inner" type="button">Inner toggle</button
+            ><button id="outer" type="button">Outer toggle</button>
+          </div>
+          <hr
+            style="
+              border: 0;
+              border-top: 1px solid var(--border);
+              margin: 1.2rem 0;
+            "
+          />
+          <fieldset>
+            <legend>Assembly</legend>
+            <label
+              ><input type="radio" name="branch" value="0" checked />
+              Parallelogram</label
+            >
+            <label
+              ><input type="radio" name="branch" value="1" /> Reflected
+              assembly</label
+            >
+          </fieldset>
+          <label
+            ><input type="checkbox" id="probe" /> Hold B still and lift C</label
+          >
+          <p class="note">
+            At a toggle this trial preserves all bar lengths to first order.
+            Test whether an acceleration can continue it.
+          </p>
+        </section>
+      </div>
+      <dl class="metrics" aria-live="polite">
+        <div>
+          <dt>Distinct assemblies at this angle</dt>
+          <dd id="closures"></dd>
+        </div>
+        <div>
+          <dt>Instantaneous degrees of freedom</dt>
+          <dd id="dimension"></dd>
+        </div>
+        <div>
+          <dt>Selected velocity</dt>
+          <dd id="verdict"></dd>
+        </div>
+      </dl>
+      <div class="exact">
+        <strong>Exact coordinates and velocities</strong><br /><output
+          id="exact"
+        ></output>
+        <p class="note">
+          All samples use rational arithmetic. Branch velocities are per radian
+          at unit crank speed. Only the diagram and angle display are rounded.
+        </p>
+      </div>
+      <noscript>Enable JavaScript to operate this offline experiment.</noscript>
+    </main>
+    <script id="samples" type="application/json">
+      [{"b":["1","0"],"vb":["0","1"],"closures":1,"branches":[{"c":["4","0"],"vc":["0","1"],"dimension":2,"trial":"second-order obstruction"},{"c":["4","0"],"vc":["0","-2"],"dimension":2,"trial":"second-order obstruction"}]},{"b":["255/257","32/257"],"vb":["-32/257","255/257"],"closures":2,"branches":[{"c":["1026/257","32/257"],"vc":["-32/257","255/257"],"dimension":1,"trial":"first-order failure"},{"c":["258/65","-16/65"],"vc":["-2056/4225","-16191/8450"],"dimension":1,"trial":"first-order failure"}]},{"b":["63/65","16/65"],"vb":["-16/65","63/65"],"closures":2,"branches":[{"c":["258/65","16/65"],"vc":["-16/65","63/65"],"dimension":1,"trial":"first-order failure"},{"c":["66/17","-8/17"],"vc":["-260/289","-975/578"],"dimension":1,"trial":"first-order failure"}]},{"b":["247/265","96/265"],"vb":["-96/265","247/265"],"closures":2,"branches":[{"c":["1042/265","96/265"],"vc":["-96/265","247/265"],"dimension":1,"trial":"first-order failure"},{"c":["274/73","-48/73"],"vc":["-6360/5329","-14575/10658"],"dimension":1,"trial":"first-order failure"}]},{"b":["15/17","8/17"],"vb":["-8/17","15/17"],"closures":2,"branches":[{"c":["66/17","8/17"],"vc":["-8/17","15/17"],"dimension":1,"trial":"first-order failure"},{"c":["18/5","-4/5"],"vc":["-34/25","-51/50"],"dimension":1,"trial":"first-order failure"}]},{"b":["231/281","160/281"],"vb":["-160/281","231/281"],"closures":2,"branches":[{"c":["1074/281","160/281"],"vc":["-160/281","231/281"],"dimension":1,"trial":"first-order failure"},{"c":["306/89","-80/89"],"vc":["-11240/7921","-10959/15842"],"dimension":1,"trial":"first-order failure"}]},{"b":["55/73","48/73"],"vb":["-48/73","55/73"],"closures":2,"branches":[{"c":["274/73","48/73"],"vc":["-48/73","55/73"],"dimension":1,"trial":"first-order failure"},{"c":["82/25","-24/25"],"vc":["-876/625","-511/1250"],"dimension":1,"trial":"first-order failure"}]},{"b":["207/305","224/305"],"vb":["-224/305","207/305"],"closures":2,"branches":[{"c":["1122/305","224/305"],"vc":["-224/305","207/305"],"dimension":1,"trial":"first-order failure"},{"c":["354/113","-112/113"],"vc":["-17080/12769","-4575/25538"],"dimension":1,"trial":"first-order failure"}]},{"b":["3/5","4/5"],"vb":["-4/5","3/5"],"closures":2,"branches":[{"c":["18/5","4/5"],"vc":["-4/5","3/5"],"dimension":1,"trial":"first-order failure"},{"c":["3","-1"],"vc":["-5/4","0"],"dimension":1,"trial":"first-order failure"}]},{"b":["175/337","288/337"],"vb":["-288/337","175/337"],"closures":2,"branches":[{"c":["1186/337","288/337"],"vc":["-288/337","175/337"],"dimension":1,"trial":"first-order failure"},{"c":["418/145","-144/145"],"vc":["-24264/21025","5729/42050"],"dimension":1,"trial":"first-order failure"}]},{"b":["39/89","80/89"],"vb":["-80/89","39/89"],"closures":2,"branches":[{"c":["306/89","80/89"],"vc":["-80/89","39/89"],"dimension":1,"trial":"first-order failure"},{"c":["114/41","-40/41"],"vc":["-1780/1681","801/3362"],"dimension":1,"trial":"first-order failure"}]},{"b":["135/377","352/377"],"vb":["-352/377","135/377"],"closures":2,"branches":[{"c":["1266/377","352/377"],"vc":["-352/377","135/377"],"dimension":1,"trial":"first-order failure"},{"c":["498/185","-176/185"],"vc":["-33176/34225","21489/68450"],"dimension":1,"trial":"first-order failure"}]},{"b":["7/25","24/25"],"vb":["-24/25","7/25"],"closures":2,"branches":[{"c":["82/25","24/25"],"vc":["-24/25","7/25"],"dimension":1,"trial":"first-order failure"},{"c":["34/13","-12/13"],"vc":["-150/169","125/338"],"dimension":1,"trial":"first-order failure"}]},{"b":["87/425","416/425"],"vb":["-416/425","87/425"],"closures":2,"branches":[{"c":["1362/425","416/425"],"vc":["-416/425","87/425"],"dimension":1,"trial":"first-order failure"},{"c":["594/233","-208/233"],"vc":["-44200/54289","44625/108578"],"dimension":1,"trial":"first-order failure"}]},{"b":["15/113","112/113"],"vb":["-112/113","15/113"],"closures":2,"branches":[{"c":["354/113","112/113"],"vc":["-112/113","15/113"],"dimension":1,"trial":"first-order failure"},{"c":["162/65","-56/65"],"vc":["-3164/4225","3729/8450"],"dimension":1,"trial":"first-order failure"}]},{"b":["31/481","480/481"],"vb":["-480/481","31/481"],"closures":2,"branches":[{"c":["1474/481","480/481"],"vc":["-480/481","31/481"],"dimension":1,"trial":"first-order failure"},{"c":["706/289","-240/289"],"vc":["-57720/83521","77441/167042"],"dimension":1,"trial":"first-order failure"}]},{"b":["0","1"],"vb":["-1","0"],"closures":2,"branches":[{"c":["3","1"],"vc":["-1","0"],"dimension":1,"trial":"first-order failure"},{"c":["12/5","-4/5"],"vc":["-16/25","12/25"],"dimension":1,"trial":"first-order failure"}]},{"b":["-32/257","255/257"],"vb":["-255/257","-32/257"],"closures":2,"branches":[{"c":["739/257","255/257"],"vc":["-255/257","-32/257"],"dimension":1,"trial":"first-order failure"},{"c":["3212/1381","-1020/1381"],"vc":["-1048560/1907161","957068/1907161"],"dimension":1,"trial":"first-order failure"}]},{"b":["-16/65","63/65"],"vb":["-63/65","-16/65"],"closures":2,"branches":[{"c":["179/65","63/65"],"vc":["-63/65","-16/65"],"dimension":1,"trial":"first-order failure"},{"c":["844/373","-252/373"],"vc":["-65520/139129","71500/139129"],"dimension":1,"trial":"first-order failure"}]},{"b":["-96/265","247/265"],"vb":["-247/265","-96/265"],"closures":2,"branches":[{"c":["699/265","247/265"],"vc":["-247/265","-96/265"],"dimension":1,"trial":"first-order failure"},{"c":["3564/1613","-988/1613"],"vc":["-1047280/2601769","1351500/2601769"],"dimension":1,"trial":"first-order failure"}]},{"b":["-8/17","15/17"],"vb":["-15/17","-8/17"],"closures":2,"branches":[{"c":["43/17","15/17"],"vc":["-15/17","-8/17"],"dimension":1,"trial":"first-order failure"},{"c":["236/109","-60/109"],"vc":["-4080/11881","6188/11881"],"dimension":1,"trial":"first-order failure"}]},{"b":["-160/281","231/281"],"vb":["-231/281","-160/281"],"closures":2,"branches":[{"c":["683/281","231/281"],"vc":["-231/281","-160/281"],"dimension":1,"trial":"first-order failure"},{"c":["4012/1885","-924/1885"],"vc":["-1038576/3553225","1846732/3553225"],"dimension":1,"trial":"first-order failure"}]},{"b":["-48/73","55/73"],"vb":["-55/73","-48/73"],"closures":2,"branches":[{"c":["171/73","55/73"],"vc":["-55/73","-48/73"],"dimension":1,"trial":"first-order failure"},{"c":["1068/509","-220/509"],"vc":["-64240/259081","134028/259081"],"dimension":1,"trial":"first-order failure"}]},{"b":["-224/305","207/305"],"vb":["-207/305","-224/305"],"closures":2,"branches":[{"c":["691/305","207/305"],"vc":["-207/305","-224/305"],"dimension":1,"trial":"first-order failure"},{"c":["4556/2197","-828/2197"],"vc":["-1010160/4826809","2482700/4826809"],"dimension":1,"trial":"first-order failure"}]},{"b":["-4/5","3/5"],"vb":["-3/5","-4/5"],"closures":2,"branches":[{"c":["11/5","3/5"],"vc":["-3/5","-4/5"],"dimension":1,"trial":"first-order failure"},{"c":["76/37","-12/37"],"vc":["-240/1369","700/1369"],"dimension":1,"trial":"first-order failure"}]},{"b":["-288/337","175/337"],"vb":["-175/337","-288/337"],"closures":2,"branches":[{"c":["723/337","175/337"],"vc":["-175/337","-288/337"],"dimension":1,"trial":"first-order failure"},{"c":["5196/2549","-700/2549"],"vc":["-943600/6497401","3303948/6497401"],"dimension":1,"trial":"first-order failure"}]},{"b":["-80/89","39/89"],"vb":["-39/89","-80/89"],"closures":2,"branches":[{"c":["187/89","39/89"],"vc":["-39/89","-80/89"],"dimension":1,"trial":"first-order failure"},{"c":["1388/685","-156/685"],"vc":["-55536/469225","237452/469225"],"dimension":1,"trial":"first-order failure"}]},{"b":["-352/377","135/377"],"vb":["-135/377","-352/377"],"closures":2,"branches":[{"c":["779/377","135/377"],"vc":["-135/377","-352/377"],"dimension":1,"trial":"first-order failure"},{"c":["5932/2941","-540/2941"],"vc":["-814320/8649481","4359628/8649481"],"dimension":1,"trial":"first-order failure"}]},{"b":["-24/25","7/25"],"vb":["-7/25","-24/25"],"closures":2,"branches":[{"c":["51/25","7/25"],"vc":["-7/25","-24/25"],"dimension":1,"trial":"first-order failure"},{"c":["396/197","-28/197"],"vc":["-2800/38809","19500/38809"],"dimension":1,"trial":"first-order failure"}]},{"b":["-416/425","87/425"],"vb":["-87/425","-416/425"],"closures":2,"branches":[{"c":["859/425","87/425"],"vc":["-87/425","-416/425"],"dimension":1,"trial":"first-order failure"},{"c":["6764/3373","-348/3373"],"vc":["-591600/11377129","5703500/11377129"],"dimension":1,"trial":"first-order failure"}]},{"b":["-112/113","15/113"],"vb":["-15/113","-112/113"],"closures":2,"branches":[{"c":["227/113","15/113"],"vc":["-15/113","-112/113"],"dimension":1,"trial":"first-order failure"},{"c":["1804/901","-60/901"],"vc":["-27120/811801","406348/811801"],"dimension":1,"trial":"first-order failure"}]},{"b":["-480/481","31/481"],"vb":["-31/481","-480/481"],"closures":2,"branches":[{"c":["963/481","31/481"],"vc":["-31/481","-480/481"],"dimension":1,"trial":"first-order failure"},{"c":["7692/3845","-124/3845"],"vc":["-238576/14784025","7393932/14784025"],"dimension":1,"trial":"first-order failure"}]},{"b":["-1","0"],"vb":["0","-1"],"closures":1,"branches":[{"c":["2","0"],"vc":["0","-1"],"dimension":2,"trial":"second-order obstruction"},{"c":["2","0"],"vc":["0","1/2"],"dimension":2,"trial":"second-order obstruction"}]},{"b":["-255/257","-32/257"],"vb":["32/257","-255/257"],"closures":2,"branches":[{"c":["516/257","-32/257"],"vc":["32/257","-255/257"],"dimension":1,"trial":"first-order failure"},{"c":["2052/1025","64/1025"],"vc":["32896/1050625","525822/1050625"],"dimension":1,"trial":"first-order failure"}]},{"b":["-63/65","-16/65"],"vb":["16/65","-63/65"],"closures":2,"branches":[{"c":["132/65","-16/65"],"vc":["16/65","-63/65"],"dimension":1,"trial":"first-order failure"},{"c":["516/257","32/257"],"vc":["4160/66049","33150/66049"],"dimension":1,"trial":"first-order failure"}]},{"b":["-247/265","-96/265"],"vb":["96/265","-247/265"],"closures":2,"branches":[{"c":["548/265","-96/265"],"vc":["96/265","-247/265"],"dimension":1,"trial":"first-order failure"},{"c":["2084/1033","192/1033"],"vc":["101760/1067089","537950/1067089"],"dimension":1,"trial":"first-order failure"}]},{"b":["-15/17","-8/17"],"vb":["8/17","-15/17"],"closures":2,"branches":[{"c":["36/17","-8/17"],"vc":["8/17","-15/17"],"dimension":1,"trial":"first-order failure"},{"c":["132/65","16/65"],"vc":["544/4225","2142/4225"],"dimension":1,"trial":"first-order failure"}]},{"b":["-231/281","-160/281"],"vb":["160/281","-231/281"],"closures":2,"branches":[{"c":["612/281","-160/281"],"vc":["160/281","-231/281"],"dimension":1,"trial":"first-order failure"},{"c":["2148/1049","320/1049"],"vc":["179840/1100401","561438/1100401"],"dimension":1,"trial":"first-order failure"}]},{"b":["-55/73","-48/73"],"vb":["48/73","-55/73"],"closures":2,"branches":[{"c":["164/73","-48/73"],"vc":["48/73","-55/73"],"dimension":1,"trial":"first-order failure"},{"c":["548/265","96/265"],"vc":["14016/70225","36062/70225"],"dimension":1,"trial":"first-order failure"}]},{"b":["-207/305","-224/305"],"vb":["224/305","-207/305"],"closures":2,"branches":[{"c":["708/305","-224/305"],"vc":["224/305","-207/305"],"dimension":1,"trial":"first-order failure"},{"c":["2244/1073","448/1073"],"vc":["273280/1151329","594750/1151329"],"dimension":1,"trial":"first-order failure"}]},{"b":["-3/5","-4/5"],"vb":["4/5","-3/5"],"closures":2,"branches":[{"c":["12/5","-4/5"],"vc":["4/5","-3/5"],"dimension":1,"trial":"first-order failure"},{"c":["36/17","8/17"],"vc":["80/289","150/289"],"dimension":1,"trial":"first-order failure"}]},{"b":["-175/337","-288/337"],"vb":["288/337","-175/337"],"closures":2,"branches":[{"c":["836/337","-288/337"],"vc":["288/337","-175/337"],"dimension":1,"trial":"first-order failure"},{"c":["2372/1105","576/1105"],"vc":["388224/1221025","635582/1221025"],"dimension":1,"trial":"first-order failure"}]},{"b":["-39/89","-80/89"],"vb":["80/89","-39/89"],"closures":2,"branches":[{"c":["228/89","-80/89"],"vc":["80/89","-39/89"],"dimension":1,"trial":"first-order failure"},{"c":["612/281","160/281"],"vc":["28480/78961","41118/78961"],"dimension":1,"trial":"first-order failure"}]},{"b":["-135/377","-352/377"],"vb":["352/377","-135/377"],"closures":2,"branches":[{"c":["996/377","-352/377"],"vc":["352/377","-135/377"],"dimension":1,"trial":"first-order failure"},{"c":["2532/1145","704/1145"],"vc":["530816/1311025","680862/1311025"],"dimension":1,"trial":"first-order failure"}]},{"b":["-7/25","-24/25"],"vb":["24/25","-7/25"],"closures":2,"branches":[{"c":["68/25","-24/25"],"vc":["24/25","-7/25"],"dimension":1,"trial":"first-order failure"},{"c":["164/73","48/73"],"vc":["2400/5329","2750/5329"],"dimension":1,"trial":"first-order failure"}]},{"b":["-87/425","-416/425"],"vb":["416/425","-87/425"],"closures":2,"branches":[{"c":["1188/425","-416/425"],"vc":["416/425","-87/425"],"dimension":1,"trial":"first-order failure"},{"c":["2724/1193","832/1193"],"vc":["707200/1423249","726750/1423249"],"dimension":1,"trial":"first-order failure"}]},{"b":["-15/113","-112/113"],"vb":["112/113","-15/113"],"closures":2,"branches":[{"c":["324/113","-112/113"],"vc":["112/113","-15/113"],"dimension":1,"trial":"first-order failure"},{"c":["708/305","224/305"],"vc":["50624/93025","46782/93025"],"dimension":1,"trial":"first-order failure"}]},{"b":["-31/481","-480/481"],"vb":["480/481","-31/481"],"closures":2,"branches":[{"c":["1412/481","-480/481"],"vc":["480/481","-31/481"],"dimension":1,"trial":"first-order failure"},{"c":["2948/1249","960/1249"],"vc":["923520/1560001","768638/1560001"],"dimension":1,"trial":"first-order failure"}]},{"b":["0","-1"],"vb":["1","0"],"closures":2,"branches":[{"c":["3","-1"],"vc":["1","0"],"dimension":1,"trial":"first-order failure"},{"c":["12/5","4/5"],"vc":["16/25","12/25"],"dimension":1,"trial":"first-order failure"}]},{"b":["32/257","-255/257"],"vb":["255/257","32/257"],"closures":2,"branches":[{"c":["803/257","-255/257"],"vc":["255/257","32/257"],"dimension":1,"trial":"first-order failure"},{"c":["2956/1189","1020/1189"],"vc":["1048560/1413721","628108/1413721"],"dimension":1,"trial":"first-order failure"}]},{"b":["16/65","-63/65"],"vb":["63/65","16/65"],"closures":2,"branches":[{"c":["211/65","-63/65"],"vc":["63/65","16/65"],"dimension":1,"trial":"first-order failure"},{"c":["716/277","252/277"],"vc":["65520/76729","29900/76729"],"dimension":1,"trial":"first-order failure"}]},{"b":["96/265","-247/265"],"vb":["247/265","96/265"],"closures":2,"branches":[{"c":["891/265","-247/265"],"vc":["247/265","96/265"],"dimension":1,"trial":"first-order failure"},{"c":["2796/1037","988/1037"],"vc":["1047280/1075369","333900/1075369"],"dimension":1,"trial":"first-order failure"}]},{"b":["8/17","-15/17"],"vb":["15/17","8/17"],"closures":2,"branches":[{"c":["59/17","-15/17"],"vc":["15/17","8/17"],"dimension":1,"trial":"first-order failure"},{"c":["172/61","60/61"],"vc":["4080/3721","748/3721"],"dimension":1,"trial":"first-order failure"}]},{"b":["160/281","-231/281"],"vb":["231/281","160/281"],"closures":2,"branches":[{"c":["1003/281","-231/281"],"vc":["231/281","160/281"],"dimension":1,"trial":"first-order failure"},{"c":["2732/925","924/925"],"vc":["1038576/855625","48332/855625"],"dimension":1,"trial":"first-order failure"}]},{"b":["48/73","-55/73"],"vb":["55/73","48/73"],"closures":2,"branches":[{"c":["267/73","-55/73"],"vc":["55/73","48/73"],"dimension":1,"trial":"first-order failure"},{"c":["684/221","220/221"],"vc":["64240/48841","-6132/48841"],"dimension":1,"trial":"first-order failure"}]},{"b":["224/305","-207/305"],"vb":["207/305","224/305"],"closures":2,"branches":[{"c":["1139/305","-207/305"],"vc":["207/305","224/305"],"dimension":1,"trial":"first-order failure"},{"c":["2764/853","828/853"],"vc":["1010160/727609","-250100/727609"],"dimension":1,"trial":"first-order failure"}]},{"b":["4/5","-3/5"],"vb":["3/5","4/5"],"closures":2,"branches":[{"c":["19/5","-3/5"],"vc":["3/5","4/5"],"dimension":1,"trial":"first-order failure"},{"c":["44/13","12/13"],"vc":["240/169","-100/169"],"dimension":1,"trial":"first-order failure"}]},{"b":["288/337","-175/337"],"vb":["175/337","288/337"],"closures":2,"branches":[{"c":["1299/337","-175/337"],"vc":["175/337","288/337"],"dimension":1,"trial":"first-order failure"},{"c":["2892/821","700/821"],"vc":["943600/674041","-578292/674041"],"dimension":1,"trial":"first-order failure"}]},{"b":["80/89","-39/89"],"vb":["39/89","80/89"],"closures":2,"branches":[{"c":["347/89","-39/89"],"vc":["39/89","80/89"],"dimension":1,"trial":"first-order failure"},{"c":["748/205","156/205"],"vc":["55536/42025","-47348/42025"],"dimension":1,"trial":"first-order failure"}]},{"b":["352/377","-135/377"],"vb":["135/377","352/377"],"closures":2,"branches":[{"c":["1483/377","-135/377"],"vc":["135/377","352/377"],"dimension":1,"trial":"first-order failure"},{"c":["3116/829","540/829"],"vc":["814320/687241","-948532/687241"],"dimension":1,"trial":"first-order failure"}]},{"b":["24/25","-7/25"],"vb":["7/25","24/25"],"closures":2,"branches":[{"c":["99/25","-7/25"],"vc":["7/25","24/25"],"dimension":1,"trial":"first-order failure"},{"c":["204/53","28/53"],"vc":["2800/2809","-4500/2809"],"dimension":1,"trial":"first-order failure"}]},{"b":["416/425","-87/425"],"vb":["87/425","416/425"],"closures":2,"branches":[{"c":["1691/425","-87/425"],"vc":["87/425","416/425"],"dimension":1,"trial":"first-order failure"},{"c":["3436/877","348/877"],"vc":["591600/769129","-1368500/769129"],"dimension":1,"trial":"first-order failure"}]},{"b":["112/113","-15/113"],"vb":["15/113","112/113"],"closures":2,"branches":[{"c":["451/113","-15/113"],"vc":["15/113","112/113"],"dimension":1,"trial":"first-order failure"},{"c":["908/229","60/229"],"vc":["27120/52441","-99892/52441"],"dimension":1,"trial":"first-order failure"}]},{"b":["480/481","-31/481"],"vb":["31/481","480/481"],"closures":2,"branches":[{"c":["1923/481","-31/481"],"vc":["31/481","480/481"],"dimension":1,"trial":"first-order failure"},{"c":["3852/965","124/965"],"vc":["238576/931225","-1841268/931225"],"dimension":1,"trial":"first-order failure"}]},{"b":["1","0"],"vb":["0","1"],"closures":1,"branches":[{"c":["4","0"],"vc":["0","1"],"dimension":2,"trial":"second-order obstruction"},{"c":["4","0"],"vc":["0","-2"],"dimension":2,"trial":"second-order obstruction"}]}]
+    </script>
+    <script>
+      "use strict";
+      const samples = JSON.parse(
+        document.getElementById("samples").textContent,
+      );
+      const el = (id) => document.getElementById(id);
+      const slider = el("position");
+      slider.max = samples.length - 1;
+      function number(s) {
+        const [n, d = 1] = String(s).split("/").map(Number);
+        return n / d;
+      }
+      function plot([x, y]) {
+        return [160 + 83 * number(x), 175 - 83 * number(y)];
+      }
+      function drawJoint(name, point, velocity) {
+        const [x, y] = plot(point),
+          joint = el("joint" + name),
+          label = el("label" + name);
+        joint.setAttribute("cx", x);
+        joint.setAttribute("cy", y);
+        label.setAttribute("x", x);
+        label.setAttribute("y", y - 14);
+        const [dx, dy] = velocity.map(number);
+        el("arrow" + name).setAttribute(
+          "d",
+          dx || dy ? "M" + x + " " + y + "l" + 34 * dx + " " + -34 * dy : "",
+        );
+      }
+      function update() {
+        const index = Number(slider.value),
+          sample = samples[index];
+        const branch =
+          sample.branches[
+            Number(document.querySelector("input[name=branch]:checked").value)
+          ];
+        const probe = el("probe").checked;
+        const vb = probe ? [0, 0] : sample.vb,
+          vc = probe ? [0, 1] : branch.vc;
+        const [x, y] = sample.b.map(number);
+        const raw = (Math.atan2(y, x) * 180) / Math.PI;
+        const angle =
+          index === samples.length - 1 ? 360 : raw < 0 ? raw + 360 : raw;
+        el("angle").textContent = angle.toFixed(1) + "°";
+        slider.setAttribute("aria-valuetext", el("angle").textContent);
+        el("rods").setAttribute(
+          "d",
+          "M160 175L" +
+            plot(sample.b).join(" ") +
+            "L" +
+            plot(branch.c).join(" ") +
+            "L409 175",
+        );
+        drawJoint("B", sample.b, vb);
+        drawJoint("C", branch.c, vc);
+        el("closures").textContent = sample.closures;
+        el("dimension").textContent = branch.dimension;
+        const verdict = probe ? branch.trial : "finite assembly motion";
+        el("verdict").textContent = verdict;
+        el("verdict").dataset.blocked =
+          probe && verdict !== "compatible acceleration";
+        const pair = (v) => "(" + v.join(", ") + ")";
+        el("exact").textContent =
+          "B = " +
+          pair(sample.b) +
+          " · C = " +
+          pair(branch.c) +
+          " · vB = " +
+          pair(vb) +
+          " · vC = " +
+          pair(vc);
+      }
+      for (const control of document.querySelectorAll("input"))
+        control.addEventListener("input", update);
+      for (const [id, index] of [
+        ["inner", 0],
+        ["outer", (samples.length - 1) / 2],
+      ])
+        el(id).addEventListener("click", () => {
+          slider.value = index;
+          update();
+        });
+      update();
+    </script>
+  </body>
+</html>

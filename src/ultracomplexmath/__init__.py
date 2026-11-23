@@ -16,7 +16,9 @@ from .core import (
 from .exact import QEPS, QI, QJ, QONE, QZERO, ExactBinary, ExactComplex, ExactDual, ExactUltra
 from .exact_formula import ExactFormula, evaluate_exact
 from .exact_geometry import (
+    CircleIntersection2D,
     barycentric2d,
+    circle_intersection2d,
     circumcircle2d,
     incircle2d,
     line_intersection2d,
@@ -37,6 +39,7 @@ from .fields import (
     UltraField,
 )
 from .formula import ExpressionError, Formula, evaluate, evaluate_system
+from .framework import BarFramework2D
 from .linalg import (
     InconsistentSystemError,
     LinearSolution,
@@ -73,6 +76,9 @@ from .transformations import (
 __version__ = "0.6.1"
 __all__ = [
     "Actor",
+    "BarFramework2D",
+    "CircleIntersection2D",
+    "circle_intersection2d",
     "Binary",
     "BoundFormula",
     "Calculation",
