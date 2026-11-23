@@ -61,7 +61,14 @@ from .plane_geometry import (
 from .polar import PolarForm, UltraRoots
 from .polynomial import Polynomial, guess
 from .surfaces import ParametricSurface, SeamReport, SurfaceSeam, mobius_strip, torus
-from .transformations import Mobius, ModeOperator, ProjectivePoint, cross_ratio
+from .transformations import (
+    ChartCoordinate,
+    Mobius,
+    ModeOperator,
+    ProjectivePoint,
+    cross_ratio,
+    projective_path,
+)
 
 __version__ = "0.6.1"
 __all__ = [
@@ -135,6 +142,8 @@ __all__ = [
     "Mobius",
     "ModeOperator",
     "ProjectivePoint",
+    "ChartCoordinate",
+    "projective_path",
     "cross_ratio",
     "rational_point2",
     "orientation2d",

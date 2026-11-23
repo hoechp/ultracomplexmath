@@ -2,6 +2,7 @@
 
 import cmath
 import math
+import random
 from fractions import Fraction
 
 import pytest
@@ -20,6 +21,54 @@ def test_real_numerator_preserves_individual_mixed_coefficients(h, scalar):
         assert scalar / x == scalar * (1 / x)
     if h == 1e-10 and scalar != 0:
         assert (scalar / x).j != 0 and (scalar / x).eps_j != 0
+
+
+@pytest.mark.parametrize("h", [1e-20, 1e-100, 1e-310])
+def test_split_quotient_preserves_binary_input(h):
+    actual = (ONE + h * J) / (ONE - h * J)
+    binary = Fraction(h)
+    assert actual.j == float(2 * binary / (1 - binary**2)) and actual.j != 0
+
+
+@pytest.mark.parametrize("scale", [1e-300, 1.0, 1e300])
+def test_general_quotient_every_component_against_exact_inputs(scale):
+    a = Ultra(*(x * scale for x in (1, 0.5, 0.125, -0.75, 0.25, -0.375, 0.875, 0.625)))
+    b = Ultra(*(x * scale for x in (2, 1e-20, -0.5, 0.25, 0.875, 0.375, -0.125, 0.625)))
+    expected = (ExactUltra.from_approximate(a) / ExactUltra.from_approximate(b)).approximate()
+    assert a / b == expected
+
+
+def test_mixed_quotients_across_binary_exponents():
+    rng = random.Random(419)
+    for _ in range(80):
+
+        def sample():
+            return Ultra(
+                *(math.ldexp(rng.randrange(-16, 17), rng.randrange(-1020, 1001)) for _ in range(8))
+            )
+
+        a, b = sample(), sample()
+        assert b.is_invertible
+        quotient = ExactUltra.from_approximate(a) / ExactUltra.from_approximate(b)
+        try:
+            expected = quotient.approximate()
+        except OverflowError:
+            with pytest.raises(NonFiniteError):
+                _ = a / b
+        else:
+            assert a / b == expected
+
+
+def test_mixed_quotient_extreme_channels_and_singular_divisor():
+    huge = Ultra(1.6e308, j=9e307)
+    assert huge.is_invertible and huge / huge == ONE
+    tiny = Ultra(1e-310, i=1e-310)
+    assert tiny / tiny == ONE
+    for sign in [1, -1]:
+        with pytest.raises(NonInvertibleError):
+            _ = I / (ONE + sign * J + EPS)
+    with pytest.raises(NonFiniteError):
+        _ = I / tiny
 
 
 def test_real_numerator_avoids_unrepresentable_reciprocal():

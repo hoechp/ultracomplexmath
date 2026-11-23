@@ -100,9 +100,28 @@ def _constraint_rank(rows: Iterator[list[int]], width: int) -> int:
     return len(basis)
 
 
+def equal_even_power_rank(size: int, degree: int, power: int) -> int:
+    """Total rank of multiplication by h_degree**power for two equal Jordan sizes.
+
+    Derived by summing the maximal graded ranks over a characteristic-zero field.
+    """
+    _integer("size", size, 1)
+    _integer("degree", degree)
+    _integer("power", power, 1)
+    if power % 2:
+        raise ValueError("The Gram formula requires an even power")
+    return max(0, size - (power // 2) * degree) ** 2
+
+
 def moment_band_rank(rows: int, columns: int, degree: int, power: int, offset: int) -> int:
     """Rank over Q of R[i,j] = [z**(offset+j-i)](1+...+z**degree)**power."""
     segments = _segments(rows, columns, degree, power, offset)
+    # A centered maximal square minor is the Gram matrix of polynomial shifts.
+    last_offset = offset + columns - rows
+    if power % 2 == 0 and min(offset, last_offset) <= (power // 2) * degree <= max(
+        offset, last_offset
+    ):
+        return min(rows, columns)
     excess = sum(s.width * max(0, s.size - power) for s in segments)
     if any(s.size == 0 for s in segments):
         return columns - excess

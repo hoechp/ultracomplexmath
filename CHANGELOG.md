@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Preserve tiny mixed components of general numerical quotients and accept finite answers even when an intermediate channel would overflow.
+- Continue a sampled projective path through mixed-channel poles, keeping coordinate and tangent in a well-scaled local chart. The offline lab includes an exact model path and an air–glass reflection experiment.
+- Prove that all graded blocks have full possible rank for equal Jordan sizes and even powers in characteristic zero. Compute the total rank in closed form.
+
 ## 0.6.1 — field loops, scalar division and powered block ranks
 
 - Draw a field loop and predict the continued square root in an offline browser lab.

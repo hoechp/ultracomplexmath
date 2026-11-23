@@ -1,8 +1,8 @@
 import pytest
 
-from examples.moment_ranks import moment_band_rank, third_power_band_rank
+from examples.moment_ranks import equal_even_power_rank, moment_band_rank, third_power_band_rank
 from examples.novelty_models import interval_band_rank, second_power_band_rank
-from tools.novelty_probe import higher_power_probe
+from tools.novelty_probe import equal_even_probe, higher_power_probe
 
 
 def test_independent_higher_power_references():
@@ -27,6 +27,18 @@ def test_specializations_and_degree_zero():
                         if 0 <= q + c - r <= p * d:
                             assert moment_band_rank(r, q, d, p, c) == special(r, q, d, c)
     assert moment_band_rank(9, 9, 0, 13, 0) == 9
+
+
+def test_centered_gram_minors_and_sum():
+    assert equal_even_probe()["explicit_blocks"] > 0
+    assert equal_even_power_rank(10**40, 0, 2) == 10**80
+    assert equal_even_power_rank(91, 92, 2) == 0
+    # Unequal sizes and an even power can lose rank.
+    assert moment_band_rank(3, 3, 3, 2, 1) == 2
+    with pytest.raises(ValueError):
+        equal_even_power_rank(5, 1, 3)
+    with pytest.raises(TypeError):
+        equal_even_power_rank(True, 1, 2)
 
 
 def test_cubic_collinearity_and_large_parameters():
