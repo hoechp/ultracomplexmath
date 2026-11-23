@@ -4,6 +4,8 @@
 
 **Status:** a derivation supplied here, with independent exact checks. Publication novelty has not been established. The graph method is classical; the specific closed classification below is the candidate contribution. No claim is made to solve the higher-power problem.
 
+The [short boundary-coefficient note](boundary-rank.md) gives a second proof of the first-power block rank and extends the block result to the second power in characteristic zero.
+
 ## The precise subproblem
 
 Vanni Noferini's [arXiv:2512.08399v5](https://arxiv.org/abs/2512.08399v5), Definition 4.10 and Problem 4.19, asks for the rank losses of a family of Toeplitz blocks. We address **all parameters with power ℓ=1**. Fix positive integers m≤n and d≥1, and write

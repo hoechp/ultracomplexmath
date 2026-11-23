@@ -7,6 +7,7 @@ not change the commutative multiplication of the scalar algebra itself.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 
 from .core import NonInvertibleError, Ultra
@@ -75,6 +76,40 @@ class ModeOperator[N: (Ultra, ExactUltra)]:
         identity = ModeOperator(type(self.alpha)(1), type(self.alpha)(0))
         increment = self.scaled(step)
         return (identity + increment) @ (identity - increment).inverse()
+
+    def flow(self: ModeOperator[Ultra], time: float = 1.0) -> ModeOperator[Ultra]:
+        """exp(time*A) for a constant complex-dual two-mode generator.
+
+        Scale the time step before evaluating the entire centered series, then
+        square the full map. The epsilon part differentiates every operation,
+        including at a repeated eigenvalue.
+        """
+        if type(self.alpha) is not Ultra:
+            raise TypeError("Continuous flows require numerical Ultra coefficients")
+        if isinstance(time, bool) or not isinstance(time, (int, float)) or not math.isfinite(time):
+            raise ValueError("time must be a finite real number")
+        identity = ModeOperator(Ultra(1), Ultra())
+        if time == 0:
+            return identity
+        size = max(abs(x) for v in (self.alpha, self.beta) for x in v.coefficients[:4])
+        # A channel matrix entry combines at most four real body coefficients.
+        squarings = max(0, math.frexp(size)[1] + math.frexp(abs(time))[1] + 3) if size else 0
+        step = self.scaled(Ultra(math.ldexp(time, -squarings)))
+        (a, b), (c, d) = step.matrix()
+        mu, offset = (a + d) * 0.5, (a - d) * 0.5
+        delta = offset * offset + b * c
+        centered = step - identity.scaled(mu)
+        # Horner forms for cosh(sqrt(delta)) and sinh(sqrt(delta))/sqrt(delta).
+        # With the scaled body |delta| <= 1, the omitted body term is <= 1/34!;
+        # the differentiated tail is bounded by its differentiated scalar series.
+        even = odd = Ultra(1)
+        for k in range(16, 0, -1):
+            even = 1 + delta * (even / ((2 * k) * (2 * k - 1)))
+            odd = 1 + delta * (odd / ((2 * k) * (2 * k + 1)))
+        result = (identity.scaled(even) + centered.scaled(odd)).scaled(mu.exp())
+        for _ in range(squarings):
+            result = result @ result
+        return result
 
     def determinant(self) -> N:
         """The 2x2 determinant, embedded without a j component."""

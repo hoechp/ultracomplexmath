@@ -1,10 +1,18 @@
 # Changelog
 
-## Unreleased — research investigations and engineering applications
+## 0.6.0 — polar geometry, winding roots and continuous dynamics
+
+- Add unit polar coordinates, continuous two-channel phase lifts and all numerical root families, including free tangents and empty singular cases.
+- Preserve small mixed sine/cosine coefficients and round non-real reciprocals from exact binary-input arithmetic.
+- Add constant two-mode matrix exponentials with their first variation through critical damping.
+- Introduce a browser lab for the winding root, spring and series RLC models. Link all three offline labs for direct browser use.
+- Derive the second-power block rank in characteristic zero and a second proof for the first power, with rational elimination and squared-operator checks.
+
+### Earlier investigations included in this version
 
 - Derive and implement a closed first-power rank classification for the Toeplitz
   subproblem in Noferini's Problem 4.19, with a graph proof and aggregate defect
-  formula. Publication novelty is unconfirmed; higher powers remain unresolved.
+  formula. Publication priority is unconfirmed. The new boundary proof above extends the block classification through the second power.
 - Add experimental exact cubic critical flows and a one-term Cayley correction,
   preserving independent operator and coefficient nilpotents.
 - Demonstrate a guarded direct-basis reciprocal that retains tiny mixed

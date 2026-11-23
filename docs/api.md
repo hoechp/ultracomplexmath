@@ -6,6 +6,9 @@ This is a task-oriented map of the implemented interfaces. Mathematical domains 
 
 | Task | Public interface / module | Guide |
 | --- | --- | --- |
+| Unit polar form and lifted paths | `Ultra.polar(previous=...)`, `PolarForm.reconstruct/shifted/root` | [Polar coordinates](polar-motion.md) |
+| All numerical roots | `Ultra.roots(n)`, `UltraRoots.at/representatives`, `.count`, `.strata` | [Root families](polar-motion.md#enumerate-sheets-or-sample-a-root-family) |
+| Continuous two-mode flow | `ModeOperator.flow(t)` | [Constant generators](polar-motion.md#one-differential-equation-two-physical-systems) |
 | Located values and rule-defined fields | `CoordinateSpace`, `SpaceTimePoint`, `LocatedUltra`, `UltraField`; `fields` | [UltraField](fields.md) |
 | Slices, grids and array exports | `FieldView`, `FieldGrid`, `.slice()`, `.sample()`, `.to_numpy()`, `.to_xarray()` | [Field views](fields.md#slices-views-and-samples) |
 | External coordinate calculus | `.partial()`, `.gradient()`, `.laplacian()`, `.wave_operator()` | [Coordinate derivatives](fields.md#differentiate-coordinates-without-consuming-epsilon) |

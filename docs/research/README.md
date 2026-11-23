@@ -16,8 +16,8 @@ The implementation was reassessed from [the 0.3.0 source snapshot](https://githu
 
 | Finding | Why it matters | Present status |
 | --- | --- | --- |
-| Every invertible value has a full eight-parameter polar form | Common scale, reciprocal stretching, two phases and four shear coordinates compose coherently | Derived, with a coupled phase lattice; bounded reconstruction checks; structured API and continuation missing |
-| Real nonscalar 2×2 generators have complex, split or dual type | Underdamping, overdamping and critical damping belong to one continuous family | Classification, rational checks and a physical damping demo with convergence; general continuous operator functions missing |
+| Every invertible value has a full eight-parameter polar form | Common scale, reciprocal stretching, two phases and four shear coordinates compose coherently | Derived, with a coupled phase lattice; bounded reconstruction checks; [polar API and winding continuation](../polar-motion.md) shipped |
+| Real nonscalar 2×2 generators have complex, split or dual type | Underdamping, overdamping and critical damping belong to one continuous family | Classification, rational checks and a physical damping demo with convergence; [constant-generator flow](../polar-motion.md) with first variations shipped |
 | Two different shears can compose into rotation or hyperbolic motion | Lens/propagation order and critical transitions reveal a connection between the geometries | Exact optical-cell checks; general composition uses existing operators, not scalar multiplication |
 | The projective line is the tangent bundle of a complex quadric | The full union has a shared surface with two line families and tangent directions | Derived through chart transitions; rational incidence examples checked; geometric API missing |
 | `i*j` is a second commuting imaginary unit | CS supports bicomplex finite-step second derivatives; epsilon can add a mixed third derivative | Derived and checked; exponential cancellation fixed; other primitives need componentwise accuracy work |

@@ -28,6 +28,7 @@ from examples.novelty_models import (  # noqa: E402
     first_power_rank,
     interval_band,
     interval_band_rank,
+    second_power_band_rank,
     toeplitz_block,
     toeplitz_shape,
 )
@@ -146,6 +147,22 @@ def rank_probe(full=False):
                 )
                 dense_cases += 1
 
+    second_blocks = second_dense = 0
+    for m in range(1, m_limit + 1):
+        for n in range(m, n_limit + 1):
+            for degree in range(1, m + n):
+                total = 0
+                for k in range(2 * degree + 1, m + n):
+                    r, q, c = toeplitz_shape(m, n, degree, 2, k)
+                    rank = second_power_band_rank(r, q, degree, c)
+                    assert rank == rational_rank(toeplitz_block(m, n, degree, 2, k))
+                    total += rank
+                    second_blocks += 1
+                if m <= dense_limit and n <= dense_limit:
+                    matrix = nilpotent_tensor_matrix(m, n, degree)
+                    assert total == rational_rank(matrix_product(matrix, matrix))
+                    second_dense += 1
+
     # A minimal ell=2 counterexample: weights cannot be replaced by their support.
     weighted = toeplitz_block(3, 3, 1, 2, 4)
     support = [[int(bool(x)) for x in row] for row in weighted]
@@ -159,8 +176,10 @@ def rank_probe(full=False):
         "triples_with_rank_loss": deficient,
         "independent_full_tensor_matrices": dense_cases,
         "full_tensor_max_m_n": dense_limit,
+        "second_power_blocks": second_blocks,
+        "second_power_full_tensor_squares": second_dense,
         "ell_2_counterexample": {"m": 3, "n": 3, "d": 1, "k": 4, "rank": 2, "support_rank": 1},
-        "status": "Proof supplied for ell=1; publication novelty unconfirmed; ell>=2 unresolved here",
+        "status": "First-power and second-power block proofs supplied; publication priority unconfirmed",
     }
 
 
@@ -247,6 +266,8 @@ def reciprocal_probe():
         reference_third = float(-exact.eps_j / exact_h**2)
         core, direct = seed.inverse(), direct_reciprocal(seed)
         second, third = -direct.j / h**2, -direct.eps_j / h**2
+        assert math.isclose(-core.j / h**2, reference_second, rel_tol=3e-15)
+        assert math.isclose(-core.eps_j / h**2, reference_third, rel_tol=3e-15)
         assert math.isclose(second, reference_second, rel_tol=3e-15)
         assert math.isclose(third, reference_third, rel_tol=3e-15)
         rows.append(
@@ -267,7 +288,7 @@ def reciprocal_probe():
         "second_derivative_limit": 2,
         "third_derivative_limit": -6,
         "samples": rows,
-        "status": "Known identity, demonstrated coefficient-accuracy gain, guarded prototype only",
+        "status": "Exact binary-input mixed reciprocal in the core and guarded numerical prototype checked",
         "negative_finding": "The same log probe retains its small j component; no log failure claimed",
     }
 

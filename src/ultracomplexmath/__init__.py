@@ -58,11 +58,12 @@ from .plane_geometry import (
     metric_project,
     metric_reflect,
 )
+from .polar import PolarForm, UltraRoots
 from .polynomial import Polynomial, guess
 from .surfaces import ParametricSurface, SeamReport, SurfaceSeam, mobius_strip, torus
 from .transformations import Mobius, ModeOperator, ProjectivePoint, cross_ratio
 
-__version__ = "0.5.0"
+__version__ = "0.6.0"
 __all__ = [
     "Actor",
     "Binary",
@@ -83,6 +84,8 @@ __all__ = [
     "Mechanism",
     "Parameter",
     "Polar2D",
+    "PolarForm",
+    "UltraRoots",
     "Polynomial",
     "RootSet",
     "SimpleCalculation",

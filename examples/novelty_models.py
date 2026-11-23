@@ -1,7 +1,7 @@
 """Scoped research prototypes, not public core APIs.
 
 See docs/research/novelty.md for proofs, prior art, domains and counterexamples.
-The rank formula addresses only the first power in Noferini's Problem 4.19.
+The rank formulas address powers one and two in Noferini's Problem 4.19.
 The critical-flow identity is a Cayley–Hamilton consequence; the reciprocal
 uses an established conjugate identity with a deliberately restricted domain.
 """
@@ -37,7 +37,7 @@ def _band_domain(rows: int, columns: int, degree: int, offset: int) -> None:
     _integer("degree", degree)
     _integer("offset", offset)
     if not 0 <= offset <= degree or not 0 <= columns - rows + offset <= degree:
-        raise ValueError("The top-left and bottom-right band entries must both be 1")
+        raise ValueError("The top-left and bottom-right entries must both lie in the band")
 
 
 def interval_band(rows: int, columns: int, degree: int, offset: int) -> list[list[int]]:
@@ -64,6 +64,38 @@ def interval_band_rank(rows: int, columns: int, degree: int, offset: int) -> int
 
     paths = count(columns + offset) - count(rows - 1)
     return columns - max(0, paths - 1)
+
+
+def second_power_band_rank(rows: int, columns: int, degree: int, offset: int) -> int:
+    """Rank over characteristic zero for the kernel (1+...+z**degree)**2.
+
+    Count congruence classes of exponents in the two boundary tails of the
+    product polynomial. Counts are constant between at most three breakpoints.
+    See docs/research/boundary-rank.md for the moment-space proof.
+    """
+    _integer("degree", degree)
+    _band_domain(rows, columns, 2 * degree, offset)
+    period = degree + 1
+    left = columns + offset - rows
+    right = columns + offset
+    end = columns + 2 * degree
+
+    def prefix(stop: int, residue: int) -> int:
+        return (stop + period - 1 - residue) // period
+
+    breaks = sorted({0, period, left % period, right % period, end % period})
+    empty = singles = excess = 0
+    for start, stop in zip(breaks[:-1], breaks[1:], strict=True):
+        size = prefix(left, start) + prefix(end, start) - prefix(right, start)
+        width = stop - start
+        if size == 0:
+            empty += width
+        elif size == 1:
+            singles += width
+        else:
+            excess += width * (size - 2)
+    common_moments = 0 if empty else max(0, 2 - singles)
+    return columns - excess - common_moments
 
 
 def _jordan_domain(m: int, n: int, degree: int) -> None:
