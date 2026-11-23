@@ -8,6 +8,8 @@ $$\mathcal A_K=K[i,j,\varepsilon]/(i^2+1,\;j^2-1,\;\varepsilon^2),\qquad ij=ji,\
 
 Choose numerical real coefficients (`Ultra`) or exact rational coefficients (`ExactUltra`). The mixed directions `ij`, `eps*i`, `eps*j` and `eps*i*j` are first-class parts of the same number. The goal is a coherent mathematical toolbox that brings the strengths of all three algebras into shared computations.
 
+**[Draw a loop and predict the returning square root](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/field-loops.html)** · [Download the offline lab](docs/gallery/field-loops.html)
+
 **[Follow a square root around a loop in your browser](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/polar-motion.html)** · [Polar coordinates, roots and dynamics in Python](docs/polar-motion.md)
 
 [Get started](docs/getting-started.md) · [Documentation](docs/README.md) · [Showcase](docs/gallery/README.md) · [Research agenda](docs/research/README.md)
@@ -20,6 +22,7 @@ The [geometry inside the full union](docs/research/geometric-structure.md) expla
 
 | Explore | What comes together | Run from a checkout |
 | --- | --- | --- |
+| [Draw a field loop](docs/polar-motion.md#draw-your-own-field-loop) | Draw around either or both singularities of `F(z) = z − j` and compare the two phase lifts | `python -m examples.field_loops` |
 | [Winding and critical damping](docs/polar-motion.md) | Follow a root from 1 to −j, then vary the damping of a spring or an RLC circuit | `python -m examples.polar_motion` |
 | [Engineering showcase](docs/gallery/impact.md) | Optical tolerances, impedance diagnostics and vibration settling, with independent references | `python -m examples.impact` |
 | [Formula compression](docs/formula-compression.md) | A complex solution and two sensitivities in one model expression; exact residual and cost audit | `python -m examples.impact --only formulas` |
@@ -29,7 +32,7 @@ The [geometry inside the full union](docs/research/geometric-structure.md) expla
 | [Waves and inverse problems](docs/gallery/applications.md) | Travelling waves, robot Jacobians and interference-based geometry recovery | `python -m examples.applications` |
 | [Trigonometric atlas](docs/gallery/README.md#trigonometry-and-angles) | The same function in circular, hyperbolic, parabolic and mixed directions | `python -m examples.gallery --only cosine` |
 | [Geometric structure](docs/research/geometric-structure.md) | Full polar form, critical motion, polarization and projective tangent geometry | `python tools/geometric_structure_probe.py` |
-| [Research investigations](docs/research/novelty.md) | A first-power rank classification, exact critical-jet flow and small-component reciprocal experiments | `python tools/novelty_probe.py` |
+| [Research investigations](docs/research/novelty.md) | Powered Toeplitz block ranks, exact critical-jet flow and small-component reciprocal experiments | `python tools/novelty_probe.py` |
 
 ![Coupled complex modes](docs/gallery/assets/coupled-modes.gif)
 
@@ -95,7 +98,7 @@ The ambition is broad; operation domains remain explicit. The scalar algebra is 
 
 ## Where next?
 
-Version 0.6.0 ships unit polar decomposition, lifted root paths, singular root families and continuous constant-generator dynamics. Next projects include exact geometric constraints, projective chart continuation and optical geometry. The [rank note](docs/research/boundary-rank.md) derives first- and second-power block formulas. The [research review](docs/research/README.md) compares all seven nonempty combinations of the three base algebras, names missing functionality and gives acceptance criteria. Reliable derivatives remain part of this toolkit, alongside the geometries themselves.
+Version 0.6.0 ships unit polar decomposition, lifted root paths, singular root families and continuous constant-generator dynamics. Next projects include exact geometric constraints, projective chart continuation and optical geometry. Version 0.6.1 adds the freehand field loop, CLI polar and root views, and a [rank reduction for every positive power](docs/research/higher-power-rank.md) with an explicit third-power classification. The [research review](docs/research/README.md) compares all seven nonempty combinations of the three base algebras, names missing functionality and gives acceptance criteria. Reliable derivatives remain part of this toolkit, alongside the geometries themselves.
 
 Development and verification: [CONTRIBUTING.md](CONTRIBUTING.md). API orientation: [docs/api.md](docs/api.md). Release changes: [CHANGELOG.md](CHANGELOG.md).
 

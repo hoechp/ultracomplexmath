@@ -63,7 +63,7 @@ from .polynomial import Polynomial, guess
 from .surfaces import ParametricSurface, SeamReport, SurfaceSeam, mobius_strip, torus
 from .transformations import Mobius, ModeOperator, ProjectivePoint, cross_ratio
 
-__version__ = "0.6.0"
+__version__ = "0.6.1"
 __all__ = [
     "Actor",
     "Binary",

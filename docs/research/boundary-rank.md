@@ -86,8 +86,7 @@ operator. The [full report](novelty-verification.json) records the grid and coun
 
 [Noferini, arXiv:2512.08399v5, §4.3](https://arxiv.org/html/2512.08399v5#S4.SS3)
 asks for the rank defects for all powers in Problem 4.19.
-For $\ell\ge3$ the same reasoning leads to higher moment images and their
-intersections. The two counts above do not classify those intersections.
+The [higher-power note](higher-power-rank.md) computes the intersections of moment images for arbitrary positive powers and gives the cubic classification.
 The first-power graph proof also relates to [Evans, Greene and Van Veen](https://emis.de/ft/34371).
 Convolution, polynomial divisibility and confluent Vandermonde rank are classical.
 The priority of these particular block formulas awaits specialist literature

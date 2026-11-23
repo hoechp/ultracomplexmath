@@ -2,10 +2,35 @@
 
 import cmath
 import math
+from fractions import Fraction
 
 import pytest
 
-from ultracomplexmath import EPS, ONE, I, J, Ultra
+from ultracomplexmath import EPS, ONE, ExactUltra, I, J, NonFiniteError, NonInvertibleError, Ultra
+
+
+@pytest.mark.parametrize("h", [1e-10, 1e-100, 1e-140])
+@pytest.mark.parametrize("scalar", [0, -3.125, 2, 1e-70])
+def test_real_numerator_preserves_individual_mixed_coefficients(h, scalar):
+    x = Ultra(1, i=h, ij=h, eps=1)
+    exact = ExactUltra(1, i=Fraction(h), ij=Fraction(h), eps=1)
+    expected = (ExactUltra(Fraction(scalar)) / exact).approximate()
+    assert scalar / x == expected
+    if scalar == 2:
+        assert scalar / x == scalar * (1 / x)
+    if h == 1e-10 and scalar != 0:
+        assert (scalar / x).j != 0 and (scalar / x).eps_j != 0
+
+
+def test_real_numerator_avoids_unrepresentable_reciprocal():
+    tiny = 1e-310
+    x = Ultra(tiny, i=tiny)
+    with pytest.raises(NonFiniteError):
+        x.inverse()
+    assert tiny / x == Ultra(0.5, i=-0.5)
+    assert 0 / x == Ultra()
+    with pytest.raises(NonInvertibleError):
+        _ = 0 / (ONE + J)
 
 
 @pytest.mark.parametrize("h", [1e-3, 1e-8, 1e-10, 1e-100])

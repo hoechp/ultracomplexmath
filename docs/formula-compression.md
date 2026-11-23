@@ -109,7 +109,7 @@ The optical demo additionally places epsilon in the **layer coefficients**, so i
 | What becomes shorter? | The model expression and derivative bookkeeping: one construction feeds values and two first variations |
 | What does `j` contribute here? | Two orthogonal complex-dual channels; this encoding is mathematically equivalent to an explicit pair |
 | Is there more geometry than batching? | In the damping example, noncommuting operators retain a Jordan part across circular/parabolic/hyperbolic regimes; the choice of action and invariant is additional structure |
-| Is it faster than ordinary linear algebra? | Not established. Current `solve` performs four complex solves, including two identical body solves here. Reusing an ordinary factorization can be faster |
+| Is it faster than ordinary linear algebra? | Not established. This fixture needs one shared LU factorization and three right-hand sides (one body, two tangents). No timing comparison was made |
 | Does it give a Hessian? | No. All products of these epsilon directions vanish; second and mixed parameter derivatives are not stored |
 | Can both channels also represent different polarizations? | Yes, but then each channel has its own body and one derivative; it no longer provides two derivatives of the same body |
 | Does it fix a singular model? | No. Singular body systems have no unique inverse; numerical singularity checks remain active |

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.1 — field loops, scalar division and powered block ranks
+
+- Draw a field loop and predict the continued square root in an offline browser lab.
+- Inspect polar coordinates and root families from the CLI with `--polar` and `--roots N`.
+- Round real-over-Ultra quotients at the final coefficients and reuse complex LU factors in `solve`.
+- Derive a characteristic-zero block rank reduction for every positive power and classify the cubic case explicitly. Include an independent exact verification grid.
+
 ## 0.6.0 — polar geometry, winding roots and continuous dynamics
 
 - Add unit polar coordinates, continuous two-channel phase lifts and all numerical root families, including free tangents and empty singular cases.

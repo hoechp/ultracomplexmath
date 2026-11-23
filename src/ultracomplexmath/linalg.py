@@ -140,9 +140,27 @@ def solution_space(
     return LinearSolution(decode(result.particular), tuple(decode(v) for v in result.basis))
 
 
-def _solve_complex(a: list[list[complex]], b: list[complex], rtol: float) -> list[complex]:
-    n = len(b)
-    rows = [row.copy() + [rhs] for row, rhs in zip(a, b, strict=True)]
+@dataclass
+class _ComplexLU:
+    rows: list[list[complex]]
+    order: list[int]
+
+    def solve(self, rhs: list[complex]) -> list[complex]:
+        values = [rhs[i] for i in self.order]
+        n = len(values)
+        for col in range(n):
+            for row in range(col + 1, n):
+                values[row] = _finite(values[row] - self.rows[row][col] * values[col])
+        for row in reversed(range(n)):
+            residual = values[row] - sum(self.rows[row][k] * values[k] for k in range(row + 1, n))
+            values[row] = _finite(residual / self.rows[row][row])
+        return values
+
+
+def _factor_complex(a: list[list[complex]], rtol: float) -> _ComplexLU:
+    n = len(a)
+    rows = [row.copy() for row in a]
+    order = list(range(n))
     scales = [max(map(abs, row)) for row in a]
     if any(scale == 0 for scale in scales):
         raise SingularSystemError("Zero row in body matrix")
@@ -151,17 +169,14 @@ def _solve_complex(a: list[list[complex]], b: list[complex], rtol: float) -> lis
         if abs(rows[pivot][col]) <= rtol * scales[pivot]:
             raise SingularSystemError(f"Body matrix singular at column {col}; rtol={rtol}")
         rows[col], rows[pivot] = rows[pivot], rows[col]
+        order[col], order[pivot] = order[pivot], order[col]
         scales[col], scales[pivot] = scales[pivot], scales[col]
         for row in range(col + 1, n):
             ratio = rows[row][col] / rows[col][col]
-            rows[row][col] = 0j
-            for k in range(col + 1, n + 1):
+            rows[row][col] = _finite(ratio)
+            for k in range(col + 1, n):
                 rows[row][k] = _finite(rows[row][k] - ratio * rows[col][k])
-    result = [0j] * n
-    for row in reversed(range(n)):
-        residual = rows[row][n] - sum(rows[row][k] * result[k] for k in range(row + 1, n))
-        result[row] = _finite(residual / rows[row][row])
-    return result
+    return _ComplexLU(rows, order)
 
 
 def solve(
@@ -181,16 +196,26 @@ def solve(
     a = [[Ultra.coerce(value).channels() for value in row] for row in matrix]
     b = [Ultra.coerce(value).channels() for value in rhs]
     solutions: list[list[Channel]] = []
+    previous_body: list[list[complex]] | None = None
+    previous_rhs: list[complex] | None = None
+    factor: _ComplexLU | None = None
+    x: list[complex] = []
     for channel in range(2):
         body = [[value[channel][0] for value in row] for row in a]
         tangent = [[value[channel][1] for value in row] for row in a]
         try:
-            x = _solve_complex(body, [value[channel][0] for value in b], rtol)
+            body_rhs = [value[channel][0] for value in b]
+            if factor is None or body != previous_body:
+                factor = _factor_complex(body, rtol)
+                x = factor.solve(body_rhs)
+            elif body_rhs != previous_rhs:
+                x = factor.solve(body_rhs)
+            previous_body, previous_rhs = body, body_rhs
             residual = [
                 value[channel][1] - sum(t * z for t, z in zip(row, x, strict=True))
                 for value, row in zip(b, tangent, strict=True)
             ]
-            dx = _solve_complex(body, residual, rtol)
+            dx = factor.solve(residual)
         except SingularSystemError as error:
             raise SingularSystemError(f"{'+' if channel == 0 else '-'} channel: {error}") from error
         solutions.append(list(zip(x, dx, strict=True)))

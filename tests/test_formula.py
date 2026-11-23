@@ -37,6 +37,37 @@ def test_math_grammar(text, expected):
     assert evaluate(text).isclose(expected)
 
 
+def test_cli_polar_and_root_families():
+    def cli(expr, *options):
+        return subprocess.run(
+            [sys.executable, "-m", "ultracomplexmath", expr, *options],
+            capture_output=True,
+            text=True,
+        )
+
+    polar = json.loads(cli("1+eps", "--polar", "--json").stdout)
+    assert polar == {"r": 1, "rho": 0, "phi": 0, "theta": 0, "v": [1, 0, 0, 0], "phases": [0, 0]}
+    regular = json.loads(cli("1", "--roots", "2", "--json").stdout)
+    assert regular["count"] == len(regular["representatives"]) == 4
+    assert all((Ultra(*coeffs) ** 2).isclose(1) for coeffs in regular["representatives"])
+    for expr, count, free in [
+        ("eps", 0, []),
+        ("0", "infinite", ["+", "-"]),
+        ("1+j", "infinite", ["-"]),
+    ]:
+        data = json.loads(cli(expr, "--roots", "3", "--json").stdout)
+        assert data["count"] == count and data["free_tangents"] == free
+        assert len(data["representatives"]) == math.prod(data["sheet_counts"])
+    assert cli("2i", "--legacy", "--polar").returncode == 0
+    for expr, options in [
+        ("0", ["--polar"]),
+        ("1", ["--exact", "--roots", "2"]),
+        ("1", ["--roots", "-1"]),
+        ("1", ["--roots", "2", "--polar"]),
+    ]:
+        assert cli(expr, *options).returncode == 2
+
+
 def test_parse_once_and_supply_different_variables():
     formula = Formula("1 + cos(x)*y^x")
     assert formula.variables == {"x", "y"}
