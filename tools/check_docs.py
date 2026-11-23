@@ -17,6 +17,7 @@ GUIDES = (
     "docs/formula-compression.md",
     "docs/research/novelty.md",
     "docs/research/higher-power-rank.md",
+    "docs/research/equal-even-rank.md",
 )
 
 

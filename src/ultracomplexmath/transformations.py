@@ -8,10 +8,12 @@ not change the commutative multiplication of the scalar algebra itself.
 from __future__ import annotations
 
 import math
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
+from typing import Literal, overload
 
-from .core import NonInvertibleError, Ultra
-from .exact import ExactUltra
+from .core import NonFiniteError, NonInvertibleError, Ultra
+from .exact import ExactChannel, ExactComplex, ExactUltra
 
 
 def _same_domain(*values: Ultra | ExactUltra) -> None:
@@ -152,6 +154,15 @@ class ModeOperator[N: (Ultra, ExactUltra)]:
         return ((a0 + a1, b0 + b1), (b0 - b1, a0 - a1))
 
 
+def _vanishing_bodies(value: Ultra | ExactUltra) -> tuple[bool, bool]:
+    # Check each channel for an exact zero without evaluating a potentially
+    # overflowing sum or involving its tangent.
+    return (
+        (value.real, value.i) == (-value.j, -value.ij),
+        (value.real, value.i) == (value.j, value.ij),
+    )
+
+
 @dataclass(frozen=True)
 class ProjectivePoint[N: (Ultra, ExactUltra)]:
     """Unimodular homogeneous pair [x:y] over the algebra.
@@ -166,8 +177,8 @@ class ProjectivePoint[N: (Ultra, ExactUltra)]:
     def __post_init__(self) -> None:
         _same_domain(self.x, self.y)
         if any(
-            not (a or b)
-            for (a, _), (b, _) in zip(self.x.channels(), self.y.channels(), strict=True)
+            a and b
+            for a, b in zip(_vanishing_bodies(self.x), _vanishing_bodies(self.y), strict=True)
         ):
             raise ValueError("Homogeneous coordinates must be unimodular in every body channel")
 
@@ -178,8 +189,8 @@ class ProjectivePoint[N: (Ultra, ExactUltra)]:
     @property
     def charts(self) -> tuple[str, str]:
         """Per split mode: 'y' permits x/y, otherwise 'x' permits y/x."""
-        (p, _), (m, _) = self.y.channels()
-        return ("y" if p else "x", "y" if m else "x")
+        p, m = _vanishing_bodies(self.y)
+        return ("x" if p else "y", "x" if m else "y")
 
     def equivalent(
         self, other: ProjectivePoint[N], *, rel_tol: float = 1e-9, abs_tol: float = 1e-12
@@ -189,6 +200,87 @@ class ProjectivePoint[N: (Ultra, ExactUltra)]:
         if isinstance(determinant, ExactUltra):
             return not determinant
         return (self.x * other.y).isclose(self.y * other.x, rel_tol=rel_tol, abs_tol=abs_tol)
+
+
+type Chart = Literal["x", "y"]
+
+
+@dataclass(frozen=True, slots=True)
+class ChartCoordinate[C: (complex, ExactComplex)]:
+    """A single split channel in the chart named for its denominator."""
+
+    chart: Chart
+    value: C
+    tangent: C
+
+    def approximate(self: ChartCoordinate[ExactComplex]) -> ChartCoordinate[complex]:
+        try:
+            return ChartCoordinate(
+                self.chart,
+                complex(self.value.real, self.value.imag),
+                complex(self.tangent.real, self.tangent.imag),
+            )
+        except OverflowError as error:
+            raise NonFiniteError("Projective coordinate exceeds binary64") from error
+
+
+def _chart_coordinate(
+    x: ExactChannel, y: ExactChannel, previous: Chart | None
+) -> ChartCoordinate[ExactComplex]:
+    nx, ny = x[0].determinant, y[0].determinant
+    # Compare squared magnitudes. Switch at a factor of two; an initial tie prefers y.
+    if previous == "x":
+        use_x = 4 * nx > ny
+    elif previous == "y":
+        use_x = nx >= 4 * ny
+    else:
+        use_x = nx > ny
+    chart: Chart = "x" if use_x else "y"
+    (a, da), (b, db) = (y, x) if use_x else (x, y)
+    value = a / b
+    return ChartCoordinate(chart, value, (da - value * db) / b)
+
+
+@overload
+def projective_path(
+    points: Iterable[ProjectivePoint[Ultra]],
+) -> Iterator[tuple[ChartCoordinate[complex], ChartCoordinate[complex]]]: ...
+@overload
+def projective_path(
+    points: Iterable[ProjectivePoint[ExactUltra]],
+) -> Iterator[tuple[ChartCoordinate[ExactComplex], ChartCoordinate[ExactComplex]]]: ...
+
+
+def projective_path(
+    points: Iterable[ProjectivePoint[Ultra] | ProjectivePoint[ExactUltra]],
+) -> Iterator[
+    tuple[ChartCoordinate[complex], ChartCoordinate[complex]]
+    | tuple[ChartCoordinate[ExactComplex], ChartCoordinate[ExactComplex]]
+]:
+    """Yield (+, −) chart coordinates and their input epsilon tangents at each sample.
+
+    The first sample chooses the larger body denominator in each channel. A
+    subsequent sample switches when the other denominator is at least twice as
+    large. Coordinates in adjacent charts are reciprocals on their overlap.
+    """
+    previous_plus: Chart | None = None
+    previous_minus: Chart | None = None
+    domain = None
+    for point in points:
+        if domain is not None and type(point.x) is not domain:
+            raise TypeError("A projective path must use one coefficient domain")
+        domain = type(point.x)
+        x = ExactUltra.from_approximate(point.x) if isinstance(point.x, Ultra) else point.x
+        y = ExactUltra.from_approximate(point.y) if isinstance(point.y, Ultra) else point.y
+        xp, xm = x.channels()
+        yp, ym = y.channels()
+        plus = _chart_coordinate(xp, yp, previous_plus)
+        minus = _chart_coordinate(xm, ym, previous_minus)
+        previous_plus, previous_minus = plus.chart, minus.chart
+        if isinstance(point.x, Ultra):
+            yield plus.approximate(), minus.approximate()
+        else:
+            yield plus, minus
 
 
 @dataclass(frozen=True)

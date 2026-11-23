@@ -61,7 +61,7 @@ assert moment_band_rank(10**30, 10**30, 10**20, 5, 0) == 10**30
 
 ## Scope, literature and reproduction
 
-[Noferini, §4.3, Problem 4.19](https://arxiv.org/html/2512.08399v5#S4.SS3) asks when the rank loss for a quadruple of Jordan parameters is positive and how large it is. For given parameters one can apply the reduction to each admissible graded block and sum the defects. Removing that sum over block indices to classify exceptional quadruples directly remains open here. The [first-power result](first-power-rank.md) already performs that last step for $p=1$. The [second-power proof](boundary-rank.md) gives a shorter special-case formula.
+[Noferini, §4.3, Problem 4.19](https://arxiv.org/html/2512.08399v5#S4.SS3) asks when the rank loss for a quadruple of Jordan parameters is positive and how large it is. For given parameters one can apply the reduction to each admissible graded block and sum the defects. For equal Jordan sizes and even powers, a [Gram minor and total rank formula](equal-even-rank.md) now remove the sum. A direct classification across all quadruples remains open here. The [first-power result](first-power-rank.md) already performs that last step for $p=1$. The [second-power proof](boundary-rank.md) gives a shorter special-case formula.
 
 Toeplitz minors also admit skew-Schur formulas, as in [Maximenko and Moctezuma-Salazar](https://arxiv.org/abs/1705.08067). The derivation above uses classical divisibility, moments and interpolation. Publication priority for this compressed formulation and independent specialist review remain open.
 

@@ -18,7 +18,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from examples.moment_ranks import moment_band_rank, third_power_band_rank  # noqa: E402
+from examples.moment_ranks import (  # noqa: E402
+    equal_even_power_rank,
+    moment_band_rank,
+    third_power_band_rank,
+)
 from examples.novelty_models import (  # noqa: E402
     QNULL,
     corrected_critical_cayley,
@@ -181,6 +185,39 @@ def rank_probe(full=False):
         "second_power_full_tensor_squares": second_dense,
         "ell_2_counterexample": {"m": 3, "n": 3, "d": 1, "k": 4, "rank": 2, "support_rank": 1},
         "status": "First-power and second-power block proofs supplied; publication priority unconfirmed",
+    }
+
+
+def equal_even_probe(full=False):
+    """Explicit convolution and rational elimination, independent of the Gram shortcut."""
+    counts = {}
+    dense = 0
+    for power in (2, 4, 6, 8, 10):
+        blocks = 0
+        for size in range(2, 17 if full else 7):
+            for degree in range(1, (2 * size - 2) // power + 2):
+                total = 0
+                for k in range(power * degree + 1, 2 * size):
+                    rows, cols, c = toeplitz_shape(size, size, degree, power, k)
+                    rank = rational_rank(toeplitz_block(size, size, degree, power, k))
+                    assert cols - rows + 2 * c == power * degree
+                    assert rank == min(rows, cols) == moment_band_rank(rows, cols, degree, power, c)
+                    total += rank
+                    blocks += 1
+                assert total == equal_even_power_rank(size, degree, power)
+                if size <= 4:
+                    matrix = base = nilpotent_tensor_matrix(size, size, degree)
+                    for _ in range(1, power):
+                        matrix = matrix_product(matrix, base)
+                    assert total == rational_rank(matrix)
+                    dense += 1
+        counts[str(power)] = blocks
+    return {
+        "explicit_blocks_by_power": counts,
+        "explicit_blocks": sum(counts.values()),
+        "full_operator_powers": dense,
+        "max_size": 16 if full else 6,
+        "total_rank": "max(0, size - power*degree/2)^2",
     }
 
 
@@ -401,6 +438,7 @@ def report(full=False):
         },
         "rank": rank_probe(full),
         "higher_power_rank": higher_power_probe(full),
+        "equal_size_even_powers": equal_even_probe(full),
         "critical_jet": critical_probe(full),
         "reciprocal": reciprocal_probe(),
     }

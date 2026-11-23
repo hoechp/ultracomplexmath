@@ -119,10 +119,7 @@ For small split arguments, sine and cosine use the complex addition formulas in
 the defining basis. Their epsilon layers use the corresponding first derivative.
 This preserves the mixed sine coefficients proportional to sinh²(h) in
 1+ih+ijh+ε, tested down to h = 10⁻¹⁴⁰. Large split angles retain channel evaluation.
-For a non-real reciprocal the core evaluates the represented binary fractions
-exactly and rounds each output coefficient once. This costs more than two
-floating-point divisions. General quotients with nonscalar numerator and
-denominator still use direct channel division.
+For division by a non-real value the core evaluates the represented binary fractions exactly and rounds each output coefficient once. This also protects mixed numerators: at $h=10^{-20}$ the $j$ coefficient of $(1+h j)/(1-h j)$ rounds to $2h$. Exact intermediates cost more than direct binary64 channel operations.
 
 The browser lab contains samples generated from these APIs with
 `python -m examples.polar_motion`. Both experiments and the two earlier labs

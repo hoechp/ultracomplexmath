@@ -226,13 +226,32 @@ indicates which coordinate can be a denominator in each mode.
 explicit tolerance for floats. Structural `==` compares stored representatives.
 `[1:0]` is also valid; `[eps:0]` is not. No fake infinity or NaN is inserted.
 
-This creates a practical starting point for projective calibration, fractional
-transfer laws and geometric continuation near null-divisor boundaries. Chart
-selection is exposed, while a general automatic path-continuation engine and
-complete circle/chain incidence library are not yet supplied. The underlying
+Homogeneous coordinates also support fractional transfer laws and geometric continuation near null-divisor boundaries. The underlying
 definition follows the established projective line over a ring, described by
 [Havlicek](https://arxiv.org/abs/1210.1921); the specialized criterion above is
 derived for this algebra.
+
+## Follow a path through a pole
+
+`projective_path(points)` consumes a sequence of numerical or exact homogeneous points lazily. Each item is a pair of `ChartCoordinate` values in plus/minus order. `chart="y"` gives $x/y$ and `chart="x"` gives $y/x$. The initial choice uses the larger body magnitude and favors $y$ in a tie. Each channel switches independently once the alternative denominator reaches twice the current one's magnitude. This hysteresis allows small oscillations near equal magnitudes without repeated switching. Changes can occur between consecutive samples. The function reports the chart at the sampled points.
+
+```python
+from fractions import Fraction
+from ultracomplexmath import QONE, QEPS, QJ, ExactComplex, ProjectivePoint, projective_path
+
+points = (ProjectivePoint(QONE, t + QJ + QEPS) for t in (3, 2, 1))
+plus, minus = list(projective_path(points))[-1]
+assert (plus.chart, plus.value, plus.tangent) == (
+    "y",
+    ExactComplex(Fraction(1, 2)),
+    ExactComplex(Fraction(-1, 4)),
+)
+assert (minus.chart, minus.value, minus.tangent) == ("x", ExactComplex(0), ExactComplex(1))
+```
+
+The tangent differentiates each input's epsilon variation. For a chart ratio $z=a/b$ it is $(da-z\,db)/b$. On an overlap the new value is $1/z$ and its tangent is $-dz/z^2$. Multiplying the homogeneous pair by any unit gives the same exact chart readings, even if the unit has a tangent. Numerical inputs use their represented binary coefficients and round the resulting per-channel readings to complex floats. A tangent outside that range raises `NonFiniteError`. Each point must be unimodular in both channels.
+
+The [browser lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/projective-paths.html) replays both trace directions. The first path crosses $t=-1$ and $t=1$ at $[1:t+j]$. In the optical path, air meets bare glass of index 1.5. Write $u=\tan\theta$, $A=\sqrt{n^2+(n^2-1)u^2}$. With tangential electric-field amplitudes the Fresnel coefficients are $r_s=(1-A)/(1+A)$ and $r_p=(A-n^2)/(A+n^2)$. At $u=n$, only the p reflection vanishes. The experiment follows $[0.1:r]$ in each channel; 0.1 is a reference amplitude used to set the scale of the charts. Tangents are per unit $u$. The [model](../examples/projective_paths.py) is checked against the [ordinary-complex Fresnel reference](../examples/impact_models.py). To regenerate the [offline file](gallery/projective-paths.html), run `python -m examples.projective_paths`.
 
 ## Measurements connecting geometry to applications
 

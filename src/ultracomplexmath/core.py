@@ -10,7 +10,6 @@ import cmath
 import math
 from collections.abc import Callable, Iterable, Iterator
 from dataclasses import dataclass, fields
-from fractions import Fraction
 from typing import TYPE_CHECKING, Literal
 
 if TYPE_CHECKING:
@@ -49,6 +48,24 @@ def _finite(z: complex) -> complex:
 def _half_sum(a: float, b: float) -> float:
     total = a + b
     return total / 2 if math.isfinite(total) else a / 2 + b / 2
+
+
+def _integer_channel_quotient(
+    numerator: list[int], divisor: list[int], sign: int
+) -> tuple[tuple[int, int, int, int], int]:
+    """Four integer numerators over one denominator for a complex-dual quotient.
+
+    Write the channel as (a + eps*u)/(b + eps*v). With N=|b|² and
+    C=a*conj(b), the body is C/N and the tangent is (N*u-C*v)*conj(b)/N².
+    The caller has already checked that both channel bodies b are nonzero.
+    """
+    ar, ai, ur, ui = (numerator[i] + sign * numerator[i + 1] for i in (0, 2, 4, 6))
+    br, bi, vr, vi = (divisor[i] + sign * divisor[i + 1] for i in (0, 2, 4, 6))
+    norm = br * br + bi * bi
+    cr, ci = ar * br + ai * bi, ai * br - ar * bi
+    dr = norm * ur - (cr * vr - ci * vi)
+    di = norm * ui - (cr * vi + ci * vr)
+    return (cr * norm, ci * norm, dr * br + di * bi, di * br - dr * bi), norm * norm
 
 
 @dataclass(frozen=True, slots=True)
@@ -240,51 +257,39 @@ class Ultra:
 
     @property
     def is_invertible(self) -> bool:
-        plus, minus = self.channels()
-        return plus[0] != 0 and minus[0] != 0
-
-    def _real_quotient(self, numerator: float) -> Ultra:
-        """Divide a real numerator by self, rounding only the final coefficients."""
-        if (self.real, self.i) in ((self.j, self.ij), (-self.j, -self.ij)):
-            raise NonInvertibleError("A zero body channel has no multiplicative inverse")
-        if any(self.coefficients[1:]):
-            # Mixed answers can be hundreds of orders below either channel.
-            # Exact evaluation of the represented floats rounds each output once.
-            from .exact import ExactUltra
-
-            try:
-                inv = ExactUltra.from_approximate(self).inverse()
-                scale = Fraction(numerator)
-                return Ultra(*(float(scale * c) for c in inv))
-            except OverflowError as error:
-                raise NonFiniteError("Quotient coefficient exceeds binary64") from error
-        return Ultra(numerator / self.real)
+        return (self.real, self.i) not in ((self.j, self.ij), (-self.j, -self.ij))
 
     def inverse(self) -> Ultra:
         """Reciprocal, preserving mixed coefficients through channel cancellation."""
-        return self._real_quotient(1.0)
+        return ONE / self
 
     def __truediv__(self, other: Scalar) -> Ultra:
         try:
             value = self.coerce(other)
         except TypeError:
-            # Let compatible containers (e.g. UltraField) implement reflected
-            # division, just as addition and multiplication already do.
             return NotImplemented
-        if not any(self.coefficients[1:]):
-            return value._real_quotient(self.real)
+        if not value.is_invertible:
+            raise NonInvertibleError("Divisor has a zero body channel")
         if not any(value.coefficients[1:]):
-            if not value.real:
-                raise NonInvertibleError("Divisor is zero")
             return Ultra(*(x / value.real for x in self))
-        # Divide channels directly to avoid forming an overflowing reciprocal.
-        result = []
-        for (z, w), (v, t) in zip(self.channels(), value.channels(), strict=True):
-            if v == 0:
-                raise NonInvertibleError("Divisor has a zero body channel")
-            body = _finite(z / v)
-            result.append((body, _finite(w / v - body * (t / v))))
-        return Ultra.from_channels(result[0], result[1])
+
+        # All binary64 denominators are powers of two. A common scale cancels
+        # from the quotient, so channel arithmetic needs only Python integers.
+        ratios = [x.as_integer_ratio() for x in (*self, *value)]
+        scale_bits = max(d.bit_length() for _, d in ratios)
+        scaled = [n << (scale_bits - d.bit_length()) for n, d in ratios]
+        numerator, divisor = scaled[:8], scaled[8:]
+        plus, dp = _integer_channel_quotient(numerator, divisor, 1)
+        minus, dm = _integer_channel_quotient(numerator, divisor, -1)
+        denominator = 2 * dp * dm
+        result: list[float] = []
+        try:
+            for p, m in zip(plus, minus, strict=True):
+                left, right = p * dm, m * dp
+                result.extend(((left + right) / denominator, (left - right) / denominator))
+            return Ultra(*result)
+        except OverflowError as error:
+            raise NonFiniteError("Quotient coefficient exceeds binary64") from error
 
     def __rtruediv__(self, other: Scalar) -> Ultra:
         return self.coerce(other) / self

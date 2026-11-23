@@ -22,6 +22,7 @@ The [geometry inside the full union](docs/research/geometric-structure.md) expla
 
 | Explore | What comes together | Run from a checkout |
 | --- | --- | --- |
+| [Through the pole](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/projective-paths.html) | Follow two projective channels through infinity and a zero of the reflected optical field | `python -m examples.projective_paths` |
 | [Draw a field loop](docs/polar-motion.md#draw-your-own-field-loop) | Draw around either or both singularities of `F(z) = z − j` and compare the two phase lifts | `python -m examples.field_loops` |
 | [Winding and critical damping](docs/polar-motion.md) | Follow a root from 1 to −j, then vary the damping of a spring or an RLC circuit | `python -m examples.polar_motion` |
 | [Engineering showcase](docs/gallery/impact.md) | Optical tolerances, impedance diagnostics and vibration settling, with independent references | `python -m examples.impact` |

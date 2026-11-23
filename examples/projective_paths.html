@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Through the pole · Ultracomplex Math</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font:
+          16px/1.5 "DM Sans",
+          system-ui,
+          sans-serif;
+        color: #1f3631;
+        background: #f7f8f3;
+        --green: #086758;
+        --rust: #ad4827;
+        --border: #cbd6cc;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      main,
+      footer {
+        max-width: 58rem;
+        margin: 0 auto;
+        padding: 1.4rem 1rem;
+      }
+      h1,
+      h2 {
+        font-family: "Instrument Serif", Georgia, serif;
+        font-weight: 500;
+        line-height: 1.05;
+        margin: 0.5rem 0;
+      }
+      h1 {
+        font-size: clamp(2.6rem, 7vw, 4.6rem);
+        letter-spacing: -0.045em;
+      }
+      h2 {
+        font-size: 1.65rem;
+      }
+      p {
+        max-width: 54rem;
+        margin: 0.6rem 0;
+      }
+      a {
+        color: var(--green);
+      }
+      .controls,
+      article {
+        border: 1px solid var(--border);
+        border-radius: 0.8rem;
+        background: white;
+        padding: 1rem;
+      }
+      .controls {
+        margin: 1.2rem 0;
+        display: grid;
+        gap: 0.8rem;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem 1rem;
+      }
+      label {
+        font-weight: 650;
+      }
+      button,
+      select {
+        font: inherit;
+        color: inherit;
+        border: 1px solid #93a99f;
+        border-radius: 0.35rem;
+        padding: 0.32rem 0.55rem;
+        background: white;
+        cursor: pointer;
+      }
+      button:focus-visible,
+      select:focus-visible,
+      input:focus-visible {
+        outline: 3px solid #c98228;
+        outline-offset: 2px;
+      }
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--green);
+      }
+      output,
+      dd {
+        font-variant-numeric: tabular-nums;
+      }
+      .channels {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .plus {
+        --color: var(--green);
+      }
+      .minus {
+        --color: var(--rust);
+      }
+      article h2 {
+        color: var(--color);
+      }
+      svg {
+        width: 100%;
+        height: auto;
+        max-height: 12rem;
+      }
+      .track {
+        stroke: #cfdbd2;
+        stroke-width: 2;
+        fill: none;
+      }
+      .guide {
+        stroke: #d9e1db;
+        stroke-dasharray: 4 4;
+      }
+      .radius {
+        stroke: var(--color);
+        stroke-width: 3;
+      }
+      .marker {
+        fill: var(--color);
+      }
+      svg text {
+        fill: #465c51;
+        font:
+          13px system-ui,
+          sans-serif;
+      }
+      dl {
+        margin: 0;
+      }
+      dl div {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        border-top: 1px solid #e0e7df;
+        padding: 0.45rem 0;
+      }
+      dd {
+        margin: 0;
+        font-weight: 650;
+      }
+      #events {
+        font-size: 0.93rem;
+      }
+      footer {
+        padding-top: 0;
+      }
+      @media (max-width: 550px) {
+        .channels {
+          gap: 0.45rem;
+        }
+        article {
+          padding: 0.65rem;
+        }
+        article h2 {
+          font-size: 1.22rem;
+        }
+        dl div {
+          display: block;
+        }
+        dd {
+          overflow-wrap: anywhere;
+        }
+        .controls {
+          padding: 0.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a href="field-loops.html">Root path lab</a>
+      <h1>Through the pole</h1>
+      <p>
+        Move along a projective line in two channels. The rings show the point
+        itself. Each readout chooses a local coordinate and carries its tangent
+        through the change of chart.
+      </p>
+      <section class="controls" aria-label="Path controls">
+        <div class="row">
+          <label for="model">Path</label
+          ><select id="model">
+            <option value="pole">Two poles · [1 : t + j]</option>
+            <option value="glass">Brewster reflection · air to glass</option>
+          </select>
+          <label for="direction">Trace</label
+          ><select id="direction">
+            <option value="forward">Left to right</option>
+            <option value="reverse">Right to left</option>
+          </select>
+        </div>
+        <p id="description"></p>
+        <div class="row">
+          <label id="slider-label" for="position">Parameter</label
+          ><output for="position" id="parameter"></output>
+        </div>
+        <input id="position" type="range" min="0" step="1" value="0" />
+        <div class="row" id="presets"></div>
+      </section>
+      <div class="channels" id="channels"></div>
+      <p id="events"></p>
+      <p>
+        Each ring represents the real projective line. Its right edge is [1 :
+        0], the affine point at infinity. Near that edge, y/x passes smoothly
+        through zero. On an overlap, the coordinates are reciprocals and their
+        tangents obey the derivative of the reciprocal.
+      </p>
+    </main>
+    <footer>
+      <a href="polar-motion.html">Polar motion</a> ·
+      <a href="impact-lab.html">Engineering lab</a>
+    </footer>
+    <template id="card"
+      ><article>
+        <h2></h2>
+        <svg viewBox="0 0 250 158" aria-hidden="true">
+          <line class="guide" x1="54" y1="80" x2="196" y2="80" />
+          <circle class="track" cx="125" cy="80" r="57" />
+          <text x="56" y="84" text-anchor="end">0</text>
+          <text x="194" y="85">∞</text>
+          <line class="radius" x1="125" y1="80" />
+          <circle class="marker" r="5.5" />
+        </svg>
+        <dl>
+          <div>
+            <dt>Chart</dt>
+            <dd class="chart"></dd>
+          </div>
+          <div>
+            <dt>Coordinate</dt>
+            <dd class="value"></dd>
+          </div>
+          <div>
+            <dt>Tangent</dt>
+            <dd class="tangent"></dd>
+          </div>
+        </dl></article
+    ></template>
+    <script id="data" type="application/json">
+      __PATHS__
+    </script>
+    <script>
+      "use strict";
+      const el = (id) => document.getElementById(id);
+      const data = JSON.parse(el("data").textContent);
+      const cards = ["plus", "minus"].map((name) => {
+        const node = el("card").content.firstElementChild.cloneNode(true);
+        node.classList.add(name);
+        el("channels").append(node);
+        return node;
+      });
+      const models = {
+        pole: {
+          label: "t",
+          description:
+            "The plus channel sees t + 1 and the minus channel t − 1 in the denominator. The tangent differentiates with respect to t.",
+          names: ["+ channel", "− channel"],
+          presets: [
+            ["First pole", -1],
+            ["Between poles", 0],
+            ["Second pole", 1],
+          ],
+          start: 1,
+        },
+        glass: {
+          label: "tan θ",
+          description:
+            "At a bare air–glass interface (index 1.5), track [0.1 : r] for each reflected electric-field amplitude. The reference amplitude 0.1 sets the chart scale. The tangent differentiates with respect to tan θ.",
+          names: ["+ channel · s light", "− channel · p light"],
+          presets: [
+            ["Normal incidence", 0],
+            ["Brewster angle", 1.5],
+            ["Steep incidence", 3],
+          ],
+          start: 1.5,
+        },
+      };
+      function fmt(x) {
+        return Number(x.toPrecision(6)).toString();
+      }
+      function draw() {
+        const key = el("model").value,
+          model = models[key],
+          set = data[key],
+          i = Number(el("position").value);
+        const steps = set[el("direction").value],
+          t = set.parameters[i];
+        el("parameter").textContent =
+          fmt(t) +
+          (key === "glass"
+            ? "  (" + fmt((Math.atan(t) * 180) / Math.PI) + "°)"
+            : "");
+        el("position").setAttribute(
+          "aria-valuetext",
+          model.label + " = " + el("parameter").textContent,
+        );
+        steps[i].forEach(([chart, z, dz], j) => {
+          const card = cards[j],
+            rev = chart === "x",
+            den = 1 + z * z;
+          const cx = 125 + (57 * (rev ? 1 - z * z : z * z - 1)) / den,
+            cy = 80 - (57 * 2 * z) / den;
+          card.querySelector("h2").textContent = model.names[j];
+          card.querySelector(".chart").textContent = rev ? "y/x" : "x/y";
+          card.querySelector(".value").textContent = fmt(z);
+          card.querySelector(".tangent").textContent = fmt(dz);
+          const line = card.querySelector(".radius"),
+            dot = card.querySelector(".marker");
+          line.setAttribute("x2", cx);
+          line.setAttribute("y2", cy);
+          dot.setAttribute("cx", cx);
+          dot.setAttribute("cy", cy);
+        });
+        const indices = Array.from(steps.keys());
+        if (el("direction").value === "reverse") indices.reverse();
+        const events = [];
+        for (let k = 1; k < indices.length; k++) {
+          const a = indices[k - 1],
+            b = indices[k];
+          for (let j = 0; j < 2; j++)
+            if (steps[a][j][0] !== steps[b][j][0])
+              events.push((j ? "−" : "+") + " at " + fmt(set.parameters[b]));
+        }
+        el("events").textContent =
+          "Chart changes along this trace: " +
+          (events.join(" · ") || "none") +
+          ".";
+      }
+      function selectModel() {
+        const key = el("model").value,
+          m = models[key],
+          set = data[key];
+        el("description").textContent = m.description;
+        el("slider-label").textContent = m.label;
+        el("position").max = set.parameters.length - 1;
+        el("position").value = set.parameters.indexOf(m.start);
+        el("presets").replaceChildren();
+        for (const [label, value] of m.presets) {
+          const button = document.createElement("button");
+          button.textContent = label;
+          button.onclick = () => {
+            el("position").value = set.parameters.indexOf(value);
+            draw();
+          };
+          el("presets").append(button);
+        }
+        draw();
+      }
+      el("model").onchange = selectModel;
+      el("position").oninput = draw;
+      el("direction").onchange = draw;
+      selectModel();
+    </script>
+  </body>
+</html>

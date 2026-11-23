@@ -4,6 +4,8 @@
 
 **[Start with the winding-root and damping lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/polar-motion.html)** · [Open the geometry lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/lab.html) · [Open the engineering lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/impact-lab.html)
 
+**[Through the pole](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/projective-paths.html)** shows simultaneous chart and tangent readouts for a two-pole path and reflection at the Brewster angle. [Offline lab](projective-paths.html) · [Python and model guide](../unified-geometry.md#follow-a-path-through-a-pole).
+
 **[Draw a field loop](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/field-loops.html)** and predict which root returns around the two branch points of `F(z) = z − j`. The [standalone field lab](field-loops.html) works offline.
 
 The [Python guide](../polar-motion.md) reproduces the winding and damping experiments. For offline use, download the [standalone file](polar-motion.html).
