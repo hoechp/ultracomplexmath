@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Winding &amp; motion · Ultracomplex Math</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: #f8f6ee;
+        --ink: #182821;
+        --green: #006d64;
+        --rust: #a23e28;
+        --muted: #41564b;
+        --line: #c9cec2;
+        font-family: "DM Sans", system-ui, sans-serif;
+        color: var(--ink);
+        background: var(--paper);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        max-width: 960px;
+        margin: auto;
+        padding: 24px clamp(16px, 4vw, 48px) 42px;
+      }
+      header,
+      nav,
+      .line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      header {
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 16px;
+        font-size: 0.87rem;
+      }
+      a {
+        color: var(--green);
+      }
+      h1,
+      h2 {
+        font-family: Georgia, serif;
+        font-weight: 400;
+        line-height: 1.08;
+      }
+      h1 {
+        font-size: clamp(2.3rem, 6vw, 4.5rem);
+        margin: 0.5em 0 0.2em;
+        letter-spacing: -0.045em;
+      }
+      p {
+        max-width: 68ch;
+        line-height: 1.5;
+      }
+      nav {
+        justify-content: flex-start;
+        gap: 8px;
+        margin: 24px 0;
+      }
+      button,
+      select {
+        font: inherit;
+        color: inherit;
+        background: transparent;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+      button[aria-pressed="true"] {
+        background: var(--ink);
+        color: white;
+      }
+      button:focus-visible,
+      select:focus-visible,
+      input:focus-visible {
+        outline: 3px solid #937111;
+        outline-offset: 3px;
+      }
+      h2 {
+        font-size: 1.65rem;
+        margin: 0;
+      }
+      figure {
+        margin: 16px 0;
+        background: #fffefa;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        padding: 12px;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: clamp(200px, 30vw, 285px);
+      }
+      figcaption {
+        color: var(--muted);
+        font-size: 0.85rem;
+        padding: 8px;
+      }
+      .controls {
+        display: grid;
+        grid-template-columns: auto minmax(100px, 1fr) auto;
+        align-items: center;
+        gap: 12px;
+      }
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--green);
+      }
+      output,
+      .numbers {
+        font-variant-numeric: tabular-nums;
+      }
+      .numbers {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+        margin: 16px 0;
+      }
+      .numbers div {
+        border-top: 1px solid var(--line);
+        padding-top: 8px;
+      }
+      .numbers dt {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .numbers dd {
+        margin: 3px 0;
+        font-weight: 650;
+      }
+      footer {
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        font-size: 0.9rem;
+        margin-top: 30px;
+      }
+      small {
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <strong>Ultracomplex Math</strong
+        ><a href="https://github.com/hoechp/ultracomplexmath">Source on GitHub</a>
+      </header>
+      <h1>Winding &amp; motion</h1>
+      <nav aria-label="Experiment">
+        <button id="showRoot" aria-pressed="true">Winding roots</button
+        ><button id="showMotion" aria-pressed="false">Critical damping</button>
+      </nav>
+      <section id="rootPanel">
+        <div class="line">
+          <h2>A square root on a loop</h2>
+          <label
+            >Moving channels
+            <select id="path">
+              <option>Plus only</option>
+              <option>Minus only</option>
+              <option>Both together</option>
+              <option>Opposite directions</option>
+            </select></label
+          >
+        </div>
+        <p>
+          Follow the same square root as its input goes around the origin. At one turn the input is
+          back at 1. Where did the root go?
+        </p>
+        <figure>
+          <canvas
+            id="circles"
+            role="img"
+            aria-label="Two complex planes showing the rotating input and its lifted square root"
+          ></canvas>
+          <figcaption>
+            Each disk is one complex channel. Green dots mark the input. Rust diamonds on the inner
+            track mark its continuously followed square root.
+          </figcaption>
+        </figure>
+        <div class="controls">
+          <label for="turn">Turns</label
+          ><input id="turn" type="range" min="0" max="192" value="0" /><output
+            id="turnLabel"
+            for="turn"
+          ></output>
+        </div>
+        <button id="oneTurn">Advance one turn</button>
+        <dl class="numbers">
+          <div>
+            <dt>Lifted root</dt>
+            <dd id="rootValue"></dd>
+          </div>
+          <div>
+            <dt>Plus phase</dt>
+            <dd id="plusPhase"></dd>
+          </div>
+          <div>
+            <dt>Minus phase</dt>
+            <dd id="minusPhase"></dd>
+          </div>
+          <div>
+            <dt>Common angle θ</dt>
+            <dd id="theta"></dd>
+          </div>
+          <div>
+            <dt>Relative angle φ</dt>
+            <dd id="phi"></dd>
+          </div>
+        </dl>
+      </section>
+      <section id="motionPanel" hidden>
+        <div class="line">
+          <h2>Through critical damping</h2>
+          <label
+            >Physical model
+            <select id="model">
+              <option>Mass &amp; spring</option>
+              <option>Series RLC</option>
+            </select></label
+          >
+        </div>
+        <p id="equation"></p>
+        <figure>
+          <canvas
+            id="curves"
+            role="img"
+            aria-label="Time traces of the physical response and its damping sensitivity"
+          ></canvas>
+          <figcaption>
+            Green solid line shows response. Rust dashed line shows its derivative with respect to
+            the damping ratio ζ. Time runs from 0 to 8 seconds.
+          </figcaption>
+        </figure>
+        <div class="controls">
+          <label for="damping">Damping ratio ζ</label
+          ><input id="damping" type="range" min="0" max="40" value="20" /><output
+            id="zetaLabel"
+            for="damping"
+          ></output>
+        </div>
+        <dl class="numbers">
+          <div>
+            <dt>Motion</dt>
+            <dd id="regime"></dd>
+          </div>
+          <div>
+            <dt>Mode λ₊ (s⁻¹)</dt>
+            <dd id="lambdaP"></dd>
+          </div>
+          <div>
+            <dt>Mode λ₋ (s⁻¹)</dt>
+            <dd id="lambdaM"></dd>
+          </div>
+        </dl>
+      </section>
+      <footer>
+        More experiments &nbsp; <a href="lab.html">Geometry lab</a> ·
+        <a href="impact-lab.html">Engineering lab</a>
+      </footer>
+    </main>
+    <script id="samples" type="application/json">
+      __LAB_DATA__
+    </script>
+    <script>
+      "use strict";
+      const data = JSON.parse(document.getElementById("samples").textContent),
+        el = (id) => document.getElementById(id);
+      const green = "#006d64",
+        rust = "#a23e28",
+        grid = "#c5cbbb",
+        ink = "#30483e";
+      function num(x) {
+        return Math.abs(x) < 0.0005 ? "0" : String(Number(x.toFixed(3)));
+      }
+      function expression(values, units) {
+        let s = "";
+        values.forEach((v, i) => {
+          if (num(v) === "0") return;
+          const unit = units[i],
+            n = num(Math.abs(v));
+          s +=
+            (s ? (v < 0 ? " − " : " + ") : v < 0 ? "−" : "") + (unit && n === "1" ? "" : n) + unit;
+        });
+        return s || "0";
+      }
+      function context(id) {
+        const c = el(id),
+          w = c.clientWidth,
+          h = c.clientHeight,
+          d = devicePixelRatio || 1;
+        c.width = Math.round(w * d);
+        c.height = Math.round(h * d);
+        const g = c.getContext("2d");
+        g.scale(d, d);
+        g.font = "14px system-ui";
+        g.textAlign = "center";
+        g.fillStyle = ink;
+        return { g, w, h };
+      }
+      function line(g, x, y, xx, yy) {
+        g.beginPath();
+        g.moveTo(x, y);
+        g.lineTo(xx, yy);
+        g.stroke();
+      }
+      function roots() {
+        const index = +el("turn").value,
+          [p, m, ...v] = data.paths[el("path").selectedIndex][index];
+        el("turnLabel").textContent = num(index / 96);
+        el("oneTurn").textContent = index === 192 ? "Return to start" : "Advance one turn";
+        el("theta").textContent = num((p + m) / (2 * Math.PI)) + "π";
+        el("phi").textContent = num((p - m) / (2 * Math.PI)) + "π";
+        el("rootValue").textContent = expression(v, ["", "j", "i", "ij"]);
+        el("plusPhase").textContent = num(p / Math.PI) + "π";
+        el("minusPhase").textContent = num(m / Math.PI) + "π";
+        const { g, w, h } = context("circles"),
+          r = Math.min(w * 0.18, h * 0.33),
+          y = h * 0.48;
+        [p, m].forEach((phase, k) => {
+          const x = w * (k ? 0.75 : 0.25);
+          g.strokeStyle = grid;
+          g.lineWidth = 1;
+          line(g, x - r - 8, y, x + r + 8, y);
+          line(g, x, y - r - 8, x, y + r + 8);
+          g.beginPath();
+          g.arc(x, y, r, 0, 2 * Math.PI);
+          g.stroke();
+          g.fillText(k ? "− channel" : "+ channel", x, h - 12);
+          const tip = (angle, rad) => [x + rad * Math.cos(angle), y - rad * Math.sin(angle)];
+          for (const [angle, radius, color] of [
+            [phase, r, green],
+            [phase / 2, r * 0.82, rust],
+          ]) {
+            g.strokeStyle = color;
+            g.lineWidth = 2.5;
+            g.beginPath();
+            g.arc(x, y, radius, 0, -angle, angle > 0);
+            g.stroke();
+          }
+          const [a, b] = tip(phase, r),
+            [c, d] = tip(phase / 2, r * 0.82);
+          g.strokeStyle = green;
+          line(g, x, y, a, b);
+          g.fillStyle = green;
+          g.beginPath();
+          g.arc(a, b, 7, 0, Math.PI * 2);
+          g.fill();
+          g.fillStyle = rust;
+          g.beginPath();
+          g.moveTo(c, d - 4);
+          g.lineTo(c + 4, d);
+          g.lineTo(c, d + 4);
+          g.lineTo(c - 4, d);
+          g.closePath();
+          g.fill();
+          g.fillStyle = ink;
+        });
+      }
+      function motion() {
+        const index = +el("damping").value,
+          z = index / 20,
+          s = data.responses[index],
+          electric = el("model").selectedIndex === 1;
+        el("zetaLabel").textContent = z.toFixed(2);
+        el("regime").textContent =
+          index === 20
+            ? "Critical · dual"
+            : index < 20
+              ? "Underdamped · circular"
+              : "Overdamped · hyperbolic";
+        el("lambdaP").textContent = expression(s.modes[0], ["", "i"]);
+        el("lambdaM").textContent = expression(s.modes[1], ["", "i"]);
+        el("equation").textContent = electric
+          ? "Series RLC discharge with L = 1 H, C = 1 F and R = " +
+            num(2 * z) +
+            " Ω. The initial charge is 1 C, the initial current is zero."
+          : "Free motion with mass 1 kg, spring stiffness 1 N/m and damping " +
+            num(2 * z) +
+            " N·s/m. The initial displacement is 1 m, the initial velocity is zero.";
+        const { g, w, h } = context("curves"),
+          l = 42,
+          r = w - 12,
+          top = 16,
+          b = h - 28;
+        const vals = s.values.flat(),
+          lo = Math.min(-0.2, ...vals),
+          hi = Math.max(1, ...vals),
+          Y = (v) => b - ((v - lo) / (hi - lo)) * (b - top),
+          X = (t) => l + ((r - l) * t) / 8;
+        g.strokeStyle = grid;
+        g.lineWidth = 1;
+        g.fillStyle = ink;
+        for (const v of [0, 1, Math.ceil(lo)]) {
+          line(g, l, Y(v), r, Y(v));
+          g.fillText(num(v), l - 16, Y(v) + 4);
+        }
+        for (const t of [0, 2, 4, 6, 8]) {
+          line(g, X(t), top, X(t), b);
+          g.fillText(t + " s", X(t), h - 6);
+        }
+        [green, rust].forEach((color, n) => {
+          g.strokeStyle = color;
+          g.lineWidth = 2.1;
+          g.setLineDash(n ? [6, 4] : []);
+          g.beginPath();
+          s.values.forEach((pair, k) => {
+            const x = X(k / 12),
+              y = Y(pair[n]);
+            if (k) g.lineTo(x, y);
+            else g.moveTo(x, y);
+          });
+          g.stroke();
+        });
+      }
+      function show(root) {
+        el("rootPanel").hidden = !root;
+        el("motionPanel").hidden = root;
+        el("showRoot").setAttribute("aria-pressed", root);
+        el("showMotion").setAttribute("aria-pressed", !root);
+        root ? roots() : motion();
+      }
+      el("showRoot").onclick = () => show(true);
+      el("showMotion").onclick = () => show(false);
+      el("oneTurn").onclick = () => {
+        const t = el("turn");
+        t.value = +t.value >= 192 ? 0 : Math.min(192, +t.value + 96);
+        roots();
+      };
+      el("path").onchange = roots;
+      el("turn").oninput = roots;
+      el("model").onchange = motion;
+      el("damping").oninput = motion;
+      window.addEventListener("resize", () => (el("rootPanel").hidden ? motion() : roots()));
+      roots();
+    </script>
+  </body>
+</html>

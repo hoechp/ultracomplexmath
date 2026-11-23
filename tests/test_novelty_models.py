@@ -17,6 +17,7 @@ from examples.novelty_models import (
     first_power_rank,
     interval_band,
     interval_band_rank,
+    second_power_band_rank,
     toeplitz_block,
     toeplitz_shape,
 )
@@ -77,6 +78,25 @@ def test_published_annihilator_and_higher_power_counterexample():
     assert weighted == [[2, 1], [1, 2]]
     assert rational_rank(weighted) == 2
     assert interval_band_rank(2, 2, 2, 1) == 1
+
+
+def test_weighted_boundary_rank_for_all_small_corner_windows():
+    for degree in range(5):
+        for rows in range(1, 7):
+            for cols in range(1, 7):
+                for offset in range(2 * degree + 1):
+                    if 0 <= cols - rows + offset <= 2 * degree:
+                        # The convolution of two rectangular pulses is triangular.
+                        matrix = [
+                            [max(0, degree + 1 - abs(offset + j - i - degree)) for j in range(cols)]
+                            for i in range(rows)
+                        ]
+                        assert second_power_band_rank(rows, cols, degree, offset) == rational_rank(
+                            matrix
+                        )
+    assert second_power_band_rank(3, 3, 3, 1) == 2
+    assert second_power_band_rank(2, 2, 1, 1) == 2
+    assert second_power_band_rank(10**50, 10**50, 10**30, 0) == 10**50
 
 
 def test_rank_zero_boundaries_and_large_parameters_without_matrices():

@@ -182,7 +182,7 @@ This product description retains the geometry; it identifies its topology precis
 
 The polar form does not cover zero divisors. If one body component vanishes, its phase is undefined; if both vanish, the value lies entirely in the square-zero ideal. These strata need their own charts and invariants. Even with rational input, logarithmic and angular coordinates generally leave rational coefficients.
 
-**Current status:** scalar exponentials, logarithms and Euler-component accessors exist. The formula is derived and its reconstruction, multiplication law and branch lattice are checked on 72 moderate inputs. A structured polar object, branch continuation, singular-stratum classification and robust conditioning diagnostics are missing. Existing inverse/logarithm cancellation near tiny components is still an open correctness issue; the bounded check does not remove it.
+**Current status:** scalar exponentials, logarithms and Euler-component accessors exist. The formula is derived and its reconstruction, multiplication law and branch lattice are checked on 72 moderate inputs. [Version 0.6.0](../polar-motion.md) adds unit coordinates, independent phase continuation and root families for all nine pairs of channel strata. Polar conditioning near null channels and general logarithm accuracy remain topics for further study.
 
 ## The projective completion is tangent geometry on a quadric
 

@@ -14,7 +14,7 @@ The connection is **independent nilpotent directions**. An operator's critical g
 
 ## 1. A small part of a real open problem
 
-[Noferini, arXiv:2512.08399v5](https://arxiv.org/abs/2512.08399v5), Problem 4.19, requests a characterization of rank losses in structured Toeplitz blocks arising in matrix-function derivatives. We derive a complete formula **for power ℓ=1**, including rectangular blocks and all admissible sizes. Higher powers remain unresolved here.
+[Noferini, arXiv:2512.08399v5](https://arxiv.org/abs/2512.08399v5), Problem 4.19, requests a characterization of rank losses in structured Toeplitz blocks arising in matrix-function derivatives. We derive a complete formula **for power ℓ=1**, including rectangular blocks and all admissible sizes. The [boundary note](boundary-rank.md) also gives a first-power proof by divisibility and a second-power classification over characteristic zero.
 
 The useful change of representation is simple: taking differences of a column containing an interval of ones leaves only its two endpoints. Columns become graph edges. Linear dependencies become cycles. For these particular bands, cycles can then be counted by integer residues. Summing the resulting block defects yields only squares or products of consecutive integers.
 
@@ -32,13 +32,7 @@ assert first_power_rank(n, n, n - 1) == n
 
 The large example illustrates the formula's representation advantage; that special family's rank is not itself claimed novel. More generally, rank tells us how many independent perturbations a matrix function can see to first order. This could support symbolic sensitivity classification at singular operators. No engineering speed benchmark or new physical effect has been established.
 
-**Next research target:** ℓ=2. Since
-
-\[
-(1-z)^\ell(1+z+\cdots+z^d)^\ell=(1-z^{d+1})^\ell,
-\]
-
-higher differences turn the untruncated convolution kernel into a sparse binomial stencil. A promising next step is to account for the finite-boundary terms and characterize the remaining dependencies. The identity is established algebra; a closed higher-power rank classification has not been derived here. A checked counterexample already prevents silently replacing weighted blocks by their supports.
+**Second power.** The two tails of a product polynomial have matching zeroth and first moments in all residue classes. This determines each weighted block rank using at most four intervals. The [research note](boundary-rank.md) gives the proof, the characteristic-zero assumption and worked examples. Powers three and above remain open here.
 
 ## 2. Critical dynamics and sensitivity collapse to a cubic
 
@@ -104,14 +98,14 @@ This familiar conjugate identity follows from j²=1 and epsilon²=0. It avoids r
 
 For f(x)=1/x, evaluate x=1+ih+ijh+epsilon. The quantities −[j]f(x)/h² and −[epsilon j]f(x)/h² approach f''(1)=2 and f'''(1)=−6. The test oracle is the exact rational result at the **actual floating-point input values**, so finite-step truncation and implementation error are distinguished.
 
-| h | Existing inverse: second | Prototype: second | Existing inverse: third | Prototype: third |
+| h | 0.5.0 inverse: second | Prototype: second | 0.5.0 inverse: third | Prototype: third |
 | --- | --- | --- | --- | --- |
 | 10^-8 | 2.22044604925 | 1.999999999999999 | −6.66133814775 | −5.999999999999995 |
 | 10^-10 | 0 | 2 | 0 | −6 |
 | 10^-100 | 0 | 2 | 0 | −6 |
 | 10^-140 | 0 | 2 | 0 | −6 |
 
-These are measured probe results, not guarantees for all reciprocal inputs. Additional exact-oracle tests vary every component and use scales 10^-150, 1 and 10^150. The scoped prototype is in `examples`, and the shipped inverse remains unchanged. Near-zero-divisor behavior, intermediate overflow/underflow and complementary evaluation charts need a broader accuracy contract before a core replacement.
+The table records the historical 0.5.0 comparison. Version 0.6.0 computes non-real reciprocals by capturing the binary input fractions, evaluating the reciprocal exactly and rounding the eight coefficients. The [current verification report](novelty-verification.json) records both the shipped result and the guarded floating-point prototype.
 
 A useful negative result: `log` retains the tiny component for this same probe family. Its possible numerical gaps must be demonstrated separately; this inverse experiment is not evidence of a logarithm failure.
 
@@ -141,11 +135,11 @@ Reviewed on **2026-10-06**. This is a bounded public-source review, not a biblio
 
 | Primary source | Role and boundary |
 | --- | --- |
-| [Noferini, arXiv:2512.08399v5](https://arxiv.org/abs/2512.08399v5) | Precise target: Definition 4.10, Proposition 4.16, Examples 4.15/4.17/4.18, Problem 4.19. The note addresses only ℓ=1. |
+| [Noferini, arXiv:2512.08399v5](https://arxiv.org/abs/2512.08399v5) | Precise target: Definition 4.10, Proposition 4.16, Examples 4.15/4.17/4.18, Problem 4.19. The first note covers ℓ=1 and the boundary note also covers ℓ=2. |
 | [Evans, Greene, Van Veen, *Nullities for a class of 0–1 symmetric Toeplitz band matrices* (2021)](https://emis.de/ft/34371) | Graph-cycle prior art. Their symmetric zero-diagonal family differs from the rectangular bands with nonzero diagonal here. |
 | [Al-Mohy and Higham, matrix exponential Fréchet derivative (2009)](https://eprints.maths.manchester.ac.uk/1218/) | Established matrix-function sensitivity and polynomial/rational evaluation framework. |
 | [Luna-Elizarrarás et al., *Bicomplex Numbers and their Elementary Functions* (2012)](https://www.scielo.cl/pdf/cubo/v14n2/art04.pdf) | Established bicomplex algebra and inverse/function theory; no novelty claim for the conjugate identity. Their second imaginary unit differs from this project's split generator. |
 
 Search families included the exact paper identifier/title and Problem 4.19; “Toeplitz rank consecutive ones”; and “Toeplitz nullity diagonal all ones.” Coverage was uneven, and no complete catalog of older interval/network-matrix results was checked. No identical aggregate formula was found in the inspected material. That absence is weak evidence of novelty. An independent mathematical review and deeper prior-art search remain the next gates for a publication claim.
 
-The next implementation priorities are narrow: investigate the boundary equations for ℓ=2; extend reciprocal evaluation only after its excluded domains are analyzed; and use the cubic critical flow as a reference when building continuous operator functions. Reinterpreting algebra coefficients as spatial coordinates is unnecessary for all three investigations.
+The next research tasks are independent assessment of the two block formulas and the higher-moment intersection problem starting at ℓ=3. The numerical flows and reciprocal changes are documented in the [user guide](../polar-motion.md).

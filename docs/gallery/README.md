@@ -2,6 +2,10 @@
 
 [Documentation](../README.md) · [Engineering lab](impact.md) · [Waves and robotics](applications.md) · [Exact geometry](../unified-geometry.md) · [Research](../research/README.md)
 
+**[Start with the winding-root and damping lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/polar-motion.html)** · [Open the geometry lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/lab.html) · [Open the engineering lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/impact-lab.html)
+
+The [Python guide](../polar-motion.md) reproduces the winding and damping experiments. For offline use, download the [standalone file](polar-motion.html).
+
 Explore the union through exact constructions, three kinds of trigonometry, coupled motion and inverse problems. Each figure is computed from the library and accompanied by its formulas, interpretation and independent checks.
 
 | Start with | What to notice |

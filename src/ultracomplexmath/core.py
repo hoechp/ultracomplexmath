@@ -10,7 +10,10 @@ import cmath
 import math
 from collections.abc import Callable, Iterable, Iterator
 from dataclasses import dataclass, fields
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
+
+if TYPE_CHECKING:
+    from .polar import PolarForm, UltraRoots
 
 
 class NonInvertibleError(ZeroDivisionError):
@@ -240,12 +243,19 @@ class Ultra:
         return plus[0] != 0 and minus[0] != 0
 
     def inverse(self) -> Ultra:
-        result = []
-        for label, (z, w) in zip(("+", "-"), self.channels(), strict=True):
-            if z == 0:
-                raise NonInvertibleError(f"Zero body in {label} channel; no multiplicative inverse")
-            result.append((_finite(1 / z), _finite(-(w / z) / z)))
-        return Ultra.from_channels(result[0], result[1])
+        """Reciprocal, preserving mixed coefficients through channel cancellation."""
+        if (self.real, self.i) in ((self.j, self.ij), (-self.j, -self.ij)):
+            raise NonInvertibleError("A zero body channel has no multiplicative inverse")
+        if any(self.coefficients[1:]):
+            # Mixed answers can be hundreds of orders below either channel.
+            # Exact evaluation of the represented floats rounds each output once.
+            from .exact import ExactUltra
+
+            try:
+                return ExactUltra.from_approximate(self).inverse().approximate()
+            except OverflowError as error:
+                raise NonFiniteError("Reciprocal coefficient exceeds binary64") from error
+        return Ultra(1 / self.real)
 
     def __truediv__(self, other: Scalar) -> Ultra:
         try:
@@ -254,6 +264,12 @@ class Ultra:
             # Let compatible containers (e.g. UltraField) implement reflected
             # division, just as addition and multiplication already do.
             return NotImplemented
+        if self == ONE:
+            return value.inverse()
+        if not any(value.coefficients[1:]):
+            if not value.real:
+                raise NonInvertibleError("Divisor is zero")
+            return Ultra(*(x / value.real for x in self))
         # Divide channels directly to avoid forming an overflowing reciprocal.
         result = []
         for (z, w), (v, t) in zip(self.channels(), value.channels(), strict=True):
@@ -422,11 +438,41 @@ class Ultra:
         """Principal channel roots; reject nonzero nilpotent tangents at zero."""
         return self._lift("sqrt", cmath.sqrt, lambda z: 0.5 / cmath.sqrt(z))
 
+    def polar(self, *, previous: PolarForm | None = None) -> PolarForm:
+        """Decompose a unit; optionally continue both phases from the previous sample."""
+        from .polar import PolarForm
+
+        return PolarForm.from_value(self, previous=previous)
+
+    def roots(self, degree: int = 2) -> UltraRoots:
+        """Describe all roots, including empty and free tangent families."""
+        from .polar import UltraRoots
+
+        return UltraRoots(self, degree)
+
+    def _trig(self, cosine: bool) -> Ultra:
+        # sin(a+j*b) = sin(a)cos(b) + j*cos(a)sin(b), and likewise for cos.
+        # Keep the original channel path for large split angles (argument
+        # reduction) or imaginary parts close to the hyperbolic overflow range.
+        a, b = complex(self.real, self.i), complex(self.j, self.ij)
+        if max(abs(b.real), abs(b.imag)) > 0.5 or abs(a.imag) > 700:
+            if cosine:
+                return self._lift("cos", cmath.cos, lambda z: -cmath.sin(z))
+            return self._lift("sin", cmath.sin, cmath.cos)
+        sa, ca, sb, cb = cmath.sin(a), cmath.cos(a), cmath.sin(b), cmath.cos(b)
+        s, sj = sa * cb, ca * sb
+        c, cj = ca * cb, -sa * sb
+        sin_body = Ultra(s.real, sj.real, s.imag, sj.imag)
+        cos_body = Ultra(c.real, cj.real, c.imag, cj.imag)
+        if cosine:
+            return cos_body.with_tangent(-sin_body * self.tangent)
+        return sin_body.with_tangent(cos_body * self.tangent)
+
     def sin(self) -> Ultra:
-        return self._lift("sin", cmath.sin, cmath.cos)
+        return self._trig(False)
 
     def cos(self) -> Ultra:
-        return self._lift("cos", cmath.cos, lambda z: -cmath.sin(z))
+        return self._trig(True)
 
     def tan(self) -> Ultra:
         return self._lift("tan", cmath.tan, lambda z: 1 + cmath.tan(z) ** 2)

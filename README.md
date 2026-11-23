@@ -8,6 +8,8 @@ $$\mathcal A_K=K[i,j,\varepsilon]/(i^2+1,\;j^2-1,\;\varepsilon^2),\qquad ij=ji,\
 
 Choose numerical real coefficients (`Ultra`) or exact rational coefficients (`ExactUltra`). The mixed directions `ij`, `eps*i`, `eps*j` and `eps*i*j` are first-class parts of the same number. The goal is a coherent mathematical toolbox that brings the strengths of all three algebras into shared computations.
 
+**[Follow a square root around a loop in your browser](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/polar-motion.html)** · [Polar coordinates, roots and dynamics in Python](docs/polar-motion.md)
+
 [Get started](docs/getting-started.md) · [Documentation](docs/README.md) · [Showcase](docs/gallery/README.md) · [Research agenda](docs/research/README.md)
 
 The [geometry inside the full union](docs/research/geometric-structure.md) explains its complete polar form, the shared structure of oscillators and optical systems, and its projective connection to a tangent quadric. It separates mathematical derivations from implemented APIs.
@@ -18,6 +20,7 @@ The [geometry inside the full union](docs/research/geometric-structure.md) expla
 
 | Explore | What comes together | Run from a checkout |
 | --- | --- | --- |
+| [Winding and critical damping](docs/polar-motion.md) | Follow a root from 1 to −j, then vary the damping of a spring or an RLC circuit | `python -m examples.polar_motion` |
 | [Engineering showcase](docs/gallery/impact.md) | Optical tolerances, impedance diagnostics and vibration settling, with independent references | `python -m examples.impact` |
 | [Formula compression](docs/formula-compression.md) | A complex solution and two sensitivities in one model expression; exact residual and cost audit | `python -m examples.impact --only formulas` |
 | [UltraField](docs/fields.md) | Values in (3+1) dimensions, slices, sensitivity and fields on curved surfaces | `python -m examples.fields --animate` |
@@ -30,7 +33,7 @@ The [geometry inside the full union](docs/research/geometric-structure.md) expla
 
 ![Coupled complex modes](docs/gallery/assets/coupled-modes.gif)
 
-The [offline interactive lab](docs/gallery/lab.html) explores motion and sensitivity. Download the HTML and open it locally; GitHub displays its source. Every numerical plot is reproducible, with model assumptions and independent checks in the showcase.
+The [geometry lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/lab.html) and [engineering lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/impact-lab.html) run in your browser. The [gallery](docs/gallery/README.md) also includes standalone HTML for offline use. Every numerical plot is reproducible, with model assumptions and independent checks in the showcase.
 
 The new [engineering lab](docs/gallery/impact-lab.html) adds four interactive tabs: optical thickness/angle tradeoffs, measurement-band information, damping through the critical point, and a formula-compression audit. Its [guide](docs/gallery/impact.md) states what the synthetic experiments establish and where the models stop. The strongest demonstrated simplification is carrying a solution and its derivatives in one composable expression; no runtime advantage is claimed.
 
@@ -83,7 +86,7 @@ Install plotting with `python -m pip install -e '.[plot]'`. Run `ultracomplex-gu
 | Functions and calculus | Numerical elementary/inverse functions, logarithm branches, first variations, intensity and phase derivatives | Stable small-component evaluation is complete for neither all functions nor all scales; general higher-derivative API is open |
 | Exact mathematics | Fraction formulas/JSON, matrices, complete linear solution families, polynomial arithmetic and Hermite interpolation | General rational powers, symbolic algebraic numbers and modular hypercomplex coefficients remain open |
 | Geometry | Intrinsic planar metrics/sectors, exact Cayley isometries, Euclidean predicates and intersections | General 3D poses, constraint systems and conic intersections need further work |
-| Transformations | Noncommuting `ModeOperator`, Möbius maps, unimodular projective points and mixed charts | Continuous matrix functions and automatic chart continuation are research priorities |
+| Transformations | Noncommuting `ModeOperator`, Möbius maps, unimodular projective points and mixed charts | Constant numerical generator flows include first variations. Automatic projective chart continuation remains open |
 | Space and time | `LocatedUltra`, rule-defined `UltraField`, 0–n spatial axes, separate time, slices, grids and optional NumPy/xarray adapters | Real coordinates are independent of the scalar algebra; numerical fields and explicit coordinate maps |
 | Surface fields | Torus and Möbius strip, induced metric, tangent gradients, Laplace–Beltrami, area quadrature and seam diagnostics | Static parametric surfaces; no general atlas, boundary solver or automatic physical transport |
 | Applications | Tested optical stacks, coating-impedance fits, critical damping, waves, robotics, interference and root basins | Specified models with independent references; no real-device calibration or general engineering solver |
@@ -92,7 +95,7 @@ The ambition is broad; operation domains remain explicit. The scalar algebra is 
 
 ## Where next?
 
-The strongest next projects are **complete polar and singular geometry**, **continuous circular–hyperbolic–parabolic dynamics**, **exact geometric constraints** and **optical/projective geometry**. The [research review](docs/research/README.md) compares all seven nonempty combinations of the three base algebras, names missing functionality and gives acceptance criteria. Reliable derivatives remain part of this toolkit, alongside the geometries themselves.
+Version 0.6.0 ships unit polar decomposition, lifted root paths, singular root families and continuous constant-generator dynamics. Next projects include exact geometric constraints, projective chart continuation and optical geometry. The [rank note](docs/research/boundary-rank.md) derives first- and second-power block formulas. The [research review](docs/research/README.md) compares all seven nonempty combinations of the three base algebras, names missing functionality and gives acceptance criteria. Reliable derivatives remain part of this toolkit, alongside the geometries themselves.
 
 Development and verification: [CONTRIBUTING.md](CONTRIBUTING.md). API orientation: [docs/api.md](docs/api.md). Release changes: [CHANGELOG.md](CHANGELOG.md).
 

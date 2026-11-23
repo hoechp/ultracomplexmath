@@ -2,7 +2,7 @@
 
 [Agenda](README.md) · [Geometric structure](geometric-structure.md) · [Operations](operations.md) · [Applications](applications.md)
 
-Reviewed against 0.3.0 and updated for 0.5.0. **P0** protects numerical correctness; **P1** continues exact coefficients and geometry; **P2** broadens application coverage. Proposed APIs below are not imports.
+Version 0.6.0 supplies [unit polar coordinates, root families, sampled windings, mixed reciprocal and trigonometric repairs, and constant-generator flows](../polar-motion.md). The work packages below also cover their wider research domains. **P0** protects numerical correctness; **P1** continues exact coefficients and geometry; **P2** broadens application coverage. Proposed APIs below are not imports.
 
 Version 0.5.0 ships the [UltraField foundation](../fields.md): independent real space/time coordinates, located values, lazy numerical fields, slices, sampling, coordinate derivatives, torus/Möbius geometry, induced surface calculus and optional array adapters. These implement specific parts of G08/G12/G13/G18/G19; they do not complete a PDE solver, general geometric transport or independent higher parameter jets. See the [field consequences](fields.md) for verified identities and the next model-driven steps.
 
@@ -14,9 +14,9 @@ The [engineering showcase](../gallery/impact.md) now gives bounded baselines for
 
 The huge-integer exponent bug is fixed: `I**(2**53+1)==I`. Rational coefficients, exact matrices/polynomials and geometry are implemented. The renewed review found a different defect: channel reconstruction erased the `j` coefficient of `exp(1+i*h+ij*h)`. Version 0.4.0 uses component-preserving factors and scaled real exponentials, with tests down to h=`1e-100` and large compensated split exponents.
 
-The same accuracy risk remains in other operations, including channel-based logarithm and inverse. A dominant body can be accurate while a tiny mixed coefficient is wrong. The frontier probe reports this explicitly; a general bicomplex Hessian API would currently promise too much.
+The same accuracy risk remains in other operations, including general division and channel-based logarithms. A dominant body can be accurate while a tiny mixed coefficient is wrong. The frontier probe reports this explicitly; a general bicomplex Hessian API would currently promise too much.
 
-The [novelty investigations](novelty.md) now supply a guarded inverse prototype for G01 and an exact cubic critical-flow reference for G05/G19. The reciprocal tests demonstrate a specific inverse failure; the logarithm succeeds on that same family. Neither prototype is a general replacement for the core APIs. On the operator side, a [closed first-power rank derivation](first-power-rank.md) addresses a subproblem in current literature; deeper prior-art review and the higher-power boundary equations are the next research targets.
+The [novelty investigations](novelty.md) now supply a guarded inverse prototype for G01 and an exact cubic critical-flow reference for G05/G19. The 0.5.0 reciprocal tests exposed a specific inverse failure. It is fixed in 0.6.0. The logarithm succeeds on the same family. Neither prototype is a general replacement for the core APIs. On the operator side, a [closed first-power rank derivation](first-power-rank.md) addresses a subproblem in current literature; the [boundary note](boundary-rank.md) extends the block calculation to the second power. Specialist review and powers three and above remain open.
 
 ## Work packages
 
@@ -44,9 +44,9 @@ The [novelty investigations](novelty.md) now supply a guarded inverse prototype 
 
 ## Suggested sequence
 
-**Milestone A: trustworthy exact and polar geometry.** G01, the small rational-root portion of G02, G16 polar/stratum structure and G04 exact constraints. Deliver polar reconstruction with correct branch metadata and a closed-linkage showcase with exact residuals. Introduce G03 abstractions around concrete coefficient needs; use G06 helpers where they serve the geometry.
+**Milestone A: trustworthy exact and polar geometry.** G01, the small rational-root portion of G02, G16 polar/stratum structure and G04 exact constraints. Polar reconstruction and branch lifts shipped in 0.6.0. A closed-linkage showcase with exact residuals remains. Introduce G03 abstractions around concrete coefficient needs; use G06 helpers where they serve the geometry.
 
-**Milestone B: motion and charts.** G05 generalized functions with existing exact Cayley steps, plus G07 continuation. Show one oscillator and one optical cell across all three motion regimes. Include G17 tangent chart transitions and apply G19 whenever geometric and perturbation nilpotents meet.
+**Milestone B: motion and charts.** G05 generalized functions with existing exact Cayley steps, plus G07 continuation. The continuous oscillator and RLC experiment shipped in 0.6.0. The optical cell is the next application. Include G17 tangent chart transitions and apply G19 whenever geometric and perturbation nilpotents meet.
 
 **Milestone C: a full-union application.** G14's optical/transfer network with G17 Stokes/coherency observables and the relevant G10/G13 pieces. Connect phase, boosts, shears and projective observations. Compare transfer/scattering stability and solve an identifiable inverse problem.
 

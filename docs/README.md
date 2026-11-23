@@ -4,6 +4,7 @@ Ultracomplex Math combines complex, split-complex and dual numbers, including th
 
 | Your goal | Start here | Continue with |
 | --- | --- | --- |
+| Follow a square root around a loop | [Browser lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/polar-motion.html) | [Polar and motion APIs](polar-motion.md) |
 | See a practical payoff | [Engineering showcase](gallery/impact.md) | [Interactive lab](gallery/impact-lab.html), [models and verification](gallery/impact.md#reproduce-and-extend) |
 | Simplify a model and its derivatives | [Formula compression](formula-compression.md) | [Linear algebra APIs](api.md), [exact arithmetic](exact-arithmetic.md) |
 | Add independent space and time | [UltraField guide](fields.md) | [Field showcase](gallery/fields.md), [mathematical consequences](research/fields.md) |
@@ -14,7 +15,7 @@ Ultracomplex Math combines complex, split-complex and dual numbers, including th
 | See useful computations | [Visual showcase](gallery/README.md) | [Waves, robotics and interference](gallery/applications.md) |
 | Build the next capability | [Research overview](research/README.md) | [Applications](research/applications.md), [roadmap](research/roadmap.md) |
 | Reproduce new findings | [Research experiments](research/experiments.md) | [Sources and evidence](research/references.md) |
-| Assess possible novelty | [Three concrete investigations](research/novelty.md) | [First-power rank proof](research/first-power-rank.md), [exact verification](research/novelty-verification.json) |
+| Assess possible novelty | [Three concrete investigations](research/novelty.md) | [First- and second-power ranks](research/boundary-rank.md), [exact verification](research/novelty-verification.json) |
 | Extend the project | [Contributing](../CONTRIBUTING.md) | [Scope](scope.md), [compatibility](compatibility.md) |
 
 The user guides describe shipped APIs. The research section labels derived possibilities, experimental evidence and unimplemented proposals separately. Numerical, exact and physical-model limitations are stated where they matter.
