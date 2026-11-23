@@ -8,7 +8,7 @@ Version 0.5.0 ships the [UltraField foundation](../fields.md): independent real 
 
 The geometric follow-up adds G16–G19 and changes the suggested sequence: full polar structure, critical dynamics and projective geometry lead the applications. Existing derivative proposals remain useful parts of the toolkit.
 
-The [engineering showcase](../gallery/impact.md) now gives bounded baselines for G05/G14/G19: a two-polarization optical stack with tolerance prediction, an identifiable impedance fit with frequency-information analysis, and discrete critical damping with exact differentiated energy balance. Its [formula audit](../formula-compression.md) also makes G10 concrete: the current packed solve repeats the shared body solve rather than reusing a factorization. These examples do not complete continuous operator functions, general scattering networks or application validation against measured devices.
+The [engineering showcase](../gallery/impact.md) now gives bounded baselines for G05/G14/G19: a two-polarization optical stack with tolerance prediction, an identifiable impedance fit with frequency-information analysis, and discrete critical damping with exact differentiated energy balance. Its [formula audit](../formula-compression.md) also makes G10 concrete: the packed solve now reuses the shared LU and body solution. These examples do not complete continuous operator functions, general scattering networks or application validation against measured devices.
 
 ## Correctness before new promises
 
@@ -16,7 +16,7 @@ The huge-integer exponent bug is fixed: `I**(2**53+1)==I`. Rational coefficients
 
 The same accuracy risk remains in other operations, including general division and channel-based logarithms. A dominant body can be accurate while a tiny mixed coefficient is wrong. The frontier probe reports this explicitly; a general bicomplex Hessian API would currently promise too much.
 
-The [novelty investigations](novelty.md) now supply a guarded inverse prototype for G01 and an exact cubic critical-flow reference for G05/G19. The 0.5.0 reciprocal tests exposed a specific inverse failure. It is fixed in 0.6.0. The logarithm succeeds on the same family. Neither prototype is a general replacement for the core APIs. On the operator side, a [closed first-power rank derivation](first-power-rank.md) addresses a subproblem in current literature; the [boundary note](boundary-rank.md) extends the block calculation to the second power. Specialist review and powers three and above remain open.
+The [novelty investigations](novelty.md) now supply a guarded inverse prototype for G01 and an exact cubic critical-flow reference for G05/G19. The 0.5.0 reciprocal tests exposed a specific inverse failure. It is fixed in 0.6.0. The logarithm succeeds on the same family. Neither prototype is a general replacement for the core APIs. On the operator side, a [closed first-power rank derivation](first-power-rank.md) addresses a subproblem in current literature; the [boundary note](boundary-rank.md) extends the block calculation to the second power. The [higher-power proof](higher-power-rank.md) treats every positive power blockwise and classifies the cubic case. Aggregate exceptional-parameter conditions and specialist review remain open.
 
 ## Work packages
 

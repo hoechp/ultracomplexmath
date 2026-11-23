@@ -174,7 +174,7 @@ The trajectory remains an approximation. At step 0.05, the largest position/velo
 
 **Yes: it reduces handwritten model and derivative equations.** The [formula guide](../formula-compression.md) derives the packed solve, gives executable examples and compares it with the ordinary formulation. The fourth lab tab exposes finite-difference step selection and the actual internal solve count.
 
-The present `solve` performs four complex solves, including a duplicate body solve in this shared-body encoding. The honest outcome is **one composable model expression**, not fewer floating-point operations. Exact checks remove rounding in rational fixtures; floating calculations retain conditioning and cancellation limits.
+Here `solve` factors the common complex body matrix once, then solves one body and two tangent right-hand sides. Both sensitivities come from **one composable model expression**. Wall-clock performance is unmeasured. Exact checks remove rounding in rational fixtures; floating calculations retain conditioning and cancellation limits.
 
 ## Reproduce and extend
 
@@ -194,4 +194,4 @@ The full run writes four PNGs, `impact-lab.html`, and `assets/impact-report.json
 
 Implementation: [forward models](../../examples/impact_models.py), [renderer](../../examples/impact.py), [HTML template](../../examples/impact_lab.html), [independent tests](../../tests/test_impact_models.py). Plotting/fitting use optional NumPy and Matplotlib; the mathematical core remains dependency-free.
 
-The next useful extensions are conditioned scattering composition, reusable factorizations and richer noise/model checks, and continuous operator functions with adaptive stepping. These demos provide concrete baselines for that work in the [roadmap](../research/roadmap.md). External positions can also remain independent through `UltraField`; a spatially varying material parameter needs an explicitly chosen physical coupling law, not a reinterpretation of the scalar coefficients.
+The next useful extensions are conditioned scattering composition, richer noise and model checks, and continuous operator functions with adaptive stepping. These demos provide concrete baselines for that work in the [roadmap](../research/roadmap.md). External positions can also remain independent through `UltraField`; a spatially varying material parameter needs an explicitly chosen physical coupling law, not a reinterpretation of the scalar coefficients.

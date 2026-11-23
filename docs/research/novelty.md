@@ -1,12 +1,12 @@
 # Three concrete investigations beyond the demonstrations
 
-[Research agenda](README.md) · [Rank proof](first-power-rank.md) · [Prototype code](../../examples/novelty_models.py) · [Full report](novelty-verification.json)
+[Research agenda](README.md) · [First-power proof](first-power-rank.md) · [All positive powers](higher-power-rank.md) · [Prototype code](../../examples/novelty_models.py) · [Full report](novelty-verification.json)
 
-The strongest candidate is a **closed first-power rank classification for a subproblem explicitly left open in a recent paper**. Two smaller investigations produce an exact formula compression and a reproducible numerical improvement. All three have executable prototypes and independent checks. Only the first is a candidate for mathematical novelty, and its publication priority is unconfirmed.
+The strongest candidate is a **rank reduction for all positive powers of structured convolution blocks**, with a closed aggregate formula at the first power. Two smaller investigations produce an exact formula compression and a reproducible numerical improvement. All three have executable prototypes and independent checks. Only the first is a candidate for mathematical novelty, and its publication priority is unconfirmed.
 
 | Investigation | Concrete result | What is new here | Assessment |
 | --- | --- | --- | --- |
-| Nilpotent operator ranks | A residue formula for every first-power block, and total defect L² or L(L+1) | Complete derivation and implementation for ℓ=1 | Strongest research candidate; known graph machinery; specialist prior-art review still needed |
+| Nilpotent operator ranks | A moment rank test for every positive power, cubic block classification and total first-power defect L² or L(L+1) | Derivation and exact implementation for admissible rectangular windows | Strongest research candidate; known graph machinery; specialist prior-art review still needed |
 | Critical motion plus parameter variation | A cubic exponential and a one-term exact Cayley correction | A compact, rationally exact prototype using existing `ModeOperator` | Useful simplification of established matrix-function mathematics |
 | Tiny mixed reciprocal components | A guarded direct-basis evaluation retains second/third derivative information | Reproducible repair path for a documented accuracy gap | Numerical engineering, not a new algebraic identity |
 
@@ -32,7 +32,7 @@ assert first_power_rank(n, n, n - 1) == n
 
 The large example illustrates the formula's representation advantage; that special family's rank is not itself claimed novel. More generally, rank tells us how many independent perturbations a matrix function can see to first order. This could support symbolic sensitivity classification at singular operators. No engineering speed benchmark or new physical effect has been established.
 
-**Second power.** The two tails of a product polynomial have matching zeroth and first moments in all residue classes. This determines each weighted block rank using at most four intervals. The [research note](boundary-rank.md) gives the proof, the characteristic-zero assumption and worked examples. Powers three and above remain open here.
+**Second power.** The two tails of a product polynomial have matching zeroth and first moments in all residue classes. This determines each weighted block rank using at most four intervals. The [research note](boundary-rank.md) gives the proof, the characteristic-zero assumption and worked examples. The [higher-power note](higher-power-rank.md) extends the reduction to every positive power and gives an explicit cubic classification.
 
 ## 2. Critical dynamics and sensitivity collapse to a cubic
 

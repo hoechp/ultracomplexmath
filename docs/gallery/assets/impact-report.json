@@ -5,15 +5,15 @@
   "numpy": "2.5.3",
   "matplotlib": "3.11.2",
   "source_sha256": {
-    "examples/impact.py": "70d08d76a13903c5102a8d9cf59a1a40917bff214377c7842cec2bbf65ac35ab",
+    "examples/impact.py": "89dae46a1085976ac479e0a4693c01f40cfa782968bf28f8eb03efea82658454",
     "examples/impact_models.py": "f5fc3da09e384e6024841727306e40b6550bcc8a4914bc360535fb27f06cafb8",
-    "examples/impact_lab.html": "7eea4637d6000823a2477338a293ff5b641a4af987f148e3368a6ded21d6fecc",
+    "examples/impact_lab.html": "87ac45e65d6698b430bfa78f55669654ed22f3cba292e4962b98f461bc7cb054",
     "examples/gallery.py": "ab1cbe301220e3934f5f68cde725ea911ab075b0b8a5f08e79a83fddb48d33fc",
-    "src/ultracomplexmath/core.py": "c5910656cb02584a2442df3fe50d569a8e9a1e674930655ad48530d89d029351",
+    "src/ultracomplexmath/core.py": "794e14bbee079835b4eb77dc05d0f664eb63dfc73d498efcb4399dfdcbd132ba",
     "src/ultracomplexmath/exact.py": "deef42c26c3f1c2d4ff0d5cfb5d1dbff17bae2bcf9a41fe1f26c1e199b7b5069",
-    "src/ultracomplexmath/linalg.py": "4dd93ba3aa915d5f662d5ce618d0f442e59c81dd73f4e32ec756557f48674869",
+    "src/ultracomplexmath/linalg.py": "7c70faebf4892f792f06c0ae1b1668e8fa3081925e5db004f6f7d56f38bc8cc3",
     "src/ultracomplexmath/exact_linalg.py": "f59afaad615c9a3e920b13d5f0fd0b7c7cab97ecccfafe8d4211839f7630e3a7",
-    "src/ultracomplexmath/transformations.py": "5d0ede7eaf151eecf6fe975e82d1b7b798588141b8d348f55e559ebedc63c8f5"
+    "src/ultracomplexmath/transformations.py": "239f024a2b4eb800de684fbbee0e8dc7834aacc3fc6b3576afd2ead2e64e44c0"
   },
   "demos": {
     "optics": {
@@ -36,7 +36,7 @@
       "selected_mean_R": 0.011274289601791058,
       "selected_first_layer_scale": 1.25,
       "max_complex_reflection_error_vs_fresnel": 8.163159687020606e-16,
-      "max_energy_body_and_tangent_residual": 1.3808398868775384e-15,
+      "max_energy_body_and_tangent_residual": 1.3426759704060487e-15,
       "plus_5_percent_max_prediction_error_in_R": 0.00017936992949259484
     },
     "impedance": {
@@ -174,7 +174,8 @@
         3.1970101740715666e-14,
         3.087689747024756e-14
       ],
-      "current_internal_complex_solves": 4,
+      "complex_factorizations": 1,
+      "current_internal_complex_solves": 3,
       "ordinary_equations_with_shared_body": 3,
       "claim": "fewer handwritten derivative equations; no speedup claim"
     }

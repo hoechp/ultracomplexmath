@@ -1,5 +1,8 @@
+from unittest.mock import patch
+
 import pytest
 
+import ultracomplexmath.linalg as linalg
 from ultracomplexmath import EPS, ONE, I, J, SingularSystemError, Ultra, solve
 
 
@@ -16,6 +19,27 @@ def test_full_algebra_system_and_residual():
         assert actual.isclose(wanted)
     for row, value in zip(a, b, strict=True):
         assert sum((c * v for c, v in zip(row, x, strict=True)), Ultra()).isclose(value)
+
+
+@pytest.mark.parametrize(
+    "split_matrix,split_rhs,expected_counts",
+    [(False, False, (1, 3)), (False, True, (1, 4)), (True, True, (2, 4))],
+)
+def test_lu_reuse_with_row_swaps_and_multiple_rhs(split_matrix, split_rhs, expected_counts):
+    a = [[0, 0, 2 + EPS], [3, 1, EPS * J], [0, 4, 1 + J * int(split_matrix)]]
+    b = [1 + EPS, 2 + J * int(split_rhs), 3 + EPS * J]
+    with (
+        patch.object(linalg, "_factor_complex", wraps=linalg._factor_complex) as factor,
+        patch.object(
+            linalg._ComplexLU, "solve", autospec=True, side_effect=linalg._ComplexLU.solve
+        ) as substitutions,
+    ):
+        x = solve(a, b)
+    assert (factor.call_count, substitutions.call_count) == expected_counts
+    for row, expected in zip(a, b, strict=True):
+        assert sum(
+            (coefficient * value for coefficient, value in zip(row, x, strict=True)), Ultra()
+        ).isclose(expected)
 
 
 def test_every_entry_can_be_a_zero_divisor():

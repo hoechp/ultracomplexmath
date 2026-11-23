@@ -223,6 +223,8 @@ class UltraRoots:
     def representatives(self) -> Iterator[Ultra]:
         """One value per discrete sheet, setting all free tangents to zero."""
         p, m = self.sheet_counts
+        if not m:
+            return
         for i in range(p):
             for j in range(m):
                 yield self.at(i, j)

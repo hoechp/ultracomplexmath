@@ -18,6 +18,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from examples.moment_ranks import moment_band_rank, third_power_band_rank  # noqa: E402
 from examples.novelty_models import (  # noqa: E402
     QNULL,
     corrected_critical_cayley,
@@ -183,6 +184,91 @@ def rank_probe(full=False):
     }
 
 
+def higher_power_probe(full=False):
+    """Compare moment constraints with ordinary rational elimination on small matrices."""
+    powers = range(3, 7)
+    jordan, windows, forced, dense = {}, 0, 0, 0
+
+    def check(rows, columns, degree, power, offset, matrix):
+        rank = rational_rank(matrix)
+        assert moment_band_rank(rows, columns, degree, power, offset) == rank
+        if power == 3:
+            assert third_power_band_rank(rows, columns, degree, offset) == rank
+        return rank
+
+    for power in powers:
+        blocks = 0
+        for m in range(1, 11 if full else 5):
+            for n in range(m, 17 if full else 8):
+                for degree in range(1, (m + n - 2) // power + 1):
+                    total = 0
+                    for k in range(power * degree + 1, m + n):
+                        rows, columns, offset = toeplitz_shape(m, n, degree, power, k)
+                        total += check(
+                            rows,
+                            columns,
+                            degree,
+                            power,
+                            offset,
+                            toeplitz_block(m, n, degree, power, k),
+                        )
+                        blocks += 1
+                    if n <= (5 if full else 4):
+                        base = nilpotent_tensor_matrix(m, n, degree)
+                        matrix = base
+                        for _ in range(1, power):
+                            matrix = matrix_product(matrix, base)
+                        assert total == rational_rank(matrix)
+                        dense += 1
+        jordan[str(power)] = blocks
+
+        for degree in range(1, 6 if full else 3):
+            # Coefficients by inclusion-exclusion on bounded weak compositions,
+            # independently of the explicit convolution in toeplitz_block().
+            coeff = [
+                sum(
+                    (-1) ** j
+                    * math.comb(power, j)
+                    * math.comb(k - j * (degree + 1) + power - 1, power - 1)
+                    for j in range(k // (degree + 1) + 1)
+                )
+                for k in range(power * degree + 1)
+            ]
+            for rows, cols in product(range(1, 8 if full else 5), repeat=2):
+                for c in range(power * degree + 1):
+                    if not 0 <= cols - rows + c <= power * degree:
+                        continue
+                    matrix = [
+                        [coeff[k] if 0 <= (k := c + j - i) < len(coeff) else 0 for j in range(cols)]
+                        for i in range(rows)
+                    ]
+                    check(rows, cols, degree, power, c, matrix)
+                    windows += 1
+
+        # On this window all coefficients are samples of a degree-(power-1)
+        # polynomial. Consecutive finite differences give exact rank power.
+        for size in range(power + 1, power + (8 if full else 3)):
+            for offset in range(size - 1, size + (6 if full else 1)):
+                degree = offset + size - 1
+                matrix = [
+                    [math.comb(offset + j - i + power - 1, power - 1) for j in range(size)]
+                    for i in range(size)
+                ]
+                assert check(size, size, degree, power, offset, matrix) == power
+                forced += 1
+    return {
+        "powers": list(powers),
+        "jordan_blocks_by_power": jordan,
+        "arbitrary_corner_windows": windows,
+        "deliberately_deficient_windows": forced,
+        "independent_full_tensor_powers": dense,
+        "jordan_max_m_n": [10, 16] if full else [4, 7],
+        "corner_max_degree_size": [5, 7] if full else [2, 4],
+        "ground_field": "characteristic zero",
+        "publication_priority": "unconfirmed",
+    }
+
+
 def matrix_product(left, right):
     return [
         [
@@ -296,6 +382,8 @@ def reciprocal_probe():
 def report(full=False):
     files = (
         "examples/novelty_models.py",
+        "examples/moment_ranks.py",
+        "tests/test_moment_ranks.py",
         "tools/novelty_probe.py",
         "tests/test_novelty_models.py",
         "src/ultracomplexmath/core.py",
@@ -305,12 +393,14 @@ def report(full=False):
     return {
         "package_version": __version__,
         "source_review_date": "2026-10-06",
+        "higher_power_source_review_date": "2026-11-23",
         "paper_version": "Noferini, arXiv:2512.08399v5; Problem 4.19",
         "full": full,
         "source_sha256": {
             name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in files
         },
         "rank": rank_probe(full),
+        "higher_power_rank": higher_power_probe(full),
         "critical_jet": critical_probe(full),
         "reciprocal": reciprocal_probe(),
     }
@@ -327,7 +417,12 @@ def main():
     if arguments.output:
         arguments.output.parent.mkdir(parents=True, exist_ok=True)
         arguments.output.write_text(json.dumps(data, indent=2, allow_nan=False) + "\n")
-    print(json.dumps({key: data[key] for key in ("full", "rank", "critical_jet")}, indent=2))
+    print(
+        json.dumps(
+            {key: data[key] for key in ("full", "rank", "higher_power_rank", "critical_jet")},
+            indent=2,
+        )
+    )
     print("Reciprocal: exact finite-step references agree with all 10 prototype samples.")
 
 

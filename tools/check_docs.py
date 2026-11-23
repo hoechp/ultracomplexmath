@@ -16,6 +16,7 @@ GUIDES = (
     "docs/polar-motion.md",
     "docs/formula-compression.md",
     "docs/research/novelty.md",
+    "docs/research/higher-power-rank.md",
 )
 
 

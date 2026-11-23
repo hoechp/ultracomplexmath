@@ -1,13 +1,16 @@
 {
-  "package_version": "0.6.0",
+  "package_version": "0.6.1",
   "source_review_date": "2026-10-06",
+  "higher_power_source_review_date": "2026-11-23",
   "paper_version": "Noferini, arXiv:2512.08399v5; Problem 4.19",
   "full": true,
   "source_sha256": {
     "examples/novelty_models.py": "43fa90d1202e8b272e5801f3017b383a2f965955616cb348da50dfaa5619775e",
-    "tools/novelty_probe.py": "1518e280e9c0a684fa3ab779f655cddacc4ad002bc01be2735fc309f4270ca20",
+    "examples/moment_ranks.py": "871174ceb3dbb7f6a7ee1a7b6049dddb7d40e9eea2bf25b435e3a769ec729778",
+    "tests/test_moment_ranks.py": "b17c5d1f4ec0741ae97cf25453cb2dd884a6f62530d96ca2eb6825032292d429",
+    "tools/novelty_probe.py": "364a1f6d3b7881fcb32a28e60ef85e51834186268c7f9223fe38deb78cade84c",
     "tests/test_novelty_models.py": "4d5ff0c2b040cd66c422989e8c70316d6fd745faaebb6f026ed6615d202d04d7",
-    "src/ultracomplexmath/core.py": "f49d26edcc28314f176ed55390ef63e2f32d1005aaa5cf79aab88e00f2efafaa",
+    "src/ultracomplexmath/core.py": "794e14bbee079835b4eb77dc05d0f664eb63dfc73d498efcb4399dfdcbd132ba",
     "src/ultracomplexmath/exact.py": "deef42c26c3f1c2d4ff0d5cfb5d1dbff17bae2bcf9a41fe1f26c1e199b7b5069",
     "src/ultracomplexmath/transformations.py": "239f024a2b4eb800de684fbbee0e8dc7834aacc3fc6b3576afd2ead2e64e44c0"
   },
@@ -41,6 +44,33 @@
       "support_rank": 1
     },
     "status": "First-power and second-power block proofs supplied; publication priority unconfirmed"
+  },
+  "higher_power_rank": {
+    "powers": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "jordan_blocks_by_power": {
+      "3": 3644,
+      "4": 2546,
+      "5": 1891,
+      "6": 1458
+    },
+    "arbitrary_corner_windows": 11980,
+    "deliberately_deficient_windows": 196,
+    "independent_full_tensor_powers": 35,
+    "jordan_max_m_n": [
+      10,
+      16
+    ],
+    "corner_max_degree_size": [
+      5,
+      7
+    ],
+    "ground_field": "characteristic zero",
+    "publication_priority": "unconfirmed"
   },
   "critical_jet": {
     "exact_jets": 324,

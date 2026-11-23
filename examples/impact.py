@@ -488,7 +488,8 @@ def formula_data():
         "report": {
             "frequency_hz": frequency,
             "relative_Ultra_derivative_errors": errors,
-            "current_internal_complex_solves": 4,
+            "complex_factorizations": 1,
+            "current_internal_complex_solves": 3,
             "ordinary_equations_with_shared_body": 3,
             "claim": "fewer handwritten derivative equations; no speedup claim",
         },
@@ -550,7 +551,7 @@ def render_formulas(output, data):
     ax.text(
         0,
         0.07,
-        "Current solve: four internal complex solves.\nA reused ordinary factorization can be faster.",
+        "One shared complex LU factorization.\nOne body and two tangent right-hand sides.",
         fontsize=11,
         color=GOLD,
         linespacing=1.7,

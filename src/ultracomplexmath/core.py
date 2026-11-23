@@ -10,6 +10,7 @@ import cmath
 import math
 from collections.abc import Callable, Iterable, Iterator
 from dataclasses import dataclass, fields
+from fractions import Fraction
 from typing import TYPE_CHECKING, Literal
 
 if TYPE_CHECKING:
@@ -242,8 +243,8 @@ class Ultra:
         plus, minus = self.channels()
         return plus[0] != 0 and minus[0] != 0
 
-    def inverse(self) -> Ultra:
-        """Reciprocal, preserving mixed coefficients through channel cancellation."""
+    def _real_quotient(self, numerator: float) -> Ultra:
+        """Divide a real numerator by self, rounding only the final coefficients."""
         if (self.real, self.i) in ((self.j, self.ij), (-self.j, -self.ij)):
             raise NonInvertibleError("A zero body channel has no multiplicative inverse")
         if any(self.coefficients[1:]):
@@ -252,10 +253,16 @@ class Ultra:
             from .exact import ExactUltra
 
             try:
-                return ExactUltra.from_approximate(self).inverse().approximate()
+                inv = ExactUltra.from_approximate(self).inverse()
+                scale = Fraction(numerator)
+                return Ultra(*(float(scale * c) for c in inv))
             except OverflowError as error:
-                raise NonFiniteError("Reciprocal coefficient exceeds binary64") from error
-        return Ultra(1 / self.real)
+                raise NonFiniteError("Quotient coefficient exceeds binary64") from error
+        return Ultra(numerator / self.real)
+
+    def inverse(self) -> Ultra:
+        """Reciprocal, preserving mixed coefficients through channel cancellation."""
+        return self._real_quotient(1.0)
 
     def __truediv__(self, other: Scalar) -> Ultra:
         try:
@@ -264,8 +271,8 @@ class Ultra:
             # Let compatible containers (e.g. UltraField) implement reflected
             # division, just as addition and multiplication already do.
             return NotImplemented
-        if self == ONE:
-            return value.inverse()
+        if not any(self.coefficients[1:]):
+            return value._real_quotient(self.real)
         if not any(value.coefficients[1:]):
             if not value.real:
                 raise NonInvertibleError("Divisor is zero")

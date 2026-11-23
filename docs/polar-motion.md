@@ -2,6 +2,20 @@
 
 [Open the browser lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/polar-motion.html) · [Offline file](gallery/polar-motion.html) · [Geometric derivation](research/geometric-structure.md)
 
+## Draw your own field loop
+
+In [the field lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/field-loops.html), trace a polygon with a mouse or touchscreen, or load a preset. Predict the factor and close the loop. For the field `F(z) = z − j`, the plus channel sees `z − 1` and the minus channel sees `z + 1`. Each winding reverses its channel's square root. A loop around +1 gives −j, a loop around −1 gives j, a loop around both gives −1, and a loop around neither gives 1. Multiple turns follow the parity in each channel. The dashed closing edge counts. Touching either marked disk invalidates the lift. [Download the offline file](gallery/field-loops.html).
+
+## Command line
+
+```sh
+ultracomplex '1+i+j/2' --polar --json
+ultracomplex '1' --roots 2 --json
+ultracomplex '0' --roots 3 --json
+```
+
+`--polar` returns the unit coordinates and both phases in radians. `--roots N` gives one representative per sheet in the public eight-coefficient order. In JSON, `count` is an integer or the string `"infinite"`. For an infinite family, `free_tangents` names the channels whose complex tangent can be freely chosen. Representatives use zero for those tangents. Both views use numerical arithmetic and accept `--legacy`. Use the default coefficient view for `--exact`.
+
 ## Follow a root around a loop
 
 With `p = (1+j)/2`, the input `p*exp(i*t) + (1-p)` goes around the origin in
