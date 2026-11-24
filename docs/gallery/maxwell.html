@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#0d202a" />
+    <title>Linked light · The Maxwell laboratory</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0e2029;
+        --panel: #132c38;
+        --line: #3b5663;
+        --text: #f0f4ef;
+        --muted: #bbccd0;
+        --mint: #79e3c0;
+        --gold: #ffb177;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.5 system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 1040px;
+        margin: auto;
+        padding: 24px clamp(14px, 4vw, 44px) 52px;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        border-bottom: 1px solid var(--line);
+        padding: 0 0 12px;
+        font-size: 0.84rem;
+        letter-spacing: 0.03em;
+      }
+      header a {
+        color: var(--mint);
+      }
+      h1,
+      h2 {
+        font:
+          normal clamp(2.6rem, 6vw, 4.8rem) / 1.04 Georgia,
+          serif;
+        letter-spacing: -0.04em;
+        margin: 24px 0 10px;
+      }
+      h2 {
+        font-size: clamp(1.7rem, 4vw, 2.75rem);
+        margin: 16px 0 8px;
+      }
+      p {
+        color: var(--muted);
+        max-width: 76ch;
+        margin: 8px 0 16px;
+      }
+      nav {
+        display: flex;
+        gap: 18px;
+        border-bottom: 1px solid var(--line);
+        margin: 18px 0;
+      }
+      nav a {
+        padding: 8px 0;
+        color: var(--muted);
+        text-decoration: none;
+        border-bottom: 3px solid transparent;
+      }
+      nav a[aria-current="page"] {
+        color: var(--text);
+        border-color: var(--mint);
+      }
+      button,
+      select,
+      input {
+        font: inherit;
+        accent-color: var(--mint);
+      }
+      button,
+      select {
+        background: #193745;
+        border: 1px solid #617c87;
+        border-radius: 4px;
+        padding: 5px 9px;
+        color: var(--text);
+      }
+      button {
+        cursor: pointer;
+      }
+      label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      input[type="range"] {
+        max-width: 145px;
+      }
+      .controls,
+      .metrics {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px 20px;
+        margin: 12px 0;
+      }
+      .panel {
+        background: var(--panel);
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+      }
+      .split {
+        display: grid;
+        grid-template-columns: minmax(0, 1.7fr) minmax(230px, 1fr);
+        gap: 16px;
+        align-items: center;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: auto;
+        touch-action: manipulation;
+      }
+      #map {
+        cursor: crosshair;
+      }
+      output {
+        font-variant-numeric: tabular-nums;
+        display: block;
+      }
+      .read {
+        color: var(--mint);
+        font-size: 1.1em;
+      }
+      .caption {
+        font-size: 0.93em;
+        margin: 8px 0;
+        color: var(--muted);
+      }
+      dl {
+        margin: 8px 0;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 5px 12px;
+      }
+      dd {
+        margin: 0;
+        font-variant-numeric: tabular-nums;
+      }
+      dt {
+        color: var(--muted);
+      }
+      .key {
+        color: var(--gold);
+      }
+      [hidden] {
+        display: none !important;
+      }
+      :focus-visible {
+        outline: 2px solid var(--mint);
+        outline-offset: 3px;
+      }
+      @media (max-width: 720px) {
+        .split {
+          grid-template-columns: 1fr;
+        }
+        .controls {
+          gap: 10px 14px;
+        }
+        input[type="range"] {
+          max-width: 108px;
+        }
+        main {
+          padding-top: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <span>ULTRACOMPLEX MATH</span
+        ><a href="https://github.com/hoechp/ultracomplexmath/blob/master/docs/maxwell.md"
+          >Equations &amp; Python ↗</a
+        >
+      </header>
+      <h1>Linked light</h1>
+      <p>
+        Follow an electromagnetic knot, then explore how energy moves through light fields in three
+        spatial dimensions and time.
+      </p>
+      <nav aria-label="Laboratory">
+        <a href="#lines">Linked field lines</a><a href="#waves">Spacetime explorer</a>
+      </nav>
+      <section id="lines">
+        <h2>Four lines of one electric field</h2>
+        <p>
+          These closed curves follow the electric field of a Hopfion at t = 0. Rotate the view and
+          isolate a pair to see how one loop threads the other.
+        </p>
+        <div class="panel split">
+          <canvas
+            id="knot"
+            width="700"
+            height="480"
+            role="img"
+            aria-label="Rotatable projection of linked electric field lines"
+          ></canvas>
+          <div>
+            <label
+              >Show
+              <select id="pair">
+                <option>All four lines</option>
+                <option>Mint and amber</option>
+                <option>Mint and violet</option>
+                <option>Mint and yellow</option>
+              </select></label
+            >
+            <div class="controls">
+              <label>Azimuth <input id="turn" type="range" min="-180" max="180" value="-40" /></label
+              ><label>Elevation <input id="tilt" type="range" min="-85" max="85" value="26" /></label>
+            </div>
+            <output class="read" id="links"></output>
+            <p class="caption">
+              The linking number counts signed crossings between two oriented closed curves, divided by
+              two. The front segments are drawn last.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section id="waves" hidden>
+        <h2>Follow the energy</h2>
+        <div class="controls">
+          <label
+            >Field
+            <select id="preset">
+              <option value="standing">Standing wave</option>
+              <option value="traveling">Circular traveling wave</option>
+              <option value="crossing">Three crossing waves</option>
+              <option value="hopfion">Localized Hopfion</option>
+            </select></label
+          >
+          <label
+            >Slice
+            <select id="plane">
+              <option>xy</option>
+              <option>xz</option>
+              <option>yz</option>
+            </select></label
+          >
+          <label
+            >Display
+            <select id="display">
+              <option value="u">Energy density</option>
+              <option value="e">Electric magnitude</option>
+              <option value="b">Magnetic magnitude</option>
+              <option value="w">Invariant energy density</option>
+            </select></label
+          >
+        </div>
+        <p id="description"></p>
+        <div class="panel split">
+          <canvas
+            id="map"
+            tabindex="0"
+            width="550"
+            height="440"
+            role="img"
+            aria-label="Field slice. Click or use arrow keys to move the probe."
+          ></canvas>
+          <div>
+            <div class="controls">
+              <button id="play">Play</button
+              ><label>Time <input id="time" type="range" min="0" max="96" value="12" /></label>
+            </div>
+            <div class="controls">
+              <label>Slice offset <input id="offset" type="range" min="-16" max="16" value="0" /></label>
+            </div>
+            <label
+              >Observer β along +x <input id="beta" type="range" min="-8" max="8" value="0"
+            /></label>
+            <p class="caption">
+              Measurements at the same events. Arrows show energy flow projected onto the slice. The
+              cross marks the probe.
+            </p>
+            <output id="position" class="read"></output>
+            <dl>
+              <dt>E</dt>
+              <dd id="electric"></dd>
+              <dt>B</dt>
+              <dd id="magnetic"></dd>
+              <dt>Energy u</dt>
+              <dd id="energy"></dd>
+              <dt>Flux S</dt>
+              <dd id="flux"></dd>
+              <dt>Invariant w</dt>
+              <dd id="rest"></dd>
+            </dl>
+            <div id="scale" class="caption"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script id="lab-data" type="application/json">
+      {"modes":{"standing":[[[1.0,0.0,0.0],[[0.0,0.0,0.0,-0.0],[1.0,0.0,0.0,-0.0],[0.0,0.0,0.0,-0.0]],[[0.0,0.0,0.0,-0.0],[0.0,0.0,0.0,-0.0],[0.0,0.0,0.0,-1.0]]]],"traveling":[[[0.0,0.0,1.0],[[1.0,0.0,0.0,-1.0],[0.0,1.0,1.0,-0.0],[0.0,0.0,0.0,-0.0]],[[0.0,-1.0,-1.0,-0.0],[1.0,0.0,0.0,-1.0],[0.0,0.0,0.0,-0.0]]]],"crossing":[[[2.0,2.0,1.0],[[1.0,0.0,0.333333333333,-0.0],[-1.0,0.0,0.333333333333,-0.0],[0.0,0.0,-1.333333333333,-0.0]],[[0.0,-1.0,0.0,-0.333333333333],[-0.0,1.0,0.0,-0.333333333333],[0.0,0.0,-0.0,1.333333333333]]],[[0.0,1.0,0.0],[[0.0,0.6,0.6,-0.0],[0.0,0.0,0.0,-0.0],[0.6,0.0,0.0,-0.6]],[[0.6,0.0,0.0,-0.6],[0.0,0.0,0.0,-0.0],[0.0,-0.6,-0.6,-0.0]]],[[1.0,0.0,0.0],[[0.0,0.0,0.0,-0.0],[0.4,0.2,0.0,-0.0],[0.0,0.0,0.4,0.2]],[[0.0,0.0,0.0,-0.0],[0.2,-0.4,0.0,-0.0],[0.0,0.0,0.2,-0.4]]]]},"curves":[[[0.0,0.5,0.0],[-0.03123644,0.4989154,-0.04164859],[-0.06239168,0.49566724,-0.08318891],[-0.09338521,0.49027237,-0.12451362],[-0.12413793,0.48275862,-0.16551724],[-0.15457278,0.47316445,-0.20609704],[-0.18461538,0.46153846,-0.24615385],[-0.21419465,0.4479388,-0.28559286],[-0.24324324,0.43243243,-0.32432432],[-0.27169811,0.41509434,-0.36226415],[-0.29950083,0.39600666,-0.39933444],[-0.32659794,0.37525773,-0.43546392],[-0.35294118,0.35294118,-0.47058824],[-0.37848767,0.32915487,-0.50465022],[-0.4032,0.304,-0.5376],[-0.42704626,0.27758007,-0.56939502],[-0.45,0.25,-0.6],[-0.47204011,0.22136521,-0.62938681],[-0.49315068,0.19178082,-0.65753425],[-0.51332083,0.16135084,-0.68442777],[-0.53254438,0.13017751,-0.71005917],[-0.55081967,0.09836066,-0.73442623],[-0.56814921,0.06599713,-0.75753228],[-0.58453936,0.03318037,-0.77938581],[-0.6,0.0,-0.8],[-0.62933236,-0.07004743,-0.83910981],[-0.65696784,-0.14701378,-0.87595712],[-0.68231047,-0.23104693,-0.90974729],[-0.70469799,-0.32214765,-0.93959732],[-0.72341357,-0.42013129,-0.96455142],[-0.73770492,-0.52459016,-0.98360656],[-0.74681153,-0.63486065,-0.9957487],[-0.75,-0.75,-1.0],[-0.74660633,-0.86877828,-0.99547511],[-0.73608247,-0.98969072,-0.9814433],[-0.71804314,-1.11099421,-0.95739085],[-0.69230769,-1.23076923,-0.92307692],[-0.65893146,-1.34700486,-0.87857528],[-0.61822126,-1.45770065,-0.82429501],[-0.57073171,-1.56097561,-0.76097561],[-0.51724138,-1.65517241,-0.68965517],[-0.45871071,-1.73894513,-0.61161428],[-0.39622642,-1.81132075,-0.52830189],[-0.33093894,-1.87172909,-0.44125192],[-0.264,-1.92,-0.352],[-0.19650655,-1.95633188,-0.26200873],[-0.12945591,-1.98123827,-0.17260788],[-0.06371441,-1.99548125,-0.08495255],[0.0,-2.0,0.0],[0.12413793,-1.98275862,0.16551724],[0.24324324,-1.93243243,0.32432432],[0.35294118,-1.85294118,0.47058824],[0.45,-1.75,0.6],[0.53254438,-1.63017751,0.71005917],[0.6,-1.5,0.8],[0.65284974,-1.36528497,0.87046632],[0.69230769,-1.23076923,0.92307692],[0.72,-1.1,0.96],[0.73770492,-0.97540984,0.98360656],[0.74716981,-0.85849057,0.99622642],[0.75,-0.75,1.0],[0.74760383,-0.65015974,0.99680511],[0.74117647,-0.55882353,0.98823529],[0.73170732,-0.47560976,0.97560976],[0.72,-0.4,0.96],[0.70669746,-0.33140878,0.94226328],[0.69230769,-0.26923077,0.92307692],[0.67722772,-0.21287129,0.9029703],[0.66176471,-0.16176471,0.88235294],[0.64615385,-0.11538462,0.86153846],[0.63057325,-0.07324841,0.84076433],[0.61515602,-0.03491828,0.82020802],[0.6,0.0,0.8],[0.56949488,0.06338726,0.75932651],[0.53826851,0.12045169,0.71769134],[0.50670241,0.17158177,0.67560322],[0.47511312,0.21719457,0.63348416],[0.44375839,0.25771812,0.59167785],[0.41284404,0.29357798,0.55045872],[0.38253085,0.32518752,0.51004113],[0.35294118,0.35294118,0.47058824],[0.32416503,0.37721022,0.43222004],[0.29626556,0.39834025,0.39502075],[0.26928388,0.41665023,0.35904518],[0.24324324,0.43243243,0.32432432],[0.21815258,0.44595319,0.29087011],[0.19400953,0.45745405,0.25867937],[0.17080292,0.46715328,0.22773723],[0.14851485,0.47524752,0.1980198],[0.1271224,0.48191348,0.16949653],[0.10659898,0.48730964,0.14213198],[0.08691551,0.49157795,0.11588735],[0.06804124,0.49484536,0.09072165],[0.04994451,0.49722531,0.06659267],[0.03259329,0.49881908,0.04345772],[0.01595564,0.4997171,0.02127419],[0.0,0.5,0.0]],[[0.0,1.0,0.0],[0.0,0.9965338,-0.08318891],[0.0,0.9862069,-0.16551724],[0.0,0.96923077,-0.24615385],[0.0,0.94594595,-0.32432432],[0.0,0.91680532,-0.39933444],[0.0,0.88235294,-0.47058824],[0.0,0.8432,-0.5376],[0.0,0.8,-0.6],[0.0,0.75342466,-0.65753425],[0.0,0.70414201,-0.71005917],[0.0,0.6527977,-0.75753228],[0.0,0.6,-0.8],[0.0,0.54630872,-0.83758389],[0.0,0.49222798,-0.87046632],[0.0,0.43820225,-0.8988764],[0.0,0.38461538,-0.92307692],[0.0,0.33179191,-0.9433526],[0.0,0.28,-0.96],[0.0,0.22945571,-0.9733191],[0.0,0.18032787,-0.98360656],[0.0,0.13274336,-0.99115044],[0.0,0.08679245,-0.99622642],[0.0,0.04253394,-0.99909502],[0.0,0.0,-1.0],[0.0,-0.08318891,-0.9965338],[0.0,-0.16551724,-0.9862069],[0.0,-0.24615385,-0.96923077],[0.0,-0.32432432,-0.94594595],[0.0,-0.39933444,-0.91680532],[0.0,-0.47058824,-0.88235294],[0.0,-0.5376,-0.8432],[0.0,-0.6,-0.8],[0.0,-0.65753425,-0.75342466],[0.0,-0.71005917,-0.70414201],[0.0,-0.75753228,-0.6527977],[0.0,-0.8,-0.6],[0.0,-0.83758389,-0.54630872],[0.0,-0.87046632,-0.49222798],[0.0,-0.8988764,-0.43820225],[0.0,-0.92307692,-0.38461538],[0.0,-0.9433526,-0.33179191],[0.0,-0.96,-0.28],[0.0,-0.9733191,-0.22945571],[0.0,-0.98360656,-0.18032787],[0.0,-0.99115044,-0.13274336],[0.0,-0.99622642,-0.08679245],[0.0,-0.99909502,-0.04253394],[0.0,-1.0,0.0],[0.0,-0.9965338,0.08318891],[0.0,-0.9862069,0.16551724],[0.0,-0.96923077,0.24615385],[0.0,-0.94594595,0.32432432],[0.0,-0.91680532,0.39933444],[0.0,-0.88235294,0.47058824],[0.0,-0.8432,0.5376],[0.0,-0.8,0.6],[0.0,-0.75342466,0.65753425],[0.0,-0.70414201,0.71005917],[0.0,-0.6527977,0.75753228],[0.0,-0.6,0.8],[0.0,-0.54630872,0.83758389],[0.0,-0.49222798,0.87046632],[0.0,-0.43820225,0.8988764],[0.0,-0.38461538,0.92307692],[0.0,-0.33179191,0.9433526],[0.0,-0.28,0.96],[0.0,-0.22945571,0.9733191],[0.0,-0.18032787,0.98360656],[0.0,-0.13274336,0.99115044],[0.0,-0.08679245,0.99622642],[0.0,-0.04253394,0.99909502],[0.0,0.0,1.0],[0.0,0.08318891,0.9965338],[0.0,0.16551724,0.9862069],[0.0,0.24615385,0.96923077],[0.0,0.32432432,0.94594595],[0.0,0.39933444,0.91680532],[0.0,0.47058824,0.88235294],[0.0,0.5376,0.8432],[0.0,0.6,0.8],[0.0,0.65753425,0.75342466],[0.0,0.71005917,0.70414201],[0.0,0.75753228,0.6527977],[0.0,0.8,0.6],[0.0,0.83758389,0.54630872],[0.0,0.87046632,0.49222798],[0.0,0.8988764,0.43820225],[0.0,0.92307692,0.38461538],[0.0,0.9433526,0.33179191],[0.0,0.96,0.28],[0.0,0.9733191,0.22945571],[0.0,0.98360656,0.18032787],[0.0,0.99115044,0.13274336],[0.0,0.99622642,0.08679245],[0.0,0.99909502,0.04253394],[0.0,1.0,0.0]],[[0.66666667,1.0,0.5],[0.65606634,0.98245934,0.39281972],[0.64112695,0.95859818,0.29376396],[0.62277192,0.92979265,0.2029829],[0.60182371,0.89726444,0.12036474],[0.57899433,0.86206773,0.04560865],[0.5548854,0.82509047,-0.02171291],[0.52999465,0.78706471,-0.08210387],[0.5047259,0.74858223,-0.13610586],[0.47940075,0.71011236,-0.18426966],[0.45427052,0.67202002,-0.22713526],[0.42952757,0.63458285,-0.26521856],[0.40531561,0.59800664,-0.29900332],[0.38173877,0.56243889,-0.32893679],[0.35886932,0.52798034,-0.3554281],[0.33675422,0.49469473,-0.3788485],[0.31542056,0.46261682,-0.39953271],[0.29487998,0.43175896,-0.41778115],[0.27513228,0.4021164,-0.43386243],[0.2561683,0.37367159,-0.44801609],[0.23797231,0.34639756,-0.46045529],[0.22052374,0.32026062,-0.4713695],[0.20379874,0.29522248,-0.48092694],[0.18777122,0.27124187,-0.48927686],[0.17241379,0.24827586,-0.49655172],[0.14239875,0.20342342,-0.5087709],[0.11254587,0.1588555,-0.51837057],[0.08294789,0.1147086,-0.52543941],[0.05369007,0.07110792,-0.53007721],[0.02484985,0.02816684,-0.53239297],[-0.00350331,-0.01401323,-0.53250292],[-0.03130798,-0.05534292,-0.53052873],[-0.05851064,-0.09574468,-0.52659574],[-0.08506547,-0.13515246,-0.52083143],[-0.11093408,-0.17351125,-0.51336387],[-0.13608511,-0.21077653,-0.50432055],[-0.16049383,-0.24691358,-0.49382716],[-0.18414167,-0.28189682,-0.48200669],[-0.20701576,-0.31570904,-0.46897857],[-0.22910836,-0.34834066,-0.45485806],[-0.25041644,-0.37978901,-0.43975569],[-0.27094113,-0.4100575,-0.4237769],[-0.2906873,-0.43915501,-0.40702172],[-0.30966301,-0.46709513,-0.38958463],[-0.32787917,-0.49389553,-0.37155444],[-0.34534908,-0.51957738,-0.35301429],[-0.36208806,-0.54416475,-0.33404173],[-0.37811312,-0.56768412,-0.31470874],[-0.39344262,-0.59016393,-0.29508197],[-0.42328042,-0.63386243,-0.25343915],[-0.45269287,-0.6768559,-0.20742358],[-0.48143982,-0.71878515,-0.15691789],[-0.50925926,-0.75925926,-0.10185185],[-0.53587,-0.79785969,-0.04221165],[-0.56097561,-0.83414634,0.02195122],[-0.58426966,-0.86766542,0.09051186],[-0.60544218,-0.89795918,0.16326531],[-0.62418726,-0.92457737,0.23992198],[-0.64021164,-0.94708995,0.32010582],[-0.65324385,-0.96510067,0.4033557],[-0.66304348,-0.97826087,0.48913043],[-0.66941015,-0.98628258,0.57681756],[-0.67219153,-0.98895028,0.66574586],[-0.67128988,-0.98613037,0.75520111],[-0.66666667,-0.97777778,0.84444444],[-0.65834489,-0.96393897,0.93273232],[-0.64640884,-0.94475138,1.01933702],[-0.63100137,-0.92043896,1.10356653],[-0.61231884,-0.89130435,1.18478261],[-0.59060403,-0.85771812,1.26241611],[-0.56613757,-0.82010582,1.33597884],[-0.53922844,-0.77893368,1.40507152],[-0.51020408,-0.73469388,1.46938776],[-0.44429313,-0.63469395,1.5873974],[-0.3670656,-0.51810332,1.69065293],[-0.28011107,-0.3873655,1.77438389],[-0.18582971,-0.2461156,1.83467993],[-0.08723742,-0.09888197,1.86900847],[0.01234568,0.04938272,1.87654321],[0.10965873,0.19384307,1.85821976],[0.20183486,0.33027523,1.81651376],[0.28663993,0.455415,1.75501388],[0.362583,0.56711366,1.67790652],[0.42890479,0.66431269,1.58948694],[0.48547718,0.74688797,1.49377593],[0.53265641,0.81542729,1.39427402],[0.5711274,0.87099689,1.293846],[0.60176434,0.91493384,1.19470699],[0.62552011,0.94868239,1.09847434],[0.64334694,0.97367733,1.0062539],[0.65614506,0.99126931,0.91873741],[0.66473368,1.0026831,0.83629628],[0.669838,1.00899974,0.75906403],[0.67208709,1.01115441,0.68700443],[0.67201822,1.00994389,0.61996556],[0.67008496,1.00603913,0.55772091],[0.66666667,1.0,0.5]],[[-0.66666667,1.0,-0.33333333],[-0.67820774,1.02464358,-0.43930754],[-0.68439108,1.04202401,-0.55317324],[-0.68421053,1.05060729,-0.67408907],[-0.67669173,1.04887218,-0.80075188],[-0.66096727,1.03541768,-0.93136297],[-0.63636364,1.00909091,-1.06363636],[-0.60249092,0.96912299,-1.19486248],[-0.55932203,0.91525424,-1.3220339],[-0.50724638,0.84782609,-1.44202899],[-0.44708423,0.76781857,-1.55183585],[-0.38005391,0.67681941,-1.64878706],[-0.30769231,0.57692308,-1.73076923],[-0.23173936,0.47057278,-1.79637415],[-0.15400411,0.36036961,-1.8449692],[-0.07623318,0.24887892,-1.87668161],[0.0,0.13846154,-1.89230769],[0.07337333,0.03114905,-1.89317028],[0.14285714,-0.07142857,-1.88095238],[0.20772136,-0.16806546,-1.85753252],[0.26751592,-0.25796178,-1.82484076],[0.3220339,-0.34067797,-1.78474576],[0.371266,-0.41607397,-1.73897582],[0.41535367,-0.48424405,-1.6890714],[0.45454545,-0.54545455,-1.63636364],[0.52200877,-0.65254878,-1.52200877],[0.57676826,-0.74180564,-1.3973548],[0.61904762,-0.81318681,-1.26739927],[0.6496945,-0.86761711,-1.13645621],[0.66995601,-0.90666984,-1.00796576],[0.6812749,-0.93227092,-0.88446215],[0.68513,-0.94645977,-0.76764978],[0.68292683,-0.95121951,-0.65853659],[0.67593328,-0.94837172,-0.55758539],[0.66525008,-0.93952272,-0.4648578],[0.65180531,-0.92604648,-0.38013776],[0.63636364,-0.90909091,-0.3030303],[0.6195433,-0.88959729,-0.23303624],[0.60183619,-0.86832568,-0.16960619],[0.58362809,-0.84588176,-0.11217787],[0.56521739,-0.82274247,-0.06020067],[0.54683162,-0.79927914,-0.01315085],[0.52864157,-0.77577741,0.0294599],[0.51077302,-0.75245421,0.0680804],[0.49331636,-0.72947167,0.10311903],[0.47633434,-0.70694864,0.13494461],[0.45986833,-0.68496988,0.1638885],[0.44394324,-0.66359356,0.19024728],[0.42857143,-0.64285714,0.21428571],[0.39827772,-0.60172228,0.25798349],[0.36791148,-0.56016598,0.29737206],[0.33766234,-0.51848152,0.33266733],[0.30769231,-0.47692308,0.36410256],[0.27813753,-0.43570768,0.39192106],[0.24911032,-0.39501779,0.41637011],[0.22070145,-0.35500428,0.43769604],[0.19298246,-0.31578947,0.45614035],[0.16600791,-0.27747036,0.47193676],[0.13981763,-0.24012158,0.48530902],[0.11443876,-0.20379839,0.49646944],[0.08988764,-0.16853933,0.50561798],[0.06617151,-0.13436867,0.51294171],[0.04329004,-0.1012987,0.51861472],[0.02123673,-0.06933167,0.52279825],[0.0,-0.03846154,0.52564103],[-0.0204357,-0.00867553,0.52727974],[-0.04008909,0.02004454,0.52783964],[-0.05898123,0.04772118,0.52743521],[-0.07713499,0.07438017,0.5261708],[-0.09457442,0.10004978,0.52414136],[-0.11132438,0.12476008,0.52143314],[-0.12741015,0.14854234,0.51812433],[-0.14285714,0.17142857,0.51428571],[-0.17314736,0.21644674,0.5048417],[-0.20340702,0.26161022,0.49280065],[-0.23353293,0.30677107,0.47812068],[-0.26341866,0.35177539,0.46077622],[-0.29295555,0.39646478,0.44075903],[-0.3220339,0.44067797,0.4180791],[-0.35054419,0.48425259,0.39276513],[-0.37837838,0.52702703,0.36486486],[-0.40543116,0.56884231,0.33444497],[-0.43160127,0.60954401,0.30159067],[-0.45679274,0.64898414,0.26640497],[-0.48091603,0.6870229,0.22900763],[-0.50388909,0.72353035,0.18953384],[-0.52563832,0.75838785,0.14813252],[-0.54609929,0.79148936,0.10496454],[-0.56521739,0.82274247,0.06020067],[-0.58294823,0.85206916,0.01401942],[-0.59925788,0.87940631,-0.03339518],[-0.61412294,0.90470594,-0.08185581],[-0.62753036,0.92793522,-0.13117409],[-0.63947724,0.94907616,-0.18116269],[-0.6499703,0.96812512,-0.2316373],[-0.65902537,0.98509214,-0.2824185],[-0.66666667,1.0,-0.33333333]]],"links":[1,1,1]}
+    </script>
+    <script>
+      "use strict";
+      const lab = JSON.parse(document.getElementById("lab-data").textContent),
+        $ = (id) => document.getElementById(id),
+        num = (id) => Number($(id).value),
+        tau = 2 * Math.PI;
+      const colors = ["#78e3c0", "#ffad78", "#b9a8ff", "#ffda87"];
+      const fmt = (x) => (Math.abs(x) < 0.00005 ? "0" : Number(x.toFixed(4)).toString()),
+        triple = (v) => "(" + v.map(fmt).join(", ") + ")";
+      function drawLines() {
+        const c = $("knot"),
+          ctx = c.getContext("2d"),
+          az = (num("turn") * tau) / 360,
+          el = (num("tilt") * tau) / 360,
+          selected = $("pair").selectedIndex;
+        const pick = lab.curves.map((_, i) => i).filter((i) => !selected || !i || i === selected);
+        const project = (p) => {
+          const [x, y, z] = p,
+            X = x * Math.cos(az) - y * Math.sin(az),
+            D = x * Math.sin(az) + y * Math.cos(az);
+          return [X, z * Math.cos(el) - D * Math.sin(el), z * Math.sin(el) + D * Math.cos(el)];
+        };
+        const polys = pick.map((i) => lab.curves[i].map(project)),
+          all = polys.flat(),
+          xs = all.map((p) => p[0]),
+          ys = all.map((p) => p[1]),
+          xmin = Math.min(...xs),
+          xmax = Math.max(...xs),
+          ymin = Math.min(...ys),
+          ymax = Math.max(...ys);
+        const zoom = Math.min(610 / (xmax - xmin), 399 / (ymax - ymin)),
+          X = (x) => 350 + zoom * (x - (xmin + xmax) / 2),
+          Y = (y) => 240 - zoom * (y - (ymin + ymax) / 2);
+        const segments = [];
+        polys.forEach((p, i) =>
+          p.slice(1).forEach((b, k) => {
+            const a = p[k];
+            segments.push([a, b, colors[pick[i]]]);
+          }),
+        );
+        segments.sort(([a, b], [c, d]) => a[2] + b[2] - c[2] - d[2]);
+        ctx.clearRect(0, 0, c.width, c.height);
+        ctx.lineCap = "round";
+        for (const [a, b, color] of segments) {
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 5.5;
+          ctx.beginPath();
+          ctx.moveTo(X(a[0]), Y(a[1]));
+          ctx.lineTo(X(b[0]), Y(b[1]));
+          ctx.stroke();
+        }
+        $("links").textContent = selected
+          ? "Oriented linking number: " + lab.links[selected - 1]
+          : "Linking with the mint line: " + lab.links.join(", ") + ".";
+      }
+      const complexMul = ([a, b], [c, d]) => [a * c - b * d, a * d + b * c],
+        add = ([a, b], [c, d]) => [a + c, b + d],
+        sub = ([a, b], [c, d]) => [a - c, b - d];
+      function knotField(x, y, z, t) {
+        const a = [x, -y],
+          b = [t - z, -1],
+          den = [x * x + y * y + z * z - t * t + 1, 2 * t],
+          cube = complexMul(den, complexMul(den, den)),
+          m = cube[0] ** 2 + cube[1] ** 2,
+          inv = [cube[0] / m, -cube[1] / m],
+          aa = complexMul(a, a),
+          bb = complexMul(b, b);
+        const packed = [
+          sub(bb, aa),
+          complexMul([0, -1], add(aa, bb)),
+          complexMul([2, 0], complexMul(a, b)),
+        ].map((v) => complexMul(v, inv));
+        return [packed.map((q) => q[0]), packed.map((q) => q[1])];
+      }
+      function field(name, pos, t) {
+        if (name === "hopfion") return knotField(...pos, t);
+        const E = [0, 0, 0],
+          B = [0, 0, 0];
+        for (const [k, a, b] of lab.modes[name]) {
+          const phase = k.reduce((s, v, i) => s + v * pos[i], 0),
+            angle = Math.hypot(...k) * t,
+            cs = Math.cos(phase),
+            sn = Math.sin(phase),
+            ct = Math.cos(angle),
+            st = Math.sin(angle);
+          for (let d = 0; d < 3; d++) {
+            const v = a[d],
+              w = b[d];
+            E[d] += cs * (ct * v[0] + st * w[0]) - sn * (ct * v[1] + st * w[1]);
+            B[d] += cs * (ct * v[2] + st * w[2]) - sn * (ct * v[3] + st * w[3]);
+          }
+        }
+        return [E, B];
+      }
+      function observe(fields, beta) {
+        const [[x, y, z], [u, v, w]] = fields,
+          g = 1 / Math.sqrt(1 - beta * beta),
+          E = [x, g * (y - beta * w), g * (z + beta * v)],
+          B = [u, g * (v + beta * z), g * (w - beta * y)];
+        const e = Math.hypot(...E),
+          b = Math.hypot(...B),
+          S = [E[1] * B[2] - E[2] * B[1], E[2] * B[0] - E[0] * B[2], E[0] * B[1] - E[1] * B[0]];
+        return {
+          E,
+          B,
+          S,
+          e,
+          b,
+          u: (e * e + b * b) / 2,
+          w: Math.hypot(
+            (e * e - b * b) / 2,
+            E.reduce((s, v, i) => s + v * B[i], 0),
+          ),
+        };
+      }
+      const models = {
+        standing:
+          "Electric energy starts at the antinodes. A quarter-period later it is magnetic and concentrated at different positions. Follow the intervening flux.",
+        traveling:
+          "Electric and magnetic vectors rotate while the wave travels in +z. Energy is uniform and moves at light speed. Choose the xz slice to see its direction.",
+        crossing:
+          "Three non-collinear waves interfere. Move through parallel slices to see energy flowing in all three directions.",
+        hopfion:
+          "A localized, source-free pulse with linked field lines. The energy propagates locally at light speed. Move the time and slice controls to follow the pulse.",
+      };
+      let probe = [0.65, 0.55],
+        timer = 0;
+      const mapDims = { left: 36, top: 12, w: 484, h: 384 };
+      function config() {
+        const name = $("preset").value,
+          axes = $("plane")
+            .value.split("")
+            .map((s) => "xyz".indexOf(s)),
+          normal = 3 - axes[0] - axes[1],
+          beta = num("beta") / 10,
+          t = name === "hopfion" ? (num("time") - 48) / 16 : (tau * num("time")) / 96,
+          offset = (num("offset") * Math.PI) / 16;
+        const point = (u, v) => {
+          const pos = [0, 0, 0];
+          pos[axes[0]] = (u * 2 - 1) * Math.PI;
+          pos[axes[1]] = (1 - v * 2) * Math.PI;
+          pos[normal] = offset;
+          return pos;
+        };
+        return { name, axes, beta, t, point };
+      }
+      function drawMap() {
+        const ctx = $("map").getContext("2d"),
+          { left, top, w, h } = mapDims,
+          { name, axes, beta, t, point } = config(),
+          metric = $("display").value,
+          N = 49;
+        const values = [],
+          rows = [];
+        let peak = 0;
+        for (let j = 0; j < N; j++)
+          for (let i = 0; i < N; i++) {
+            const state = observe(field(name, point(i / (N - 1), j / (N - 1)), t), beta),
+              v = state[metric];
+            values.push(v);
+            peak = Math.max(peak, v);
+            if (i % 6 === 0 && j % 6 === 0)
+              rows.push([i, j, state.S[axes[0]], -state.S[axes[1]], state.u]);
+          }
+        // A fixed scale for each configuration keeps time and slice comparisons meaningful.
+        const limit = ((name === "crossing" ? 6 : 1) * (1 + Math.abs(beta))) / (1 - Math.abs(beta)),
+          cap = metric === "e" || metric === "b" ? Math.sqrt(2 * limit) : limit;
+        ctx.clearRect(0, 0, 550, 440);
+        for (let j = 0; j < N; j++)
+          for (let i = 0; i < N; i++) {
+            const f = Math.min(1, Math.sqrt(values[j * N + i] / cap));
+            ctx.fillStyle =
+              "rgb(" + [14 + 225 * f ** 1.5, 36 + 145 * f, 52 + 68 * f].map(Math.round).join(",") + ")";
+            ctx.fillRect(left + (i * w) / N, top + (j * h) / N, w / N + 1, h / N + 1);
+          }
+        ctx.strokeStyle = "#daf5fb";
+        ctx.lineWidth = 1.5;
+        for (const [i, j, dx, dy, u] of rows) {
+          const mag = Math.hypot(dx, dy);
+          if (u < 1e-10 || mag / u < 0.05) continue;
+          const x = left + ((i + 0.5) * w) / N,
+            y = top + ((j + 0.5) * h) / N,
+            L = 14 * Math.min(1, mag / u),
+            nx = dx / mag,
+            ny = dy / mag,
+            X = x + L * nx,
+            Y = y + L * ny;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(X, Y);
+          ctx.lineTo(X - 4 * nx + 2 * ny, Y - 4 * ny - 2 * nx);
+          ctx.moveTo(X, Y);
+          ctx.lineTo(X - 4 * nx - 2 * ny, Y - 4 * ny + 2 * nx);
+          ctx.stroke();
+        }
+        const px = left + probe[0] * w,
+          py = top + probe[1] * h;
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(px, py, 7, 0, tau);
+        ctx.moveTo(px - 12, py);
+        ctx.lineTo(px + 12, py);
+        ctx.moveTo(px, py - 12);
+        ctx.lineTo(px, py + 12);
+        ctx.stroke();
+        ctx.font = "16px system-ui";
+        ctx.fillStyle = "#c6d8db";
+        ctx.fillText("−π", left - 2, 424);
+        ctx.fillText("+" + "π", left + w - 15, 424);
+        ctx.fillText("xyz"[axes[0]], left + w / 2, 424);
+        ctx.fillText("xyz"[axes[1]], 5, top + h / 2);
+        ctx.fillText("+π", 5, top + 12);
+        ctx.fillText("−π", 5, top + h);
+        const pos = point(...probe),
+          s = observe(field(name, pos, t), beta);
+        $("description").textContent = models[name];
+        $("position").textContent =
+          "x, y, z = " + triple(pos) + " · ct = " + fmt(t) + " · β = " + fmt(beta);
+        for (const [key, value] of Object.entries({
+          electric: triple(s.E),
+          magnetic: triple(s.B),
+          energy: fmt(s.u),
+          flux: triple(s.S),
+          rest: fmt(s.w),
+        }))
+          $(key).textContent = value;
+        $("scale").textContent = "Color range: 0 to " + fmt(cap) + " · slice maximum " + fmt(peak) + ".";
+      }
+      function stop() {
+        clearInterval(timer);
+        timer = 0;
+        $("play").textContent = "Play";
+      }
+      $("play").onclick = () => {
+        if (timer) {
+          stop();
+          return;
+        }
+        timer = setInterval(() => {
+          $("time").value = (num("time") + 1) % 97;
+          drawMap();
+        }, 85);
+        $("play").textContent = "Pause";
+      };
+      $("map").onclick = (e) => {
+        const r = $("map").getBoundingClientRect(),
+          { left, top, w, h } = mapDims;
+        probe = [
+          (((e.clientX - r.left) * 550) / r.width - left) / w,
+          (((e.clientY - r.top) * 440) / r.height - top) / h,
+        ].map((v) => Math.min(1, Math.max(0, v)));
+        drawMap();
+      };
+      $("map").onkeydown = (e) => {
+        const shift = { ArrowRight: [1, 0], ArrowLeft: [-1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[
+          e.key
+        ];
+        if (!shift) return;
+        e.preventDefault();
+        probe = probe.map((v, i) => Math.min(1, Math.max(0, v + shift[i] / 48)));
+        drawMap();
+      };
+      ["turn", "tilt", "pair"].forEach((id) => ($(id).oninput = drawLines));
+      ["preset", "plane", "offset", "time", "beta", "display"].forEach(
+        (id) =>
+          ($(id).oninput = () => {
+            if (id === "time" || id === "preset") stop();
+            if (id === "preset" && $("preset").value === "hopfion") $("time").value = 48;
+            drawMap();
+          }),
+      );
+      function page() {
+        const waves = location.hash === "#waves";
+        $("waves").hidden = !waves;
+        $("lines").hidden = waves;
+        document.querySelectorAll("nav a").forEach((a) => {
+          if (a.hash === (waves ? "#waves" : "#lines")) a.setAttribute("aria-current", "page");
+          else a.removeAttribute("aria-current");
+        });
+        stop();
+        if (waves) drawMap();
+        else drawLines();
+      }
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) stop();
+      });
+      window.addEventListener("hashchange", page);
+      page();
+    </script>
+  </body>
+</html>

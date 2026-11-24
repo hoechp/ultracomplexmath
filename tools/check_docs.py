@@ -12,6 +12,7 @@ GUIDES = (
     "docs/getting-started.md",
     "docs/exact-arithmetic.md",
     "docs/unified-geometry.md",
+    "docs/maxwell.md",
     "docs/five-experiments.md",
     "docs/four-bar.md",
     "docs/fields.md",

@@ -52,6 +52,7 @@ from .fields import (
 )
 from .formula import ExpressionError, Formula, evaluate, evaluate_system
 from .framework import BarFramework2D
+from .hopfion import exact_hopfion, hopfion
 from .linalg import (
     InconsistentSystemError,
     LinearSolution,
@@ -60,6 +61,8 @@ from .linalg import (
     solve,
 )
 from .matrix import M2R, Matrix
+from .maxwell import MaxwellField, MaxwellMode, MaxwellState
+from .maxwell_fft import periodic_maxwell_field
 from .mechanisms import Actor, Freedom, Joint, Machine, Mechanism
 from .numbers import Binary, Complex, Dual, Hypercomplex, RootSet
 from .plane_geometry import (
@@ -107,6 +110,12 @@ __all__ = [
     "LinearSolution",
     "M2R",
     "Machine",
+    "MaxwellField",
+    "MaxwellMode",
+    "MaxwellState",
+    "hopfion",
+    "exact_hopfion",
+    "periodic_maxwell_field",
     "Matrix",
     "Mechanism",
     "Parameter",

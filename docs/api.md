@@ -15,6 +15,7 @@ This is a task-oriented map of the implemented interfaces. Mathematical domains 
 | Surface geometry and fields | `CoordinateMap`, `ParametricSurface`, `torus`, `mobius_strip`, `SurfaceSeam`, `SeamReport` | [Surface fields](fields.md#coordinate-maps-and-surfaces) |
 | Full numerical algebra | `Ultra`, `ONE`, `ZERO`, `I`, `J`, `EPS`; `core` | [Foundation](mathematics.md) |
 | Closed numerical planes | `Complex`, `Binary`, `Dual`, `RootSet`; `numbers` | [Geometry](unified-geometry.md) |
+| Electromagnetism in 3+1 | `MaxwellMode`, `MaxwellField`, `MaxwellState`, `periodic_maxwell_field`, `hopfion`, `exact_hopfion` | [Maxwell fields](maxwell.md) |
 | Exact square-root families | `ExactUltra.square_roots()`, `ExactSquareRoots.at/representatives`, `.count` | [Rational branches](five-experiments.md#all-rational-square-roots) |
 | Exact field continuation | `PolynomialCauchyField(plane, trace, normal)` | [Polynomial Cauchy data](five-experiments.md#one-pair-of-cauchy-data) |
 | Projective quadric | `SegreQuadricPoint.from_projective/to_projective` | [Rulings and tangents](five-experiments.md#two-rulings-and-a-tangent) |
