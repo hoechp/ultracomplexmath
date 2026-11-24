@@ -8,6 +8,8 @@ $$F:M\times T\longrightarrow\mathcal A_{\mathbb R}.$$
 
 Space and time are **additional inputs**. The eight coefficients and the multiplication laws of `Ultra` retain their existing meanings. In particular, `i`, `j` and `eps` never become spatial coordinate axes. This release provides numerical fields; it does not implicitly convert `ExactUltra` to floating point.
 
+The [Maxwell module](maxwell.md) evolves a physical vector of three packed field components in this spacetime. Each component is available as an `UltraField` for the slices and grids below.
+
 ## A value with a location, without a field
 
 ```python

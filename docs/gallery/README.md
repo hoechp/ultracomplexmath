@@ -2,7 +2,11 @@
 
 [Documentation](../README.md) · [Engineering lab](impact.md) · [Waves and robotics](applications.md) · [Exact geometry](../unified-geometry.md) · [Research](../research/README.md)
 
+**[Linked light](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/maxwell.html)** lets you rotate linked Hopfion field lines, move through slices of electromagnetic waves and compare observers at the same event. [Equations and Python](../maxwell.md) · [Offline lab](maxwell.html).
+
 **[Start with the winding-root and damping lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/polar-motion.html)** · [Open the geometry lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/lab.html) · [Open the engineering lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/impact-lab.html)
+
+**[Listen to a zero divisor](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/five-experiments.html#sound)** and explore exact roots, three field equations, a ruled quadric and polarization in the same [five-experiment lab](../five-experiments.md).
 
 **[Four bars at dead centre](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/four-bar.html)** follows two assemblies through their common toggle. Choose a branch and test a velocity that passes the linearized equations. [Offline lab](four-bar.html) · [Exact model and derivation](../four-bar.md).
 

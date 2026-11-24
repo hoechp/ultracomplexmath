@@ -10,6 +10,10 @@ The geometric follow-up adds G16–G19 and changes the suggested sequence: full 
 
 The [engineering showcase](../gallery/impact.md) now gives bounded baselines for G05/G14/G19: a two-polarization optical stack with tolerance prediction, an identifiable impedance fit with frequency-information analysis, and discrete critical damping with exact differentiated energy balance. Its [formula audit](../formula-compression.md) also makes G10 concrete: the packed solve now reuses the shared LU and body solution. These examples do not complete continuous operator functions, general scattering networks or application validation against measured devices.
 
+The [vacuum Maxwell solver](../maxwell.md) advances G12/G17/G18 with arbitrary transverse modes, periodic samples, local observer transformations and an exact knotted field on spacetime. Material interfaces, sources and general PDEs remain open.
+
+The [five experiments](../five-experiments.md) implement exact square-root families (G15), exact tangent-quadric coordinates and Stokes/coherency transformations (G17), and polynomial Cauchy data for all three planes (G18).
+
 ## Correctness before new promises
 
 The huge-integer exponent bug is fixed: `I**(2**53+1)==I`. Rational coefficients, exact matrices/polynomials and geometry are implemented. The renewed review found a different defect: channel reconstruction erased the `j` coefficient of `exp(1+i*h+ij*h)`. Version 0.4.0 uses component-preserving factors and scaled real exponentials, with tests down to h=`1e-100` and large compensated split exponents.

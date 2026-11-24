@@ -1,5 +1,6 @@
 """The full union of complex, split-complex and dual algebra, with exact geometry."""
 
+from .cauchy import PolynomialCauchyField
 from .coordinates import Cartesian2D, Polar2D
 from .core import (
     BASIS,
@@ -13,7 +14,18 @@ from .core import (
     NonInvertibleError,
     Ultra,
 )
-from .exact import QEPS, QI, QJ, QONE, QZERO, ExactBinary, ExactComplex, ExactDual, ExactUltra
+from .exact import (
+    QEPS,
+    QI,
+    QJ,
+    QONE,
+    QZERO,
+    ExactBinary,
+    ExactComplex,
+    ExactDual,
+    ExactSquareRoots,
+    ExactUltra,
+)
 from .exact_formula import ExactFormula, evaluate_exact
 from .exact_geometry import (
     CircleIntersection2D,
@@ -40,6 +52,7 @@ from .fields import (
 )
 from .formula import ExpressionError, Formula, evaluate, evaluate_system
 from .framework import BarFramework2D
+from .hopfion import exact_hopfion, hopfion
 from .linalg import (
     InconsistentSystemError,
     LinearSolution,
@@ -48,6 +61,8 @@ from .linalg import (
     solve,
 )
 from .matrix import M2R, Matrix
+from .maxwell import MaxwellField, MaxwellMode, MaxwellState
+from .maxwell_fft import periodic_maxwell_field
 from .mechanisms import Actor, Freedom, Joint, Machine, Mechanism
 from .numbers import Binary, Complex, Dual, Hypercomplex, RootSet
 from .plane_geometry import (
@@ -62,7 +77,9 @@ from .plane_geometry import (
     metric_reflect,
 )
 from .polar import PolarForm, UltraRoots
+from .polarization import ExactStokes
 from .polynomial import Polynomial, guess
+from .quadric import SegreQuadricPoint
 from .surfaces import ParametricSurface, SeamReport, SurfaceSeam, mobius_strip, torus
 from .transformations import (
     ChartCoordinate,
@@ -93,6 +110,12 @@ __all__ = [
     "LinearSolution",
     "M2R",
     "Machine",
+    "MaxwellField",
+    "MaxwellMode",
+    "MaxwellState",
+    "hopfion",
+    "exact_hopfion",
+    "periodic_maxwell_field",
     "Matrix",
     "Mechanism",
     "Parameter",
@@ -121,6 +144,10 @@ __all__ = [
     "solution_space",
     "solve",
     "ExactUltra",
+    "ExactSquareRoots",
+    "PolynomialCauchyField",
+    "SegreQuadricPoint",
+    "ExactStokes",
     "ExactComplex",
     "ExactBinary",
     "ExactDual",

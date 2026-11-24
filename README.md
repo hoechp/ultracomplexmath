@@ -8,6 +8,8 @@ $$\mathcal A_K=K[i,j,\varepsilon]/(i^2+1,\;j^2-1,\;\varepsilon^2),\qquad ij=ji,\
 
 Choose numerical real coefficients (`Ultra`) or exact rational coefficients (`ExactUltra`). The mixed directions `ij`, `eps*i`, `eps*j` and `eps*i*j` are first-class parts of the same number. The goal is a coherent mathematical toolbox that brings the strengths of all three algebras into shared computations.
 
+**[Explore linked light and the Maxwell field in 3+1 dimensions](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/maxwell.html)** · [Physics, exact Hopfion and Python examples](docs/maxwell.md)
+
 **[Draw a loop and predict the returning square root](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/field-loops.html)** · [Download the offline lab](docs/gallery/field-loops.html)
 
 **[Follow a square root around a loop in your browser](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/polar-motion.html)** · [Polar coordinates, roots and dynamics in Python](docs/polar-motion.md)
@@ -22,6 +24,8 @@ The [geometry inside the full union](docs/research/geometric-structure.md) expla
 
 | Explore | What comes together | Run from a checkout |
 | --- | --- | --- |
+| [Linked light](docs/maxwell.md) | Evolve electromagnetic initial data, compare moving observers and trace linked lines of an exact vacuum pulse | `python -m examples.maxwell` |
+| [Five experiments](docs/five-experiments.md) · [Open the lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/five-experiments.html) | Count rational roots, continue a field, trace a ruled surface, measure polarization and hear a zero divisor | `python -m examples.five_experiments` |
 | [Four bars at dead centre](docs/four-bar.md) | Find the two finite assembly motions hidden in one singular pose, then try a velocity that fails at second order | `python -m examples.four_bar` |
 | [Through the pole](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/projective-paths.html) | Follow two projective channels through infinity and a zero of the reflected optical field | `python -m examples.projective_paths` |
 | [Draw a field loop](docs/polar-motion.md#draw-your-own-field-loop) | Draw around either or both singularities of `F(z) = z − j` and compare the two phase lifts | `python -m examples.field_loops` |

@@ -14,7 +14,7 @@ ultracomplex '1' --roots 2 --json
 ultracomplex '0' --roots 3 --json
 ```
 
-`--polar` returns the unit coordinates and both phases in radians. `--roots N` gives one representative per sheet in the public eight-coefficient order. In JSON, `count` is an integer or the string `"infinite"`. For an infinite family, `free_tangents` names the channels whose complex tangent can be freely chosen. Representatives use zero for those tangents. Both views use numerical arithmetic and accept `--legacy`. Use the default coefficient view for `--exact`.
+`--polar` returns the unit coordinates and both phases in radians. `--roots N` gives one representative per sheet in the public eight-coefficient order. In JSON, `count` is an integer or the string `"infinite"`. For an infinite family, `free_tangents` names the channels whose complex tangent can be freely chosen. Representatives use zero for those tangents. Both numerical views accept `--legacy`. Use `--exact --roots 2` to list [rational square roots](five-experiments.md#all-rational-square-roots). Exact JSON identifies the coefficient domain as `Q` and encodes each coefficient as a pair of numerator and denominator strings.
 
 ## Follow a root around a loop
 

@@ -5,13 +5,15 @@ from __future__ import annotations
 import argparse
 import json
 import math
+from collections.abc import Iterator
 
 from .core import Ultra
+from .exact import ExactSquareRoots, ExactUltra
 from .formula import evaluate
 from .polar import UltraRoots
 
 
-def _print_roots(roots: UltraRoots, as_json: bool) -> None:
+def _print_roots(roots: UltraRoots | ExactSquareRoots, as_json: bool) -> None:
     count = roots.count
     strata = roots.strata
     free = [
@@ -27,10 +29,18 @@ def _print_roots(roots: UltraRoots, as_json: bool) -> None:
             "sheet_counts": roots.sheet_counts,
             "free_tangents": free,
         }
+        if isinstance(roots, ExactSquareRoots):
+            metadata["coefficient_domain"] = "Q"
         # Stream the finite list of representatives even for parametrized families.
         print(json.dumps(metadata)[:-1] + ', "representatives": [', end="")
-        for i, root in enumerate(roots.representatives()):
-            print((", " if i else "") + json.dumps(root.coefficients, allow_nan=False), end="")
+        representatives: Iterator[ExactUltra | Ultra] = roots.representatives()
+        for i, root in enumerate(representatives):
+            coefficients = (
+                [[str(c.numerator), str(c.denominator)] for c in root]
+                if isinstance(root, ExactUltra)
+                else root.coefficients
+            )
+            print((", " if i else "") + json.dumps(coefficients, allow_nan=False), end="")
         print("]}")
     else:
         print("Roots:", "infinitely many" if free else count)
@@ -73,7 +83,7 @@ def main() -> None:
         "--roots",
         type=int,
         metavar="N",
-        help="Describe all numerical Nth roots and print one representative per sheet",
+        help="List Nth-root sheets (exact rational square roots with --exact)",
     )
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument(
@@ -87,16 +97,19 @@ def main() -> None:
         help="Accept implicit multiplication and original word operators",
     )
     args = parser.parse_args()
-    if args.exact and (args.polar or args.roots is not None):
-        parser.error(
-            "--polar and --roots use numerical coordinates and cannot be combined with --exact"
-        )
+    if args.exact and args.polar:
+        parser.error("--polar requires numerical coordinates")
+    if args.exact and args.roots not in (None, 2):
+        parser.error("--exact --roots supports square roots (N=2)")
     try:
         if args.exact:
             from .exact_formula import evaluate_exact
 
             exact = evaluate_exact(args.expression)
-            print(exact.to_json() if args.json else str(exact))
+            if args.roots == 2:
+                _print_roots(exact.square_roots(), args.json)
+            else:
+                print(exact.to_json() if args.json else str(exact))
             return
         if args.legacy:
             from .expressions import Calculation

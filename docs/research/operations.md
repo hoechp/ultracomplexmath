@@ -30,7 +30,7 @@ C = complex (`i²=-1`), S = split-complex (`j²=1`), D = dual (`eps²=0`). Juxta
 | SD | Root validity and tangent solvability can differ by sector: null-boundary and bifurcation diagnostics. |
 | CSD | Chosen body roots have tangent equations; zero-body factors can produce free families or no roots: multiplicity-aware continuation. |
 
-**Status:** numerical principal functions, independent logarithm branches and closed 2D root APIs exist. [Full numerical root families](../polar-motion.md) include empty sets and free tangents. Exact integer powers and rational principal square roots exist; even `ExactUltra(8)**Fraction(1,3)` is currently unsupported. Rational-power and complete-root contracts are separate tasks [G02/G15](roadmap.md).
+**Status:** numerical principal functions, independent logarithm branches and closed 2D root APIs exist. [Full numerical root families](../polar-motion.md) include empty sets and free tangents. Exact integer powers and [all rational square roots](../five-experiments.md#all-rational-square-roots) exist; even `ExactUltra(8)**Fraction(1,3)` is currently unsupported. Rational-power and complete-root contracts are separate tasks [G02/G15](roadmap.md).
 
 ## Exponential and trigonometry
 

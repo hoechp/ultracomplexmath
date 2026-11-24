@@ -133,7 +133,7 @@ For any Jones matrix $G$ with determinant one, $H\mapsto GHG^\dagger$ preserves 
 
 This established bridge is described by [Han, Kim and Noz](https://arxiv.org/abs/physics/9707016). Our rational examples check determinant preservation and explicit rotation/boost coefficients. An arbitrary determinant-one matrix need not be passive; attenuation factors must be restored for a physical device. Depolarizing Mueller maps require a larger model. The algebra alone does not identify physical space-time with polarization.
 
-In the library, a Jones state can occupy the two split components of a CS value. Multiplication by $e^{ij\phi/2}$ performs the displayed relative phase change, while $e^{j\rho}$ performs the reciprocal amplitude change. These are direct mixed-generator meanings. General polarization mixing uses `ModeOperator`; CD coefficients can additionally carry first variations if desired. A reusable coherency/Stokes API and physical component models remain unimplemented.
+In the library, a Jones state can occupy the two split components of a CS value. Multiplication by $e^{ij\phi/2}$ performs the displayed relative phase change, while $e^{j\rho}$ performs the reciprocal amplitude change. These are direct mixed-generator meanings. General polarization mixing uses `ModeOperator`; CD coefficients can additionally carry first variations if desired. The [exact Stokes API](../five-experiments.md#light-and-its-observable-phase) now converts Jones and coherency states and propagates them through these operators.
 
 ## A full polar form for all eight dimensions
 
@@ -216,7 +216,7 @@ T(\mathbb {CP}^1\times\mathbb {CP}^1)\cong TQ.}$$
 
 Here $T$ is the holomorphic tangent bundle, viewed also as a real eight-dimensional manifold. The quadric has complex dimension two; its tangent bundle has complex dimension four. Thus the split factors identify two line families on one surface, the complex directions provide its projective complex geometry, and the dual extension records tangent directions on that surface.
 
-This identification is derived from the chart laws above. The probe checks rational examples of the quadric equation, its linearized equation, unit rescaling and all four chart combinations. It does not establish global topology by sampling; that conclusion uses the gluing argument. `ExactUltra` supplies a rational subset of this geometry, not all complex points.
+The [reversible exact Segre map](../five-experiments.md#two-rulings-and-a-tangent) implements this identification over Gaussian-rational dual coordinates. The identification follows from the chart laws above. The probe checks rational examples of the quadric equation, its linearized equation, unit rescaling and all four chart combinations. It does not establish global topology by sampling; that conclusion uses the gluing argument. `ExactUltra` supplies a rational subset of this geometry, not all complex points.
 
 A further algebraic connection is the determinant
 
