@@ -352,19 +352,12 @@ class ExactUltra:
 
     def sqrt(self) -> ExactUltra:
         """Principal channel square root, if every coefficient is rational."""
-        result = []
-        for z, w in self.channels():
-            if not z:
-                if w:
-                    raise DomainError("A nonzero pure tangent has no square root")
-                result.append((ExactComplex(), ExactComplex()))
-                continue
-            radius = _rational_sqrt(z.determinant)
-            a = _rational_sqrt((radius + z.real) / 2)
-            b = _rational_sqrt((radius - z.real) / 2)
-            root = ExactComplex(a, -b if z.imag < 0 else b)
-            result.append((root, w / (2 * root)))
-        return ExactUltra.from_channels(result[0], result[1])
+        plus, minus = self.channels()
+        return ExactUltra.from_channels(_channel_sqrt(plus), _channel_sqrt(minus))
+
+    def square_roots(self) -> ExactSquareRoots:
+        """All square roots with rational coefficients, including singular families."""
+        return ExactSquareRoots(self)
 
     @property
     def primal(self) -> ExactUltra:
@@ -430,6 +423,94 @@ class ExactUltra:
                 raise ValueError("Expected string numerator/denominator pairs")
             result.append(Fraction(int(pair[0]), int(pair[1])))
         return cls(*result)
+
+
+def _channel_sqrt(channel: ExactChannel) -> ExactChannel:
+    z, w = channel
+    if not z:
+        if w:
+            raise DomainError("A nonzero pure tangent has no square root")
+        return ExactComplex(), ExactComplex()
+    radius = _rational_sqrt(z.determinant)
+    a = _rational_sqrt((radius + z.real) / 2)
+    b = _rational_sqrt((radius - z.real) / 2)
+    root = ExactComplex(a, -b if z.imag < 0 else b)
+    return root, w / (2 * root)
+
+
+_ZERO_COMPLEX = ExactComplex()
+
+
+@dataclass(frozen=True, init=False, slots=True)
+class ExactSquareRoots:
+    """Solutions over Q[i, j, eps]. A zero channel admits any Gaussian-rational tangent."""
+
+    degree: ClassVar[int] = 2
+    strata: tuple[str, str]
+    _sheets: tuple[tuple[ExactChannel, ...], tuple[ExactChannel, ...]]
+
+    def __init__(self, value: ExactUltra) -> None:
+        def sheets(channel: ExactChannel) -> tuple[ExactChannel, ...]:
+            try:
+                u, v = _channel_sqrt(channel)
+            except DomainError:
+                return ()
+            return ((u, v), (-u, -v)) if u else ((u, v),)
+
+        p, m = value.channels()
+
+        def kind(channel: ExactChannel) -> str:
+            z, w = channel
+            return "regular" if z else ("nilpotent" if w else "zero")
+
+        object.__setattr__(self, "strata", (kind(p), kind(m)))
+        object.__setattr__(self, "_sheets", (sheets(p), sheets(m)))
+
+    @property
+    def sheet_counts(self) -> tuple[int, int]:
+        plus, minus = self._sheets
+        return len(plus), len(minus)
+
+    @property
+    def count(self) -> int | float:
+        p, m = self.sheet_counts
+        if p * m and 1 in (p, m):
+            return math.inf
+        return p * m
+
+    def at(
+        self,
+        plus: int = 0,
+        minus: int = 0,
+        *,
+        plus_tangent: ExactComplex = _ZERO_COMPLEX,
+        minus_tangent: ExactComplex = _ZERO_COMPLEX,
+    ) -> ExactUltra:
+        if not all(self.sheet_counts):
+            raise DomainError("No square root with rational coefficients")
+
+        def select(
+            sheets: tuple[ExactChannel, ...], index: int, tangent: ExactComplex
+        ) -> ExactChannel:
+            if type(index) is not int or not 0 <= index < len(sheets):
+                raise ValueError("Sheet index is outside the channel's range")
+            if not isinstance(tangent, ExactComplex):
+                raise TypeError("Free tangents require an ExactComplex value")
+            u, v = sheets[index]
+            if u and tangent:
+                raise ValueError("Only a zero channel admits a free tangent")
+            return u, v if u else tangent
+
+        p, m = self._sheets
+        return ExactUltra.from_channels(
+            select(p, plus, plus_tangent), select(m, minus, minus_tangent)
+        )
+
+    def representatives(self) -> Iterator[ExactUltra]:
+        """One representative per sheet, with free tangents set to zero."""
+        for plus in self._sheets[0]:
+            for minus in self._sheets[1]:
+                yield ExactUltra.from_channels(plus, minus)
 
 
 QZERO = ExactUltra()

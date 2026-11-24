@@ -15,6 +15,10 @@ This is a task-oriented map of the implemented interfaces. Mathematical domains 
 | Surface geometry and fields | `CoordinateMap`, `ParametricSurface`, `torus`, `mobius_strip`, `SurfaceSeam`, `SeamReport` | [Surface fields](fields.md#coordinate-maps-and-surfaces) |
 | Full numerical algebra | `Ultra`, `ONE`, `ZERO`, `I`, `J`, `EPS`; `core` | [Foundation](mathematics.md) |
 | Closed numerical planes | `Complex`, `Binary`, `Dual`, `RootSet`; `numbers` | [Geometry](unified-geometry.md) |
+| Exact square-root families | `ExactUltra.square_roots()`, `ExactSquareRoots.at/representatives`, `.count` | [Rational branches](five-experiments.md#all-rational-square-roots) |
+| Exact field continuation | `PolynomialCauchyField(plane, trace, normal)` | [Polynomial Cauchy data](five-experiments.md#one-pair-of-cauchy-data) |
+| Projective quadric | `SegreQuadricPoint.from_projective/to_projective` | [Rulings and tangents](five-experiments.md#two-rulings-and-a-tangent) |
+| Polarization | `ExactStokes.from_jones/from_coherency`, `.through`, `.interval` | [Jones and Stokes](five-experiments.md#light-and-its-observable-phase) |
 | Exact coefficients | `ExactUltra`, `ExactComplex`, `ExactBinary`, `ExactDual`, `QONE`, `QZERO`, `QI`, `QJ`, `QEPS`; `exact` | [Exact arithmetic](exact-arithmetic.md) |
 | Numerical formulas | `Formula`, `evaluate`, `evaluate_system`; `formula` | [Getting started](getting-started.md) |
 | Exact formulas and JSON | `ExactFormula`, `evaluate_exact`, exact values' `to_json` / `from_json` | [Exact arithmetic](exact-arithmetic.md) |

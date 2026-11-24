@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Add exact square-root families, polynomial Cauchy fields, reversible tangent-quadric coordinates and Jones/Stokes optics. Explore them with an audible two-path filter in the [five-experiment lab](docs/five-experiments.md).
 - Add exact circle intersections and pinned planar bar frameworks with driven velocities and second-order compatibility. The offline four-bar lab follows both finite assemblies through their toggles.
 
 - Preserve tiny mixed components of general numerical quotients and accept finite answers even when an intermediate channel would overflow.

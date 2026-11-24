@@ -58,10 +58,16 @@ def test_cli_polar_and_root_families():
         data = json.loads(cli(expr, "--roots", "3", "--json").stdout)
         assert data["count"] == count and data["free_tangents"] == free
         assert len(data["representatives"]) == math.prod(data["sheet_counts"])
+    exact = json.loads(cli("(1+j)/2", "--exact", "--roots", "2", "--json").stdout)
+    assert exact["count"] == "infinite" and exact["free_tangents"] == ["-"]
+    assert exact["coefficient_domain"] == "Q"
+    assert [root[0] for root in exact["representatives"]] == [["1", "2"], ["-1", "2"]]
+    assert json.loads(cli("2", "--exact", "--roots", "2", "--json").stdout)["count"] == 0
     assert cli("2i", "--legacy", "--polar").returncode == 0
     for expr, options in [
         ("0", ["--polar"]),
-        ("1", ["--exact", "--roots", "2"]),
+        ("1", ["--exact", "--roots", "3"]),
+        ("1", ["--exact", "--polar"]),
         ("1", ["--roots", "-1"]),
         ("1", ["--roots", "2", "--polar"]),
     ]:

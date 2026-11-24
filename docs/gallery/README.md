@@ -4,6 +4,8 @@
 
 **[Start with the winding-root and damping lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/polar-motion.html)** · [Open the geometry lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/lab.html) · [Open the engineering lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/impact-lab.html)
 
+**[Listen to a zero divisor](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/five-experiments.html#sound)** and explore exact roots, three field equations, a ruled quadric and polarization in the same [five-experiment lab](../five-experiments.md).
+
 **[Four bars at dead centre](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/four-bar.html)** follows two assemblies through their common toggle. Choose a branch and test a velocity that passes the linearized equations. [Offline lab](four-bar.html) · [Exact model and derivation](../four-bar.md).
 
 **[Through the pole](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/projective-paths.html)** shows simultaneous chart and tangent readouts for a two-pole path and reflection at the Brewster angle. [Offline lab](projective-paths.html) · [Python and model guide](../unified-geometry.md#follow-a-path-through-a-pole).

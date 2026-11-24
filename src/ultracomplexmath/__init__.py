@@ -1,5 +1,6 @@
 """The full union of complex, split-complex and dual algebra, with exact geometry."""
 
+from .cauchy import PolynomialCauchyField
 from .coordinates import Cartesian2D, Polar2D
 from .core import (
     BASIS,
@@ -13,7 +14,18 @@ from .core import (
     NonInvertibleError,
     Ultra,
 )
-from .exact import QEPS, QI, QJ, QONE, QZERO, ExactBinary, ExactComplex, ExactDual, ExactUltra
+from .exact import (
+    QEPS,
+    QI,
+    QJ,
+    QONE,
+    QZERO,
+    ExactBinary,
+    ExactComplex,
+    ExactDual,
+    ExactSquareRoots,
+    ExactUltra,
+)
 from .exact_formula import ExactFormula, evaluate_exact
 from .exact_geometry import (
     CircleIntersection2D,
@@ -62,7 +74,9 @@ from .plane_geometry import (
     metric_reflect,
 )
 from .polar import PolarForm, UltraRoots
+from .polarization import ExactStokes
 from .polynomial import Polynomial, guess
+from .quadric import SegreQuadricPoint
 from .surfaces import ParametricSurface, SeamReport, SurfaceSeam, mobius_strip, torus
 from .transformations import (
     ChartCoordinate,
@@ -121,6 +135,10 @@ __all__ = [
     "solution_space",
     "solve",
     "ExactUltra",
+    "ExactSquareRoots",
+    "PolynomialCauchyField",
+    "SegreQuadricPoint",
+    "ExactStokes",
     "ExactComplex",
     "ExactBinary",
     "ExactDual",

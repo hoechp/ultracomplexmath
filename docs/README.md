@@ -4,6 +4,7 @@ Ultracomplex Math combines complex, split-complex and dual numbers, including th
 
 | Your goal | Start here | Continue with |
 | --- | --- | --- |
+| Explore five sides of the algebra | [Five experiments](five-experiments.md) | [Offline laboratory](gallery/five-experiments.html) |
 | Follow a square root around a loop | [Browser lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/polar-motion.html) | [Polar and motion APIs](polar-motion.md) |
 | See a practical payoff | [Engineering showcase](gallery/impact.md) | [Interactive lab](gallery/impact-lab.html), [models and verification](gallery/impact.md#reproduce-and-extend) |
 | Simplify a model and its derivatives | [Formula compression](formula-compression.md) | [Linear algebra APIs](api.md), [exact arithmetic](exact-arithmetic.md) |

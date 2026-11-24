@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#0e2029" />
+    <title>Five experiments · Ultracomplex Math</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #e9f2f3;
+        --soft: #a8bec6;
+        --line: #3a525e;
+        --a: #77dfbc;
+        --b: #ffb777;
+        --c: #aeadff;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #0e2029;
+        color: var(--ink);
+        font:
+          16px/1.5 system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 940px;
+        margin: auto;
+        padding: 32px 24px 60px;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 14px;
+        font-size: 0.85rem;
+        color: var(--soft);
+      }
+      a {
+        color: var(--a);
+      }
+      header a {
+        text-decoration: none;
+      }
+      h1,
+      h2 {
+        font-family: Georgia, serif;
+        font-weight: 400;
+        line-height: 1.12;
+        margin: 0.7em 0 0.32em;
+      }
+      h1 {
+        font-size: clamp(2.5rem, 7vw, 4.8rem);
+        letter-spacing: -0.04em;
+      }
+      h2 {
+        font-size: clamp(1.7rem, 4vw, 2.5rem);
+      }
+      p {
+        max-width: 70ch;
+        margin: 0.5em 0 1em;
+        color: var(--soft);
+      }
+      nav,
+      .buttons,
+      .controls,
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+      nav {
+        margin: 22px 0 34px;
+        border-bottom: 1px solid var(--line);
+        gap: 4px;
+      }
+      nav a {
+        display: inline-block;
+        text-decoration: none;
+        color: var(--soft);
+        padding: 9px 14px;
+        border-bottom: 3px solid transparent;
+      }
+      nav a[aria-current="page"] {
+        border-color: var(--a);
+        color: var(--ink);
+      }
+      label {
+        display: inline-flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 9px;
+        font-size: 0.95rem;
+      }
+      input,
+      select,
+      button {
+        font: inherit;
+        color: var(--ink);
+        accent-color: var(--a);
+      }
+      input[type="range"] {
+        width: min(36vw, 165px);
+      }
+      select,
+      button {
+        background: #17303d;
+        border: 1px solid #65808a;
+        padding: 6px 10px;
+        border-radius: 4px;
+      }
+      button {
+        cursor: pointer;
+      }
+      button:hover {
+        border-color: var(--a);
+      }
+      :focus-visible {
+        outline: 2px solid var(--a);
+        outline-offset: 3px;
+      }
+      .controls {
+        gap: 12px 24px;
+        margin: 18px 0;
+      }
+      .panel {
+        background: #122a35;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: clamp(12px, 3vw, 24px);
+      }
+      .legend {
+        gap: 8px 20px;
+        margin: 0 0 8px;
+        font-size: 0.93rem;
+      }
+      .a {
+        color: var(--a);
+      }
+      .b {
+        color: var(--b);
+      }
+      .c {
+        color: var(--c);
+      }
+      .read {
+        display: block;
+        margin: 0.85em 0 0;
+        font-variant-numeric: tabular-nums;
+        color: var(--ink);
+      }
+      svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 350px;
+      }
+      svg text {
+        fill: #bed0d6;
+        font:
+          14px system-ui,
+          sans-serif;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+        font-variant-numeric: tabular-nums;
+      }
+      th,
+      td {
+        padding: 7px 2px;
+        border-bottom: 1px solid var(--line);
+      }
+      th {
+        color: var(--a);
+        font-weight: 500;
+      }
+      .buttons {
+        margin-top: 16px;
+      }
+      .note {
+        font-size: 0.9em;
+      }
+      .symbol {
+        font:
+          italic 1.2em Georgia,
+          serif;
+        color: var(--a);
+      }
+      @media (max-width: 560px) {
+        main {
+          padding: 18px 12px 32px;
+        }
+        nav a {
+          padding: 8px;
+        }
+        nav {
+          margin-bottom: 22px;
+        }
+        .panel {
+          padding: 12px;
+        }
+        svg text {
+          font-size: 17px;
+        }
+        input[type="range"] {
+          width: 112px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <span>ULTRACOMPLEX MATH</span
+        ><a href="https://github.com/hoechp/ultracomplexmath/blob/master/docs/five-experiments.md"
+          >Formulas &amp; Python ↗</a
+        >
+      </header>
+      <h1>Five experiments</h1>
+      <p>Explore what changes when an imaginary unit squares to −1, +1 or 0.</p>
+      <nav aria-label="Experiments">
+        <a href="#roots">Roots</a><a href="#fields">Fields</a><a href="#quadric">Quadric</a
+        ><a href="#light">Light</a><a href="#sound">Sound</a>
+      </nav>
+      <section id="roots">
+        <h2>What squares to one?</h2>
+        <p>
+          A sign can change in either split channel. Try the idempotent (1+j)/2 to free an entire tangent
+          direction.
+        </p>
+        <div class="controls">
+          <label
+            >Square
+            <select id="radicand"></select></label
+          ><label id="free-label"
+            >Free tangent sample <input id="free" type="range" min="-2" max="2" value="0" step="1"
+          /></label>
+        </div>
+        <div class="panel">
+          <div id="root-summary" class="legend"></div>
+          <table id="root-table">
+            <caption>
+              Coefficients of each displayed root
+            </caption>
+            <thead>
+              <tr>
+                <th>1</th>
+                <th>j</th>
+                <th>i</th>
+                <th>ij</th>
+                <th>ε</th>
+                <th>εj</th>
+                <th>εi</th>
+                <th>εij</th>
+              </tr>
+            </thead>
+            <tbody id="root-rows"></tbody>
+          </table>
+          <output class="read" id="root-read"></output>
+        </div>
+      </section>
+      <section id="fields" hidden>
+        <h2>One trace, three fields</h2>
+        <p>
+          All three fields start with (1−x²)² and the same normal slope x/2. Move away from y = 0 and
+          watch their cross-sections separate.
+        </p>
+        <div class="controls">
+          <label>Slice y <input id="slice" type="range" min="0" max="12" value="10" /></label>
+        </div>
+        <div class="panel">
+          <div class="legend">
+            <span class="a">● Harmonic · i² = −1</span><span class="b">● Wave · j² = +1</span
+            ><span class="c">● Shear · ε² = 0</span>
+          </div>
+          <svg id="field-svg" viewBox="0 0 660 280" role="img" aria-label="Field values versus x"></svg
+          ><output class="read" id="field-read"></output>
+        </div>
+      </section>
+      <section id="quadric" hidden>
+        <h2>Two straight lines through a saddle</h2>
+        <p>
+          Fix one channel and vary the other. Each traces a straight line on z = ab. Varying both with
+          unit speed produces the violet tangent arrow.
+        </p>
+        <div class="controls">
+          <label>Channel a <input id="qa" type="range" min="0" max="8" value="6" /></label
+          ><label>Channel b <input id="qb" type="range" min="0" max="8" value="3" /></label>
+        </div>
+        <div class="panel">
+          <div class="legend">
+            <span class="a">● Fixed a</span><span class="b">● Fixed b</span
+            ><span class="c">● Tangent</span>
+          </div>
+          <svg
+            id="quadric-svg"
+            viewBox="0 0 660 320"
+            role="img"
+            aria-label="Projected real patch of the ruled quadric with selected point and tangent"
+          ></svg
+          ><output class="read" id="quadric-read"></output>
+        </div>
+      </section>
+      <section id="light" hidden>
+        <h2>Measure an invisible phase</h2>
+        <p>
+          A retarder shifts one Jones amplitude relative to the other. Track the measured Stokes
+          components on the S₁ = 0 section of the Poincaré sphere.
+        </p>
+        <div class="controls">
+          <label
+            >Polarized fraction
+            <select id="fraction">
+              <option value="0">0%</option>
+              <option value="1">50%</option>
+              <option value="2" selected>100%</option>
+            </select></label
+          ><label>Retardance <input id="angle" type="range" min="0" max="32" value="8" /></label>
+        </div>
+        <div class="panel">
+          <div class="legend">
+            <span class="a">● State</span><span class="c">● Tangent per radian (scaled)</span>
+          </div>
+          <svg
+            id="light-svg"
+            viewBox="0 0 660 310"
+            role="img"
+            aria-label="Normalized Stokes trajectory and phase derivative"
+          ></svg
+          ><output class="read" id="light-read"></output>
+        </div>
+      </section>
+      <section id="sound" hidden>
+        <h2>Listen to a zero divisor</h2>
+        <p>
+          Mix a sine with a copy delayed by 1 ms. Choose a frequency, then compare the direct tone with
+          the sum and difference outputs. At full echo gain, one output can fall completely silent.
+        </p>
+        <div class="controls">
+          <label
+            >Echo gain
+            <select id="gain">
+              <option value="0">½</option>
+              <option value="1" selected>1</option>
+            </select></label
+          ><label>Frequency <input id="frequency" type="range" min="0" max="32" value="16" /></label>
+        </div>
+        <div class="panel">
+          <div class="legend">
+            <span class="a">● Sum power</span><span class="b">● Difference power</span>
+          </div>
+          <svg
+            id="sound-svg"
+            viewBox="0 0 660 280"
+            role="img"
+            aria-label="Power of the sum and difference filters versus frequency"
+          ></svg
+          ><output class="read" id="sound-read"></output>
+        </div>
+        <div class="buttons">
+          <button data-tone="dry">Play direct</button><button data-tone="sum">Play sum</button
+          ><button data-tone="difference">Play difference</button
+          ><output id="audio-read" role="status"></output>
+        </div>
+      </section>
+    </main>
+    <script id="experiment-data" type="application/json">
+      __DATA__
+    </script>
+    <script>
+      "use strict";
+      const data = JSON.parse(document.getElementById("experiment-data").textContent);
+      const $ = (id) => document.getElementById(id),
+        val = (id) => Number($(id).value);
+      const A = "#77dfbc",
+        B = "#ffb777",
+        C = "#aeadff",
+        grid = "#44616d";
+      const fmt = (n) => Number(n.toFixed(3)).toString();
+      function line(points, color, width = 2) {
+        return (
+          '<polyline fill="none" stroke="' +
+          color +
+          '" stroke-width="' +
+          width +
+          '" stroke-linejoin="round" points="' +
+          points.map((p) => p.join(",")).join(" ") +
+          '"/>'
+        );
+      }
+      function dot(x, y, c) {
+        return '<circle cx="' + x + '" cy="' + y + '" r="5" fill="' + c + '"/>';
+      }
+      function label(x, y, s) {
+        return '<text x="' + x + '" y="' + y + '">' + s + "</text>";
+      }
+      function arrow(x, y, dx, dy) {
+        const end = [x + dx, y + dy],
+          a = Math.atan2(dy, dx);
+        if (dx === 0 && dy === 0) return "";
+        return (
+          line([[x, y], end], C, 3) +
+          line(
+            [
+              [end[0] - 9 * Math.cos(a - 0.45), end[1] - 9 * Math.sin(a - 0.45)],
+              end,
+              [end[0] - 9 * Math.cos(a + 0.45), end[1] - 9 * Math.sin(a + 0.45)],
+            ],
+            C,
+            3,
+          )
+        );
+      }
+      function plot(id, xs, curves, lo, hi, xLabel, marker) {
+        const X = (x) => 54 + (548 * (x - xs[0])) / (xs.at(-1) - xs[0]),
+          Y = (y) => 232 - (201 * (y - lo)) / (hi - lo);
+        let s = "";
+        for (const y of [...new Set([lo, 0, hi])])
+          s +=
+            line(
+              [
+                [54, Y(y)],
+                [602, Y(y)],
+              ],
+              grid,
+              1,
+            ) + label(4, Y(y) + 4, fmt(y));
+        for (const x of [xs[0], (xs[0] + xs.at(-1)) / 2, xs.at(-1)]) s += label(X(x) - 10, 253, fmt(x));
+        s += label(323, 275, xLabel);
+        curves.forEach((ys, i) => {
+          s += line(
+            xs.map((x, k) => [X(x), Y(ys[k])]),
+            [A, B, C][i],
+            2.6,
+          );
+        });
+        if (marker !== undefined) {
+          const x = X(xs[marker]);
+          s += line(
+            [
+              [x, 30],
+              [x, 232],
+            ],
+            "#cadae0",
+            1,
+          );
+          curves.forEach((ys, i) => {
+            s += dot(x, Y(ys[marker]), [A, B, C][i]);
+          });
+        }
+        $(id).innerHTML = s;
+      }
+      function roots() {
+        const r = data.roots[val("radicand")],
+          free = r.sheets.includes(1) && r.count !== "0",
+          k = val("free");
+        $("free-label").hidden = !free;
+        $("free").disabled = !free;
+        $("root-summary").textContent =
+          r.count + " rational roots of " + r.label + " · sheets (+, −) = (" + r.sheets.join(", ") + ")";
+        const rows = r.samples[k + 2];
+        $("root-table").hidden = !rows.length;
+        $("root-rows").innerHTML = rows
+          .map((row) => "<tr>" + row.map((c) => "<td>" + c + "</td>").join("") + "</tr>")
+          .join("");
+        $("root-read").textContent = free
+          ? "Free tangent in each zero channel for this sample: " + (k ? k + " + i" : "0") + "."
+          : r.label === "ε"
+            ? "A square with zero body has zero tangent."
+            : r.label === "2"
+              ? "√2 lies outside the rational coefficient domain."
+              : "Every row squares exactly to " + r.label + ".";
+      }
+      function fields() {
+        const f = data.field,
+          k = val("slice"),
+          ys = f.slices[k],
+          all = ys.flat();
+        plot(
+          "field-svg",
+          f.x,
+          ys,
+          Math.min(-1, Math.floor(Math.min(...all))),
+          Math.max(1, Math.ceil(Math.max(...all))),
+          "x",
+        );
+        $("field-read").textContent =
+          "y = " +
+          fmt(f.y[k]) +
+          " · At x = 0: " +
+          ys.map((s) => fmt(s[(s.length - 1) / 2])).join("  /  ") +
+          " (harmonic, wave, shear).";
+      }
+      function quadric() {
+        const rows = data.quadric,
+          i = val("qa"),
+          j = val("qb"),
+          cols = rows[0].map((_, k) => rows.map((r) => r[k]));
+        const proj = ([x, y, z]) => [330 + 140 * x - 68 * y, 168 + 38 * x + 52 * y - 70 * z];
+        let s = "";
+        for (const path of [...rows, ...cols]) s += line(path.map(proj), grid, 1);
+        s += line(rows[i].map(proj), A, 3) + line(cols[j].map(proj), B, 3);
+        const [a, b, z, dz] = rows[i][j],
+          [px, py] = proj([a, b, z]),
+          [qx, qy] = proj([a + 0.43, b + 0.43, z + 0.43 * dz]);
+        $("quadric-svg").innerHTML = s + arrow(px, py, qx - px, qy - py) + dot(px, py, "#fff");
+        $("quadric-read").textContent =
+          "a = " +
+          fmt(a) +
+          " · b = " +
+          fmt(b) +
+          " · z = " +
+          fmt(z) +
+          " · tangent (1, 1, " +
+          fmt(dz) +
+          ").";
+      }
+      function light() {
+        const q = data.light[val("fraction")],
+          k = val("angle"),
+          [u, v, du, dv] = q[k],
+          X = (x) => 330 + 119 * x,
+          Y = (y) => 156 - 119 * y;
+        let s = '<circle cx="330" cy="156" r="119" fill="none" stroke="' + grid + '"/>';
+        s +=
+          line(
+            [
+              [197, 156],
+              [465, 156],
+            ],
+            grid,
+            1,
+          ) +
+          line(
+            [
+              [330, 24],
+              [330, 288],
+            ],
+            grid,
+            1,
+          ) +
+          label(466, 162, "S₂/S₀") +
+          label(342, 20, "S₃/S₀");
+        $("light-svg").innerHTML =
+          s +
+          line(
+            q.map((p) => [X(p[0]), Y(p[1])]),
+            A,
+            2.5,
+          ) +
+          arrow(X(u), Y(v), 30 * du, -30 * dv) +
+          dot(X(u), Y(v), A);
+        $("light-read").textContent =
+          fmt(data.degrees[k]) +
+          "° · normalized Stokes (S₂, S₃)/S₀ = (" +
+          fmt(u) +
+          ", " +
+          fmt(v) +
+          ") · slope (" +
+          fmt(du) +
+          ", " +
+          fmt(dv) +
+          ") per radian.";
+      }
+      function sound() {
+        const f = data.sound,
+          k = val("frequency"),
+          ys = f.curves[val("gain")],
+          q = ys[k];
+        plot("sound-svg", f.hz, [ys.map((p) => p[0]), ys.map((p) => p[1])], 0, 1, "Hz", k);
+        const delay = (d) => (d === null ? "undefined at silence" : fmt(d) + " samples");
+        $("sound-read").textContent =
+          fmt(f.hz[k]) +
+          " Hz · power (sum, difference) = (" +
+          fmt(q[0]) +
+          ", " +
+          fmt(q[1]) +
+          ") · group delay: " +
+          delay(q[2]) +
+          " / " +
+          delay(q[3]) +
+          ".";
+        $("audio-read").textContent = "";
+      }
+      let context, source;
+      async function play(tone) {
+        const audio = $("audio-read"),
+          f = data.sound,
+          k = val("frequency"),
+          hz = f.hz[k],
+          g = val("gain") ? 1 : 0.5;
+        const power = f.curves[val("gain")][k][tone === "sum" ? 0 : 1];
+        try {
+          context ??= new AudioContext();
+          await context.resume();
+          if (source) {
+            source.stop();
+            source = null;
+          }
+          if (tone !== "dry" && power === 0) {
+            audio.textContent = "Silent · this channel cancels exactly.";
+            return;
+          }
+          const duration = 0.85,
+            n = Math.round(duration * context.sampleRate),
+            buf = context.createBuffer(1, n, context.sampleRate),
+            out = buf.getChannelData(0);
+          const sign = tone === "sum" ? 1 : -1,
+            lag = f.delay / f.rate;
+          for (let j = 0; j < n; j++) {
+            const t = j / context.sampleRate,
+              dry = Math.sin(2 * Math.PI * hz * t);
+            const sample =
+              tone === "dry" ? dry : (dry + sign * g * Math.sin(2 * Math.PI * hz * (t - lag))) / (1 + g);
+            out[j] = 0.16 * Math.min(1, t / 0.025, (duration - t) / 0.035) * sample;
+          }
+          const node = context.createBufferSource();
+          node.buffer = buf;
+          node.connect(context.destination);
+          node.onended = () => {
+            node.disconnect();
+            if (source === node) source = null;
+          };
+          source = node;
+          node.start();
+          audio.textContent = "Played " + tone + " at " + fmt(hz) + " Hz.";
+        } catch {
+          audio.textContent = "Audio unavailable in this browser. The plotted powers show the response.";
+        }
+      }
+      data.roots.forEach((r, i) => $("radicand").add(new Option(r.label, i)));
+      const renderers = { roots, fields, quadric, light, sound };
+      function page() {
+        const key = Object.hasOwn(renderers, location.hash.slice(1)) ? location.hash.slice(1) : "roots";
+        for (const name of Object.keys(renderers)) $(name).hidden = name !== key;
+        document.querySelectorAll("nav a").forEach((a) => {
+          if (a.hash === "#" + key) a.setAttribute("aria-current", "page");
+          else a.removeAttribute("aria-current");
+        });
+        renderers[key]();
+      }
+      document
+        .querySelectorAll("input,select")
+        .forEach((el) => el.addEventListener("input", () => renderers[el.closest("section").id]()));
+      document
+        .querySelectorAll("[data-tone]")
+        .forEach((el) => el.addEventListener("click", () => play(el.dataset.tone)));
+      window.addEventListener("hashchange", page);
+      page();
+    </script>
+  </body>
+</html>

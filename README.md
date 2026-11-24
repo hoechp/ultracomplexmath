@@ -22,6 +22,7 @@ The [geometry inside the full union](docs/research/geometric-structure.md) expla
 
 | Explore | What comes together | Run from a checkout |
 | --- | --- | --- |
+| [Five experiments](docs/five-experiments.md) · [Open the lab](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/five-experiments.html) | Count rational roots, continue a field, trace a ruled surface, measure polarization and hear a zero divisor | `python -m examples.five_experiments` |
 | [Four bars at dead centre](docs/four-bar.md) | Find the two finite assembly motions hidden in one singular pose, then try a velocity that fails at second order | `python -m examples.four_bar` |
 | [Through the pole](https://raw.githack.com/hoechp/ultracomplexmath/master/docs/gallery/projective-paths.html) | Follow two projective channels through infinity and a zero of the reflected optical field | `python -m examples.projective_paths` |
 | [Draw a field loop](docs/polar-motion.md#draw-your-own-field-loop) | Draw around either or both singularities of `F(z) = z − j` and compare the two phase lifts | `python -m examples.field_loops` |
